@@ -21,8 +21,12 @@ header('Content-type: text/plain; charset=us-ascii');
 $i=0;
 $line="";
 echo "["; 
-
+$num1 = 0;
 foreach ($dbh->query($query) as $row) {
+	if ($num1 > 0) {
+		echo ",";
+	}
+	$num1 += 1;
 	echo "{";
 	echo "\"candidateName\": \"".$row["FirstLastP"]."\",";
 	echo "\"CID \": \"".$row["CID"]."\",";
@@ -68,58 +72,123 @@ foreach ($dbh->query($query) as $row) {
 		$map[$name] += $amount;
 		//echo "\"".$name."\":".$map[$name].",";
 	}
+	$num = 0;
 	if ($map["Agribusiness"] > 0) {
-		echo "\""."Agribusiness"."\":".$map["Agribusiness"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Agribusiness"."\":".$map["Agribusiness"]."}";
 	}
 	if ($map["Candidate"] > 0) {
-		echo "\""."Candidate"."\":".$map["Candidate"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Candidate"."\":".$map["Candidate"]."}";
 	}
 	if ($map["Communic/Electronics"] > 0) {
-		echo "\""."Communic/Electronics"."\":".$map["Communic/Electronics"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Communic/Electronics"."\":".$map["Communic/Electronics"]."}";
 	}
 	if ($map["Construction"] > 0) {
-		echo "\""."Construction"."\":".$map["Construction"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Construction"."\":".$map["Construction"]."}";
 	}
 	if ($map["Defense"] > 0) {
-		echo "\""."Defense"."\":".$map["Defense"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Defense"."\":".$map["Defense"]."}";
 	}
 	if ($map["Energy/Nat Resource"] > 0) {
-		echo "\""."Energy/Nat Resource"."\":".$map["Energy/Nat Resource"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Energy/Nat Resource"."\":".$map["Energy/Nat Resource"]."}";
 	}
 	if ($map["Finance/Insur/RealEst"] > 0) {
-		echo "\""."Finance/Insur/RealEst"."\":".$map["Finance/Insur/RealEst"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Finance/Insur/RealEst"."\":".$map["Finance/Insur/RealEst"]."}";
 	}
 	if ($map["Health"] > 0) {
-		echo "\""."Health"."\":".$map["Health"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Health"."\":".$map["Health"]."}";
 	}
 	if ($map["Ideology/Single-Issue"] > 0) {
-		echo "\""."Ideology/Single-Issue"."\":".$map["Ideology/Single-Issue"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Ideology/Single-Issue"."\":".$map["Ideology/Single-Issue"]."}";
 	}
 	if (($map["Joint Candidate Cmtes"] + $map["Party Cmte"])  > 0) {
-		echo "\""."Committee"."\":".($map["Joint Candidate Cmtes"] + $map["Party Cmte"]).",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Committee"."\":".($map["Joint Candidate Cmtes"] + $map["Party Cmte"])."}";
 	}
 	if (($map["Other"] + $map["Unknown"])  > 0) {
-		echo "\""."Other"."\":".($map["Other"] + $map["Unknown"]).",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Other"."\":".($map["Other"] + $map["Unknown"])."}";
 	}
 	if ($map["Labor"] > 0) {
-		echo "\""."Labor"."\":".$map["Labor"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Labor"."\":".$map["Labor"]."}";
 	}
 	if ($map["Lawyers & Lobbyists"] > 0) {
-		echo "\""."Lawyers & Lobbyists"."\":".$map["Lawyers & Lobbyists"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Lawyers & Lobbyists"."\":".$map["Lawyers & Lobbyists"]."}";
 	}
 	if ($map["Misc Business"] > 0) {
-		echo "\""."Misc Business"."\":".$map["Misc Business"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Misc Business"."\":".$map["Misc Business"]."}";
 	}
 	if ($map["Non-contribution"] > 0) {
-		echo "\""."Non-contribution"."\":".$map["Non-contribution"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Non-contribution"."\":".$map["Non-contribution"]."}";
 	}
 	if ($map["Transportation"] > 0) {
-		echo "\""."Transportation"."\":".$map["Transportation"].",";
+		if ($num > 0) {
+			echo ",";
+		}
+		$num += 1;
+		echo "{\""."Transportation"."\":".$map["Transportation"]."}";
 	}
 	echo "]";
  	$i=$i+1;
  	$line="";
- 	echo "},";
+ 	echo "}";
 }
 echo "]";
 ?>
