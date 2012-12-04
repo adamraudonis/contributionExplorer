@@ -4,7 +4,7 @@ try
 {
     /*** connect to SQLite database ***/
 
-    $dbh = new PDO("sqlite:db/test.db");
+    $dbh = new PDO("sqlite:db/contrib.db");
 
 }
 catch(PDOException $e)
@@ -14,7 +14,7 @@ catch(PDOException $e)
     die( "<br><br>Query Closed !!! $error");
 }
 
-$query =  "SELECT * from categories";
+$query =  "SELECT * from CandsCRP12";
 header('Content-type: text/plain; charset=us-ascii');
 $i=0;
 $line="";
@@ -22,7 +22,7 @@ $line="";
 
 foreach ($dbh->query($query) as $row) {
 
-	$line=$line.$row["catcode"];
+	$line=$line.$row[0];
  	$i=$i+1;
  	echo $line."\n";
  	$line="";
