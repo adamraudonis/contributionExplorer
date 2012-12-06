@@ -21,8 +21,12 @@ header('Content-type: text/plain; charset=us-ascii');
 $i=0;
 $line="";
 echo "["; 
-
+$number = 0;
 foreach ($dbh->query($query) as $row) {
+	if ($number > 0) {
+			echo ",";
+
+	}
 	echo "{";
 	echo "\"candidateName\": \"".$row["FirstLastP"]."\",";
 	echo "\"CID\": \"".$row["CID"]."\",";
@@ -32,11 +36,16 @@ foreach ($dbh->query($query) as $row) {
 	echo "\"type\": \"".$row["CRPICO"]."\",";
 	echo "\"noPacs\": \"".$row["noPacs"]."\",";
 	$query2 = "SELECT distinct(PACID), FECCandID, RealCode from PACs12 WHERE FECCandID = '".$row["FECCandID"]."'";
-	echo "\"PACs\":[";
+	echo "\"PACs\":{";
+	$num = 0;
+	$name;
+	$amount;
 	foreach ($dbh->query($query2) as $row2) {
+		if ($num > 0) {
+			echo ",";
+
+		}
 		$query3 = "SELECT * from Cmtes12 where CmteID = '".$row2["PACID"]."'";
-		$name;
-		$amount;
 		foreach ($dbh->query($query3) as $row3) {
 			$name = $row3["PACShort"];
 		}
@@ -44,12 +53,14 @@ foreach ($dbh->query($query) as $row) {
 		foreach ($dbh->query($query4) as $row4) {
 			$amount = $row4[0];
 		}
-		echo "\"".$name."\":".$amount.",";
+		echo "\"".$name."\":".$amount;
+		$num += 1;
 	}
-	echo "]";
+	echo "}";
  	$i=$i+1;
  	$line="";
- 	echo "},";
+ 	$number += 1;
+ 	echo "}";
 }
 echo "]";
 ?>
