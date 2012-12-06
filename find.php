@@ -25,7 +25,7 @@ echo "[";
 foreach ($dbh->query($query) as $row) {
 	echo "{";
 	echo "\"candidateName\": \"".$row["FirstLastP"]."\",";
-	echo "\"CID \": \"".$row["CID"]."\",";
+	echo "\"CID\": \"".$row["CID"]."\",";
 	echo "\"Party\": \"".$row["Party"]."\",";
 	echo "\"ranFor\": \"".$row["DistIDRunFor"]."\",";
 	echo "\"currentPosition\": \"".$row["DistIDCurr"]."\",";
