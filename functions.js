@@ -24,6 +24,7 @@ function write_data(json){
 
 function initialize(){
      
+     
     var canvas = d3.select("#canvas")
                 
     var colors=new Array();
@@ -71,7 +72,7 @@ function initialize(){
 
                                         if(party=="D"){return "blue"}
                                         else if(party=="R"){return "red"}
-                                        else{return "black"}
+                                        else{return "green"}
 
                                     }
                                )
@@ -241,85 +242,8 @@ function initialize(){
                                 
                             
                         })
-                        .on("mousemove",function(){
-                            var select_status=$("#select_status").html()
-                            if(select_status=="true"){
-                                var mouse_x=$("#mouse_x").html()
-                                var mouse_y=$("#mouse_y").html()
-
-                                var origin_x=$("#select_point_1_x").html()
-                                var origin_y=$("#select_point_1_y").html()
-
-                                var width=mouse_x-origin_x
-                                var height=mouse_y-origin_y
-                                
-                                var d="M"+origin_x+" "+origin_y+" l"+width+" 0 l0 "+height+" h"+(-1*width)+" 0 v0 "+(-1*height)
-
-                                var selection_rect=d3.select("#selection_rect")
-                               
-                                selection_rect.attr("d",d)
-
-
-
-                                $("#select_point_2_x").html(mouse_x)
-                                $("#select_point_2_y").html(mouse_y)
-                            
-                            }
-                             
-                        })
-                        .on("mouseup", function(){
-                            
-                            $("#select_status").html("false")
-                            
-                            if($("#select_point_2_x").html()==$("#select_point_1_x").html() || $("#select_point_2_y").html()==$("#select_point_1_y").html() ){
-                                
-                                $(".candidate")
-                                .css("stroke", "black")
-                                .css("stroke-width", 1.5)
-                                
-                            }   
-                            else{
-                               
-                                var x_1=$("#select_point_1_x").html()
-                                var x_2=$("#select_point_2_x").html()
-                                var min_x=0
-                                var max_x=0
-
-                                if(x_1<x_2){min_x=x_1; max_x=x_2}
-                                else {min_x=x_2; max_x=x_1}
-
-                                var y_1=$("#select_point_1_y").html()
-                                var y_2=$("#select_point_2_y").html()
-                                var min_y=0
-                                var max_y=0
-
-                                if(y_1<y_2){min_y=y_1; max_y=y_2}
-                                else {min_y=y_2; max_y=y_1}
-
-                                var candidates=$(".candidate")
-                                var candidate="";
-                                var cx=0, cy=0;
-
-                                for(var i=0;i<candidates.length;i++){
-
-                                    candidate=$("#"+candidates[i].id)
-                                    cx=candidate.attr("cx")
-                                    cy=candidate.attr("cy")
-
-                                    if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
-
-                                        candidate.css("stroke", "orange")
-                                        candidate.css("stroke-width", 4)
-                                        
-                                        console.log(candidate.attr("id"))
-
-                                    }
-
-                                }
-                            }
-                            
-                        })
                         
+                    
                         
                         canvas.append("svg:circle")
                         .attr("cx", main_x)
@@ -530,6 +454,7 @@ function mouse_tracker(canvas, colors_assigned){
                 
                 document.onmousemove = function(event){
                     
+                    track_selection()
                     var current_mouse_x=$("#mouse_x").html();
                     var current_mouse_y=$("#mouse_y").html();
                     
@@ -592,9 +517,12 @@ function mouse_tracker(canvas, colors_assigned){
                 
                 document.onmouseup = function (event){
                     
+                    finish_selection()
                     $('#target').html("")
                     
                 }
+                
+                
                 
          
 }
@@ -611,5 +539,139 @@ function motion_lock(target){
 
 function between(x, min, max) {
   return x > min && x < max;
+}
+
+function track_selection(){
+                            var select_status=$("#select_status").html()
+                            if(select_status=="true"){
+                                var mouse_x=$("#mouse_x").html()
+                                var mouse_y=$("#mouse_y").html()
+
+                                var origin_x=$("#select_point_1_x").html()
+                                var origin_y=$("#select_point_1_y").html()
+
+                                var width=mouse_x-origin_x
+                                var height=mouse_y-origin_y
+                                
+                                var d="M"+origin_x+" "+origin_y+" l"+width+" 0 l0 "+height+" h"+(-1*width)+" 0 v0 "+(-1*height)
+
+                                var selection_rect=d3.select("#selection_rect")
+                               
+                                selection_rect.attr("d",d)
+
+
+
+                                
+                            
+                            }
+                             
+}
+
+function finish_selection(){
+                            
+                            $("#select_status").html("false")
+                            $("#selection_list").html("")
+                            
+                               
+                                var x_1=$("#select_point_1_x").html()
+                                var x_2=$("#mouse_x").html()
+                                var min_x=0
+                                var max_x=0
+
+                                if(x_1<x_2){min_x=x_1; max_x=x_2}
+                                else {min_x=x_2; max_x=x_1}
+
+                                var y_1=$("#select_point_1_y").html()
+                                var y_2=$("#mouse_y").html()
+                                var min_y=0
+                                var max_y=0
+                                
+                                if(y_1<y_2){min_y=y_1; max_y=y_2}
+                                else {min_y=y_2; max_y=y_1}
+                                
+                                var width=max_x-min_x
+                                var height=max_y-min_y
+                            
+                                if(width<2 || height < 2){
+                                    
+                                    
+                                    $("#selection_rect").remove()
+                                    
+                                    $(".candidate")
+                                        .css("stroke", "black")
+                                        .css("stroke-width", 1.5)
+                                    
+                                }
+                                else{
+                                    
+
+                                    var candidates=$(".candidate")
+                                    var candidate="";
+                                    var cx=0, cy=0, cand_id="", name="", d3_candidate="";
+                                    var div_function=""
+                                  
+
+                                    for(var i=0;i<candidates.length;i++){
+
+                                        candidate=$("#"+candidates[i].id)
+                                        d3_candidate=d3.select("#"+candidates[i].id)
+                                        cx=candidate.attr("cx")
+                                        cy=candidate.attr("cy")
+                                        cand_id=candidate.attr("id")
+                                        name=d3_candidate[0][0]["__data__"]["candidateName"]
+                                        console.log(name)
+
+                                        if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
+
+                                            candidate.css("stroke", "orange")
+                                            candidate.css("stroke-width", 4)
+                                           
+                                            $("#selection_list").append("<div id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
+                                                
+
+                                          
+                                        }
+                                    }
+                                }
+                            
+                            
+}
+
+function highlight_this(target){
+    
+    
+    $(target).attr("class", "highlighted_text")
+    
+    var target_circle=$(target).attr("for")
+    
+    $("#"+target_circle).attr("class","candidate_highlight")
+    $(".candidate").css("fill","black")
+    
+}
+
+function lowlight_this(target){
+    
+    $(target).attr("class", "lowlighted_text")
+    var target_circle=$(target).attr("for")
+    
+    $("#"+target_circle).attr("class","candidate")
+    
+    
+    var candidates=$(".candidate")
+    var party="", id="", color="";
+    
+    for (var i=0;i<candidates.length;i++){
+        
+        party=candidates[i]['__data__']['Party']
+        id="candidate_"+candidates[i]['__data__']['CID']
+        if(party=="R"){color="red"}
+        else if(party=="D"){color="blue"}
+        else{color="green"}
+        
+        $("#"+id).css("fill", color)
+        
+    }
+
+    
 }
 
