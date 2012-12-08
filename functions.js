@@ -6,7 +6,7 @@ var main_r=300;
 var main_x=500
 var main_y=400
 var all_sectors=new Array();
-
+var sector_count=0;
 
 function write_data(json){
     
@@ -64,7 +64,7 @@ function initialize(){
                         .attr("cy", main_y)
                         .attr("r", 20)
                         .attr("id", function(d){if(d.CID==undefined){return "no id"}else{return ("candidate_" + d.CID)} })
-                        .attr("class", "candidate")
+                        .attr("class", "candidate cand_unlocked")
                         .attr("candidateName", function (d){return d.candidateName})
                         .style("fill", function(d){
                             
@@ -85,7 +85,7 @@ function initialize(){
                                 total=total+sector
                                 
                                 var old_sector=all_sectors[j]
-                                if(old_sector==undefined){all_sectors[j]=0;}
+                                if(old_sector==undefined){all_sectors[j]=0; sector_count++;}
                                 all_sectors[j]=all_sectors[j]+sector
 
                             }
@@ -142,11 +142,12 @@ function initialize(){
                     var y=0
                     var bar_size=0
                     var d="";
+                    var angle_segment=sector_count+1
                     
                     for (var j in all_sectors){
                         
                         bar_size=15+all_sectors[j]/200000
-                        anchor_angle=i/15*2*pi;
+                        anchor_angle=i/angle_segment*2*pi;
                         x=main_x+main_r*Math.cos(anchor_angle)
                         y=main_y+main_r*Math.sin(anchor_angle)
  
@@ -219,11 +220,8 @@ function initialize(){
                         .attr("id", "main_circle")
                         .on("mousedown",function(){
                             
-                            $("#selection_rect").remove()
-                            
-                            $(".candidate")
-                                .css("stroke", "black")
-                                .css("stroke-width", 1.5)
+                            remove_selection()
+                                
                             
                             $("#select_status").html("true")
                             
@@ -570,8 +568,20 @@ function track_selection(){
 function finish_selection(){
                             
                             $("#select_status").html("false")
+                            
                             $("#selection_list").html("")
                             
+                            /*
+                            var list_items=$("#selection_list").children()
+                            
+                            for (var i=0;i<list_items.length;i++){
+                                
+                               if($(list_items[i]).attr("locked")=='false'){
+                                   $(list_items[i]).remove()
+                                   
+                               }  
+                            }
+                            */
                                
                                 var x_1=$("#select_point_1_x").html()
                                 var x_2=$("#mouse_x").html()
@@ -622,7 +632,7 @@ function finish_selection(){
                                             candidate.css("stroke", "orange")
                                             candidate.css("stroke-width", 4)
                                            
-                                            $("#selection_list").append("<div id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
+                                            $("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
                                                 
 
                                           
@@ -633,31 +643,57 @@ function finish_selection(){
                             
 }
 
+function lock_candidate(target){
+    var candidate=""
+    if($(target).attr("locked")=='false'){
+        $(target).attr("locked", 'true')
+        $(target).attr("class", "locked_text")
+        candidate=$(target).attr("for")
+        
+        $("#"+candidate).css("stroke", "#4900b6")
+        $("#"+candidate).attr("class", "candidate cand_locked")
+        $("#"+candidate).css("opacity", 1)
+        
+    }
+    else{
+        
+        $(target).attr("locked", 'false')
+        $(target).attr("class","")
+        candidate=$(target).attr("for")
+        $("#"+candidate).attr("class", "candidate cand_unlocked")
+        $("#"+candidate).css("opacity", 0.1)
+        
+    }
+    
+}
+
+
 function highlight_this(target){
+   
+   var target_circle=$(target).attr("for")
+   
+    $(".cand_unlocked").css("opacity",0.1)
+    $("#"+target_circle).css("opacity", 1)
+    
+    
+    if($(target).attr("locked")=="true") {return;}
     
     
     $(target).attr("class", "highlighted_text")
     
-    var target_circle=$(target).attr("for")
-   
     
-    $("#"+target_circle).attr("class","candidate_highlight")
-    
-    $(".candidate").attr("class","candidate_lowlight")
 }
 
 function lowlight_this(target){
     
-    $(target).attr("class", "lowlighted_text")
+
+    
     var target_circle=$(target).attr("for")
     
-    $("#"+target_circle).attr("class","candidate")
-    $(".candidate_lowlight").attr("class", "candidate")
     
-    
-    var candidates=$(".candidate")
-    var party="", id="", color="";
-    
+    /*
+     *var candidates=$(".candidate")
+     *var party="", id="", color="";
     for (var i=0;i<candidates.length;i++){
         
         party=candidates[i]['__data__']['Party']
@@ -669,7 +705,16 @@ function lowlight_this(target){
        
         $("#"+id).css("fill", color)
         
-    }
+    }*/
+    
+    $(".cand_unlocked").css("opacity", 0.25)
+    
+    
+   if($(target).attr("locked")=="true") {return;}
+   
+   $(target).attr("class", 'lowlighted_text')
+     
+    
 
     
 }
@@ -678,18 +723,19 @@ function remove_selection(){
     
      $("#selection_rect").remove()
      
-     $("#selection_list").html("")
     
     
-     $(".candidate_lowlight").attr("class", "candidate")
+     $(".cand_locked").attr("class", "candidate cand_unlocked")
      
      $(".candidate")
             .css("stroke", "black")
             .css("stroke-width", 1.5)
+            .css("opacity", 0.25)
 
     var candidates=$(".candidate")
     var party="", id="", color="";
     
+    /*
     for (var i=0;i<candidates.length;i++){
         
         party=candidates[i]['__data__']['Party']
@@ -702,6 +748,7 @@ function remove_selection(){
         $("#"+id).css("fill", color)
         
     }
+    */
     
 }
 
