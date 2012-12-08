@@ -1,0 +1,65 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="http://d3js.org/d3.v2.js"></script>
+        <script type="text/javascript" src="functions.js"></script>
+        <script type="text/javascript" src="data.js"></script>
+        
+        <script type="text/javascript">
+            
+            
+            $(function(){
+                
+                   
+                initialize();
+                
+            })
+            
+            
+            
+            
+        
+            
+            
+        </script>
+    </head>
+    <body>
+        
+        <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
+        <div id="meta">
+            <div>mouse x: <span id="mouse_x"></span></div>
+            <div>mouse y: <span id="mouse_y"></span></div>
+            <div>theta: <span id="theta"></span></div>
+            <div>mouse r: <span id="mouse_r"></span></div>
+            <div>target: <span id="target"></span></div>
+            <div>selection point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
+            <div>selection point 1 y: <span class="selection_data" id="select_point_1_y"></span></div>
+            <div>selecting status: <span id="select_status">false</span></div>
+        
+        </div>
+        <div id="selection_list">
+            list
+        </div>
+        
+        
+        
+        
+         
+        
+        
+        
+        
+        
+        
+        
+    </body>
+</html>

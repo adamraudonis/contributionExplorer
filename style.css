@@ -1,0 +1,127 @@
+/* 
+    Document   : style
+    Created on : Nov 20, 2012, 9:07:56 PM
+    Author     : enzomangubat
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+rect{
+    
+    fill:#619f3a;
+}
+
+circle{
+    
+    fill:#e37e23; ;
+}
+
+#center{
+    opacity:0
+}
+
+path{
+    stroke: black;
+    stroke-width:3;
+    fill:none;
+}
+
+body{
+    
+    height:100em;
+}
+
+#main_circle{
+    
+    fill:black;
+    stroke: black;
+    stroke-width:1;
+    opacity:0
+    
+}
+
+.candidate{
+    opacity:0.25;
+    stroke:black;
+    stroke-width:1.5;
+}
+
+.candidate_highlight{
+    opacity:1;
+    stroke:orange;
+    stroke-width:1.5    
+}
+
+.candidate_lowlight{
+    
+    opacity:0.1;
+       
+}
+
+
+
+
+
+
+.force_vector{
+    
+    stroke-width: 3
+    
+}
+
+#meta{
+    
+    position:fixed;
+    top:8em;
+    right: 5em;
+    width:20em;
+    text-align:left;
+}
+
+#selection_list{
+        position:fixed;
+        top:20em;
+        right: 5em;
+        width:20em;
+        text-align:eft
+    
+}
+
+.sector_bar{
+    
+    stroke-width:40;
+    opacity:1
+}
+
+.sector_circle{
+    
+    opacity:0
+}
+
+#selection_rect{
+    
+    stroke:orange;
+    stroke-width:2
+    
+}
+
+.highlighted_text{
+    
+    color:orange
+    
+}
+.lowlighted_text{
+    
+    color:black
+    
+}
+    

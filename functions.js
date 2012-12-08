@@ -105,7 +105,8 @@ function initialize(){
                         
                    //my prototype to view data structure in console.     
                    
-                    
+                    console.log("all sectors")
+                    console.log(all_sectors)
                     console.log("everyone")
                     console.log(selection)
                     var obama=d3.select("#candidate_N00009638");
@@ -453,7 +454,7 @@ function mouse_tracker(canvas, colors_assigned){
                     }  
                 
                 document.onmousemove = function(event){
-                    
+                   
                     track_selection()
                     var current_mouse_x=$("#mouse_x").html();
                     var current_mouse_y=$("#mouse_y").html();
@@ -499,8 +500,7 @@ function mouse_tracker(canvas, colors_assigned){
                          var target_bar_size=target_bar.attr("size")
                          d="M"+new_x+" "+new_y+" l"+target_bar_size*Math.cos(theta)+" "+target_bar_size*Math.sin(theta)
                          target_bar.attr("d",d)
-                         
-                         
+                                                  
                          
                          var candidates=$(".candidate")
                     
@@ -516,10 +516,10 @@ function mouse_tracker(canvas, colors_assigned){
                 };
                 
                 document.onmouseup = function (event){
-                    
-                    finish_selection()
+                    if($("#select_status").html()=='true'){
+                        finish_selection()
+                    }
                     $('#target').html("")
-                    
                 }
                 
                 
@@ -595,11 +595,7 @@ function finish_selection(){
                                 if(width<2 || height < 2){
                                     
                                     
-                                    $("#selection_rect").remove()
-                                    
-                                    $(".candidate")
-                                        .css("stroke", "black")
-                                        .css("stroke-width", 1.5)
+                                    remove_selection()
                                     
                                 }
                                 else{
@@ -643,10 +639,11 @@ function highlight_this(target){
     $(target).attr("class", "highlighted_text")
     
     var target_circle=$(target).attr("for")
+   
     
     $("#"+target_circle).attr("class","candidate_highlight")
-    $(".candidate").css("fill","black")
     
+    $(".candidate").attr("class","candidate_lowlight")
 }
 
 function lowlight_this(target){
@@ -655,6 +652,7 @@ function lowlight_this(target){
     var target_circle=$(target).attr("for")
     
     $("#"+target_circle).attr("class","candidate")
+    $(".candidate_lowlight").attr("class", "candidate")
     
     
     var candidates=$(".candidate")
@@ -667,11 +665,44 @@ function lowlight_this(target){
         if(party=="R"){color="red"}
         else if(party=="D"){color="blue"}
         else{color="green"}
-        
+
+       
         $("#"+id).css("fill", color)
         
     }
 
     
 }
+
+function remove_selection(){
+    
+     $("#selection_rect").remove()
+     
+     $("#selection_list").html("")
+    
+    
+     $(".candidate_lowlight").attr("class", "candidate")
+     
+     $(".candidate")
+            .css("stroke", "black")
+            .css("stroke-width", 1.5)
+
+    var candidates=$(".candidate")
+    var party="", id="", color="";
+    
+    for (var i=0;i<candidates.length;i++){
+        
+        party=candidates[i]['__data__']['Party']
+        id="candidate_"+candidates[i]['__data__']['CID']
+        if(party=="R"){color="red"}
+        else if(party=="D"){color="blue"}
+        else{color="green"}
+
+       
+        $("#"+id).css("fill", color)
+        
+    }
+    
+}
+
 
