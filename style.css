@@ -26,7 +26,9 @@ circle{
 }
 
 #center{
-    opacity:0
+    opacity:1;
+    fill:"black"
+        
 }
 
 path{
@@ -61,6 +63,8 @@ body{
     stroke-width:1.5    
 }
 
+
+
 .candidate_lowlight{
     
     opacity:0.1;
@@ -85,6 +89,7 @@ body{
     right: 5em;
     width:20em;
     text-align:left;
+    opacity:0.1
 }
 
 #selection_list{
@@ -124,4 +129,7 @@ body{
     color:black
     
 }
+.locked_text{
     
+    color:#4900b6
+}
