@@ -5,10 +5,16 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html>
     <head>
+         <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="style.css" rel="stylesheet" type="text/css" />
-        
+
+
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script src="http://d3js.org/d3.v2.js"></script>
         <script type="text/javascript" src="functions.js"></script>
@@ -16,50 +22,101 @@ and open the template in the editor.
         
         <script type="text/javascript">
             
-            
             $(function(){
-                
                    
                 initialize();
                 
             })
-            
-            
-            
-            
-        
-            
+
+            $(function ()  {
+                $("#example").popover();  
+            });  
             
         </script>
     </head>
     <body>
+
+
+        <form class="searchform">
+            <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+
+            <button type="button" id="example" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot;>Submit</button>">Find My Rep</button>
+
+       
+<!--
+             <div class="bs-docs-example" style="padding-bottom: 24px;">
+          <a href="#" class="btn btn-small" rel="popover" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">Find My Rep</a>
+        </div>
+-->
+            <div class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn btn-small">President</button>
+                <button type="button" class="btn btn-small">Senate</button>
+                <button type="button" class="btn btn-small">House</button>
+            </div>
+
+            <button type="button" class="btn btn-small">Reset</button>
+
+        </form>
+
+
+
+        <script>
+            $(function() {
+                var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"];
+
+                $( "#tags" ).autocomplete({
+                    source: availableTags
+                });
+            });
+        </script>
+
+
+
         
-        <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1"></svg>
+        <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
         <div id="meta">
-            <div>mouse x: <span id="mouse_x"></span></div>
-            <div>mouse y: <span id="mouse_y"></span></div>
-            <div>theta: <span id="theta"></span></div>
-            <div>mouse r: <span id="mouse_r"></span></div>
-            <div>target: <span id="target"></span></div>
-            <div>selection point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
+            <div><span id="mouse_x"></span></div>
+            <div> <span id="mouse_y"></span></div>
+            <div> <span id="theta"></span></div>
+            <div> <span id="mouse_r"></span></div>
+            <div> <span id="target"></span></div>
+             <div>selection point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
             <div>selection point 1 y: <span class="selection_data" id="select_point_1_y"></span></div>
             <div>selecting status: <span id="select_status">false</span></div>
         
         </div>
+
+        </div>
         <div id="selection_list">
             
         </div>
-        
-        
-        
-        
-         
-        
-        
-        
-        
-        
-        
-        
+
+
+<!-- For an unknown reason this needs to be here to make the popover work -->
+<script src="js/bootstrap.min.js"></script> 
+
+        <p><center>By Adam Raudonis - Lorenzo Mangubat - Gabriel Vincent Kho - Chris Fontas</center></p>
     </body>
 </html>
