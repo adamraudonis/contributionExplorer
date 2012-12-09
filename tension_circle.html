@@ -73,22 +73,39 @@
                     e.preventDefault()
                 });
 
+            // Must be placed here. Can't be inside the document click function.
+            function whoisrep_callback(jsonData){
+                console.log(jsonData);
+                if (jsonData.response.legislators.length > 0) {
+                    console.log(jsonData.response.legislators[0].legislator.crp_id);
+
+                    // Switch to Rep. View if not in it already
+                    if(!$('#house').hasClass('active')) {
+                        $('#house').button('toggle');
+                        d3.select("svg").remove();
+                        var svg = d3.select("body").append("svg")
+                            .attr("id","canvas").attr("width",900).attr("height",900);
+                        initialize("house");
+                    } 
+
+                } else {
+                    alert("A representative for that zipcode could not be found. Try entering your full zip code ex: 91361-2038");
+                };
+            }
+
             $(document).click(function(e) {
 
                 // If you press the submit button
                 if (e.target.id == "zipbutton") {
-                    console.log($('#zip').val());
-                    d3.xml('http://whoismyrepresentative.com/getall_mems.php?zip=' + $('#zip').val(), "application/xml", function(xml) {
-                  
-                        console.log(xml.documentElement.childNodes[0])
-                        if (xml.documentElement.childNodes[0]) {
-                            console.log(xml.documentElement.childNodes[0].attributes.getNamedItem("name").nodeValue)
-                            // If multiple reps then also give an alert?
 
-                        } else {
-                            alert("A representative for that zipcode could not be found. Try entering your full zip code ex: 91361-2038");
-                        };
-                    });
+                    $(document).ready(function(){
+                        $.ajax({
+                            type: 'get',
+                            url: 'http://services.sunlightlabs.com/api/legislators.allForZip?apikey=de9c6b058ea542a4a5aab1d845d56c83&zip='+ $('#zip').val() +'&jsonp=whoisrep_callback',
+                            dataType: 'jsonp',
+                            success: whoisrep_callback 
+                        });
+                    })
                 }
 
                 // Don't close if you are touching the zip textfield
