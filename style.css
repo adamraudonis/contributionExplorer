@@ -94,10 +94,11 @@ body{
 
 #selection_list{
         position:fixed;
+        right:1em;
         top:20em;
-        right: 5em;
-        width:20em;
-        text-align:eft
+        width:10em;
+        text-align:left;
+        
     
 }
 

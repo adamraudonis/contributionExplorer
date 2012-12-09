@@ -7,7 +7,7 @@ var main_x=500
 var main_y=400
 var all_sectors=new Array();
 var sector_count=0;
-
+var max_sector=0;
 function write_data(json){
     
     return json
@@ -93,10 +93,14 @@ function initialize(){
                             
                         })
                         
+                           
                     var i=0;   
                     for (var j in all_sectors){
                         
                         colors_assigned[j]=colors[i]
+                        
+                        if(all_sectors[j]>max_sector){max_sector=all_sectors[j]}
+                        
                         
                         i++
                     }    
@@ -146,7 +150,7 @@ function initialize(){
                     
                     for (var j in all_sectors){
                         
-                        bar_size=15+all_sectors[j]/200000
+                        bar_size=15+all_sectors[j]/max_sector*300
                         anchor_angle=i/angle_segment*2*pi;
                         x=main_x+main_r*Math.cos(anchor_angle)
                         y=main_y+main_r*Math.sin(anchor_angle)
