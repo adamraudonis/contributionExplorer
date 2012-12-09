@@ -183,6 +183,36 @@ function initialize(){
                                 motion_lock(this)
                             })  
                             
+
+                             canvas.append("svg:text")
+                            .text(j)
+                            .attr("class","sector_bar_text")
+                            .attr("x",x)
+                            .attr("y",y)
+                           // .attr("transform", "rotate("+anglen+","+x+","+y+")")
+                            .attr("id", "sector_bar_text_"+j)
+                            .attr("sector_name", j)
+                            .attr("size", bar_size)
+                            .style("stroke", "#fffff")
+                            .style("-webkit-touch-callout", "none")
+                            .style("-webkit-user-select", "none")
+                            .style("-khtml-user-select", "none")
+                            .style("-moz-user-select", "none")
+                            .style("-ms-user-select", "none")
+                            .style("user-select", "none")
+                            .on("mousedown", function(){  
+                                
+                                motion_lock(this)
+                            })
+                            .attr("text-anchor", function() { 
+//                              var radians = data[i].radians
+                              if (anchor_angle < Math.PI/2 || anchor_angle > 3 * Math.PI/2) {
+                                  return "start";
+                              }
+                              else {
+                                  return "end";
+                              };
+                            });
                            
                             i++
                     }
@@ -502,6 +532,21 @@ function mouse_tracker(canvas, colors_assigned){
                          var target_bar_size=target_bar.attr("size")
                          d="M"+new_x+" "+new_y+" l"+target_bar_size*Math.cos(theta)+" "+target_bar_size*Math.sin(theta)
                          target_bar.attr("d",d)
+
+                         var target_bar_text=$("#sector_bar_text_"+$('#target').html())
+                   
+                          target_bar_text.attr("x",new_x)
+                          target_bar_text.attr("y",new_y)
+                          target_bar_text.attr("text-anchor", function() { 
+//                              var radians = data[i].radians
+                              if (theta < Math.PI/2 || theta > 3 * Math.PI/2) {
+                                  return "start";
+                              }
+                              else {
+                                  return "end";
+                              };
+                            }) 
+
                                                   
                          
                          var candidates=$(".candidate")
