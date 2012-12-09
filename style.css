@@ -12,12 +12,13 @@
 */
 
 root { 
-        -webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    /* Makes it so you can't select text */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     display: block;
 }
 
@@ -44,12 +45,18 @@ path{
 }
 
 body{
+    /* Makes it so you can't select text */
     -webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    background-image: url('cream_dust_@2X.png');
+    background-size: 50px; 
+    background-position: initial initial;
+    background-repeat: initial initial;
     height:100em;
 }
 
