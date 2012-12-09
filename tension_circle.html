@@ -1,65 +1,112 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html>
     <head>
-         <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-
-        <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Contribution Explorer</title>
+
         <link href="style.css" rel="stylesheet" type="text/css" />
-
-
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="js/bootstrap.min.js"></script>
         <script src="http://d3js.org/d3.v2.js"></script>
         <script type="text/javascript" src="functions.js"></script>
         <script type="text/javascript" src="data.js"></script>
-        
-        <script type="text/javascript">
-            
-            $(function(){
-                   
-                initialize();
-                
-            })
-
-            $(function ()  {
-                $("#example").popover();  
-            });  
-            
-        </script>
     </head>
     <body>
+        <div class="credits">
+            <p>By Adam Raudonis - Lorenzo Mangubat - Gabriel Vincent Kho - Chris Fontas</p>
+        </div>
 
 
         <form class="searchform">
             <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
 
-            <button type="button" id="example" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot;>Submit</button>">Find My Rep</button>
+            <button type="button" id="zippopover" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot; id=&quot;zipbutton&quot;>Submit</button>">Find My Rep.</button>
 
-       
-<!--
-             <div class="bs-docs-example" style="padding-bottom: 24px;">
-          <a href="#" class="btn btn-small" rel="popover" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">Find My Rep</a>
-        </div>
--->
-            <div class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn btn-small">President</button>
-                <button type="button" class="btn btn-small">Senate</button>
-                <button type="button" class="btn btn-small">House</button>
+            <div class="btn-group" data-toggle="buttons-radio" id="typeButtonGroup">
+                <button type="button" class="btn btn-small" id="pres">President</button>
+                <button type="button" class="btn btn-small" id="senate">Senate</button>
+                <button type="button" class="btn btn-small" id="house">House</button>
             </div>
 
             <button type="button" class="btn btn-small">Reset</button>
-
         </form>
 
+        <script type="text/javascript">
+            
+            $(function() {
+
+                // Select Presidents view initially.
+                $('#pres').button('toggle');
+
+                // Get the selected button in the button group when pressed.
+                $ref = $(".btn-group");
+                $("body").on('click',$ref.selector+' .btn',function() {
+                    if(!$(this).hasClass('active')){
+
+                        // Remove the SVG and initialize with different data
+                        // Note: This is move any html under the visualization to the top.
+                        d3.select("svg").remove();
+                        var svg = d3.select("body").append("svg")
+                            .attr("id","canvas").attr("width",900).attr("height",900);
+                        initialize($(this).attr("id"));
+                    }
+                });
+
+                // Create the visualization with the president data
+                initialize("pres");
+            })
+
+            // Close the popover by tapping anywhere
+            // http://stackoverflow.com/questions/8947749/
+            var isVisible = false;
+            var clickedAway = false;
+
+            $('#zippopover').popover({
+                    html: true,
+                    trigger: 'manual'
+                }).click(function(e) {
+                    $(this).popover('show');
+                    $('#zip').focus();
+                    clickedAway = false
+                    isVisible = true
+                    e.preventDefault()
+                });
+
+            $(document).click(function(e) {
+
+                // If you press the submit button
+                if (e.target.id == "zipbutton") {
+                    console.log($('#zip').val());
+                    d3.xml('http://whoismyrepresentative.com/getall_mems.php?zip=' + $('#zip').val(), "application/xml", function(xml) {
+                  
+                        console.log(xml.documentElement.childNodes[0])
+                        if (xml.documentElement.childNodes[0]) {
+                            console.log(xml.documentElement.childNodes[0].attributes.getNamedItem("name").nodeValue)
+                            // If multiple reps then also give an alert?
+
+                        } else {
+                            alert("A representative for that zipcode could not be found. Try entering your full zip code ex: 91361-2038");
+                        };
+                    });
+                }
+
+                // Don't close if you are touching the zip textfield
+                if (e.target.id != "zip") {
+
+                    if(isVisible & clickedAway) {
+                        $('#zippopover').popover('hide')
+                        isVisible = clickedAway = false
+                    }
+                    else {
+                        clickedAway = true
+                    }
+                };
+            });
+        </script>
 
 
+<!--
         <script>
             $(function() {
                 var availableTags = [
@@ -92,31 +139,27 @@ and open the template in the editor.
             });
         </script>
 
+-->
 
-
-        
         <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
         <div id="meta">
             <div><span id="mouse_x"></span></div>
-            <div> <span id="mouse_y"></span></div>
-            <div> <span id="theta"></span></div>
-            <div> <span id="mouse_r"></span></div>
-            <div> <span id="target"></span></div>
-             <div>selection point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
-            <div>selection point 1 y: <span class="selection_data" id="select_point_1_y"></span></div>
-            <div>selecting status: <span id="select_status">false</span></div>
-        
+            <div><span id="mouse_y"></span></div>
+            <div><span id="theta"></span></div>
+            <div><span id="mouse_r"></span></div>
+            <div><span id="target"></span></div>
+            <div><span class="selection_data" id="select_point_1_x"></span></div>
+            <div><span class="selection_data" id="select_point_1_y"></span></div>
+            <div><span id="select_status">false</span></div>
         </div>
 
         </div>
-        <div id="selection_list">
-            
+            <div id="selection_list">
         </div>
 
 
-<!-- For an unknown reason this needs to be here to make the popover work -->
-<script src="js/bootstrap.min.js"></script> 
+        <!-- For an unknown reason this needs to be here to make the popover work -->
+        <script src="js/bootstrap.min.js"></script> 
 
-        <p><center>By Adam Raudonis - Lorenzo Mangubat - Gabriel Vincent Kho - Chris Fontas</center></p>
     </body>
 </html>

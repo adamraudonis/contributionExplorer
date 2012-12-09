@@ -153,6 +153,18 @@ body{
     color:#4900b6
 }
 
+.credits {
+    position:absolute;
+    top:850px;
+    left: 280px;
+    height: 40px;
+}
+
+.credits p {
+  font-family: 'Average Sans';
+  color: #777;
+}
+
 /* search form 
 http://www.webdesignerwall.com/demo/css3-search-form.html
 -------------------------------------- */
