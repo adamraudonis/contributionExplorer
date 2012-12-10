@@ -7,7 +7,7 @@ var obj = {
                 "committee": {
                     "chamber": "House",
                     "id": "HSPW",
-                    "name": "House Committee on Transportation and Infrastructure",
+                    "name": "House Committee on Transportation & Infrastructure",
                     "subcommittees": [
                         {
                             "committee": {
@@ -707,7 +707,7 @@ var obj = {
                 "committee": {
                     "chamber": "House",
                     "id": "HSGO",
-                    "name": "House Committee on Oversight and Government Reform",
+                    "name": "House Committee on Oversight and Gov. Reform",
                     "subcommittees": [
                         {
                             "committee": {

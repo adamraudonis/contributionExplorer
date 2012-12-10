@@ -33,8 +33,8 @@
         <button type="button" class="btn btn-small">Reset</button>
     </form>
 
-    <!-- The list of all the congressional committees -->
-    <div class="glossymenu"></div>
+    <!-- The list of all the congressional committees. Display none hides it. style="display: none;"-->
+    <div class="glossymenu" id="glossyid" style="display: none;"></div>
 
     <script type="text/javascript">
         
@@ -53,7 +53,7 @@
                     d3.select("svg").remove();
                     var svg = d3.select("body").append("svg")
                         .attr("id","canvas").attr("width",900).attr("height",900);
-                    initialize($(this).attr("id"));
+                    initializeVizAndMenu($(this).attr("id"));
                 }
             });
 
@@ -130,14 +130,19 @@
 
         function initializeVizAndMenu(raceType) {
             initialize(raceType);
-
-            if ($('#senate').hasClass('active')) {
-
-            } else if ($('#house').hasClass('active')) {
-
+            console.log("BEFORE TEST DATA");
+            //console.log($('#glossyid').children().remove());
+            $('#glossyid').children().remove()
+           // $('#glossyid a').remove();
+            if (raceType == "pres") {
+                $("#glossyid").css("display","none");
             } else {
-                // The presidents aren't part of congressional committees
+                $("#glossyid").css("display","block");
             }
+
+            testData(raceType);
+
+
         }
 
     </script>
@@ -169,21 +174,40 @@
         ***********************************************/
 
         // Callback for tapping the menu committees
-        function myFunc(name) {
-            console.log(name);
+        function getCom(committee_id) {
+            console.log(committee_id);
+            $.ajax({
+                type: 'get',
+                url: 'http://services.sunlightlabs.com/api/committees.get.json?apikey=de9c6b058ea542a4a5aab1d845d56c83&id=' + committee_id + '&jsonp=comdetails_callback',
+                dataType: 'jsonp',
+                success: comdetails_callback 
+            });
+        }
+
+        function comdetails_callback(jsonData) {
+            // Parse to get CIDs to highlight
+            console.log("GOT JSON DATA");
+            console.log(jsonData);
         }
             
-        
 
-        var obj = get_senate_list();
+    function testData(raceType) {
+
+        var obj;
+        if (raceType == "senate") {
+            obj = get_senate_list();
+        } else {
+            obj = get_house_list();
+        }
+                    console.log("IN TEST DATA");
+
+            console.log(obj);
 
         obj = obj.response;
-
-        var raceType = "senate";
            
         for (f = 0; f < obj.committees.length; f++) {
             var a = document.createElement ("a");
-            a.setAttribute("href",'javascript:myFunc(\"'+obj.committees[f].committee.id+'\")');
+            a.setAttribute("href",'javascript:getCom(\"'+obj.committees[f].committee.id+'\")');
             a.setAttribute("id",obj.committees[f].committee.id);
             var committeename = obj.committees[f].committee.name;
             var firstsubstring = committeename.substring(0,19)
@@ -191,9 +215,9 @@
             if (raceType == "senate") {
                 if (firstsubstring == "Senate Committee on") {
                     committeename = committeename.substring(20)
-                } else if (firstsubstring == "Senate Select Commit") {
+                } else if (firstsubstring == "Senate Select Commi") {
                     committeename = committeename.substring(27)
-                } else if (firstsubstring == "Senate Special Commi") {
+                } else if (firstsubstring == "Senate Special Comm") {
                     committeename = committeename.substring(27)
                 } else if (firstsubstring == "Senate Commission on") {
                     committeename = committeename.substring(21)
@@ -227,7 +251,7 @@
                     var subcommittee = subcommittees[i];
                     var sub_li = document.createElement ("li");
                     var sub_a = document.createElement ("a");
-                    sub_a.setAttribute("href",'javascript:myFunc(\"'+obj.committees[f].committee.id+'\")');
+                    sub_a.setAttribute("href",'javascript:getCom(\"'+obj.committees[f].committee.id+'\")');
                     sub_a.appendChild (document.createTextNode (subcommittee.committee.name));
                     sub_li.appendChild(sub_a);
                     ul.appendChild(sub_li);
@@ -240,37 +264,17 @@
             }
         }
 
-
-        ddaccordion.init({
-            headerclass: "submenuheader", //Shared CSS class name of headers group
-            contentclass: "submenu", //Shared CSS class name of contents group
-            revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
-            mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
-            collapseprev: true, //Collapse previous content (so only one open at any time)? true/false 
-            defaultexpanded: [], //index of content(s) open by default [index1, index2, etc] [] denotes no content
-            onemustopen: false, //Specify whether at least one header should be open always (so never all headers closed)
-            animatedefault: false, //Should contents open by default be animated into view?
-            persiststate: true, //persist state of opened contents within browser session?
-            toggleclass: ["", ""], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
-            togglehtml: ["suffix", "<img src='plus.gif' class='statusicon' />", "<img src='minus.gif' class='statusicon' />"], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
-            animatespeed: "fast", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
-            oninit:function(headers, expandedindices){ //custom code to run when headers have initalized
-                //do nothing
-            },
-            onopenclose:function(header, index, state, isuseractivated){ //custom code to run whenever a header is opened or closed
-                //do nothing
-                myFunc(header.getAttribute("id"))
-                console.log(header);
-                        console.log(header.getAttribute("id"));
-
-                // console.log(index);
-                // console.log(state);
-                // console.log(isuseractivated);
-
-
-            }
-        })
-
+        
+        // NOTE: I did this fricken crazy generation because
+        // the ddaccordion does not work in a function and if you
+        // just have it outside when you clear the div because you are
+        // switching senate/house the + signs disappear.
+        var headID = document.getElementsByTagName("head")[0];         
+        var newScript = document.createElement('script');
+        newScript.type = 'text/javascript';
+        newScript.src = 'accordianinit.js';
+        headID.appendChild(newScript);
+    }
     </script>
 
     <!-- For an unknown reason this needs to be here to make the popover work -->

@@ -35,7 +35,7 @@ var obj = {
                 "committee": {
                     "chamber": "Senate",
                     "id": "SSHR",
-                    "name": "Senate Committee on Health, Education, Labor, and Pensions",
+                    "name": "Senate Committee on Health, Education, Labor, & Pensions",
                     "subcommittees": [
                         {
                             "committee": {
@@ -65,7 +65,7 @@ var obj = {
                 "committee": {
                     "chamber": "Senate",
                     "id": "SSBK",
-                    "name": "Senate Committee on Banking, Housing, and Urban Affairs",
+                    "name": "Senate Committee on Banking, Housing, & Urban Affairs",
                     "subcommittees": [
                         {
                             "committee": {
@@ -167,7 +167,7 @@ var obj = {
                 "committee": {
                     "chamber": "Senate",
                     "id": "SSSB",
-                    "name": "Senate Committee on Small Business and Entrepreneurship"
+                    "name": "Senate Committee on Small Business & Entrepreneurship"
                 }
             },
             {
@@ -543,7 +543,7 @@ var obj = {
                 "committee": {
                     "chamber": "Senate",
                     "id": "SSCM",
-                    "name": "Senate Committee on Commerce, Science, and Transportation",
+                    "name": "Senate Committee on Commerce, Science, & Transport",
                     "subcommittees": [
                         {
                             "committee": {
@@ -601,7 +601,7 @@ var obj = {
                 "committee": {
                     "chamber": "Senate",
                     "id": "SSAF",
-                    "name": "Senate Committee on Agriculture, Nutrition, and Forestry",
+                    "name": "Senate Committee on Agriculture, Nutrition, & Forestry",
                     "subcommittees": [
                         {
                             "committee": {
