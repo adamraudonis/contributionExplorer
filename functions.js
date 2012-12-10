@@ -12,10 +12,11 @@ function write_data(json){
 	
 	return json
 }
-	
-function initialize(filename){
-	 
-	var canvas = d3.select("#canvas")
+
+function jsonCallback(data){
+     console.log(data);
+
+     var canvas = d3.select("#canvas")
 				
 	var colors=new Array();
 
@@ -40,9 +41,7 @@ function initialize(filename){
 
 	var sector_x=0 
 	var sector_y=0
-			 
-	d3.json('http://www.stanford.edu/~raudonis/' + filename + '.json', function (data) {
- 
+
 		var selection = canvas.selectAll("circle").data(data);
 					
 		selection.enter().append("circle");
@@ -100,13 +99,13 @@ function initialize(filename){
 		console.log(all_sectors)
 		console.log("everyone")
 		console.log(selection)
-		var obama=d3.select("#candidate_N00009638");
-		var obama_PACs=obama[0][0]["__data__"]["PACs"];
-		for(var i in obama_PACs){
+		// var obama=d3.select("#candidate_N00009638");
+		// var obama_PACs=obama[0][0]["__data__"]["PACs"];
+		// for(var i in obama_PACs){
 			
-			var PAC=obama_PACs[i];
+		// 	var PAC=obama_PACs[i];
   
-		}
+		// }
 		//end of prototype
 					
 					
@@ -135,7 +134,8 @@ function initialize(filename){
 		var angle_segment=sector_count+1
 					
 		for (var j in all_sectors){
-						
+						console.log(j);
+		
 			bar_size = 15 + all_sectors[j]/max_sector * 300
 			anchor_angle = i/angle_segment * 2 * pi;
 			x = main_x + main_r * Math.cos(anchor_angle)
@@ -281,10 +281,18 @@ function initialize(filename){
 						.attr("id", "center")
 			   
 			   
-			   
-			   
+}
 	
-	})
+function initialize(filename){
+	 
+	$(document).ready(function(){
+	    $.ajax({
+	        type: 'get',
+	        url: 'http://www.stanford.edu/~raudonis/'+filename+'.json&jsonp=jsonCallback',
+	        dataType: 'jsonp',
+	        success: jsonCallback
+	    });
+     })	
 }
 
 
