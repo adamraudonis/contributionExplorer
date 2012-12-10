@@ -14,9 +14,9 @@ function write_data(json){
 }
 
 function jsonCallback(data){
-     console.log(data);
+    console.log(data);
 
-     var canvas = d3.select("#canvas")
+    var canvas = d3.select("#canvas")
 				
 	var colors=new Array();
 
@@ -52,7 +52,7 @@ function jsonCallback(data){
 			.attr("r", 20)
 			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{return ("candidate_" + d.CID)} })
 			.attr("class", "candidate cand_unlocked")
-			.attr("candidateName", function (d){return d.candidateName})
+			.attr("candidateName", function (d){return d.Name})
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -64,9 +64,9 @@ function jsonCallback(data){
 			.attr("total_cash",function(d){
 				
 				var total = 0
-				for(var j in d.PACs) {
+				for(var j in d.SectorTotals) {
 				
-					var sector = d.PACs[j]
+					var sector = d.SectorTotals[j]
 					total = total + sector
 					
 					var old_sector = all_sectors[j]
@@ -323,7 +323,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 			
 					   if(sum_k!=0){
 						   
-						   var candidate_sectors=candidate[0][0]["__data__"]["PACs"];
+						   var candidate_sectors=candidate[0][0]["__data__"]["SectorTotals"];
 						   for (var j in candidate_sectors){
 						  
 							   var sector=$("#sector_"+j)
