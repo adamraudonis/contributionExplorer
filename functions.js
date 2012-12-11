@@ -356,7 +356,7 @@ function run_qtip(){
         })
 }
 
-function candCallback(data){
+function candCallBack(data){
 	console.log(data)
 }
 
@@ -364,12 +364,13 @@ function candCallback(data){
 function contributor(cid){
 
 	//nameList = new Array();
+	console.log('http://www.stanford.edu/~gdykho/cgi-bin/candCallback'+cid+'.json&jsonp=candCallback')
 	$(document).ready(function(){
 	    $.ajax({
 	        type: 'get',
 	        url: 'http://www.stanford.edu/~gdykho/cgi-bin/callback/'+cid+'.json&jsonp=candCallback',
 	        dataType: 'jsonp',
-	        success: candCallback
+	        success: candCallBack
 	    });
      })	
 }
@@ -1002,7 +1003,6 @@ function search_data(name) {
 }
 
 function select_cand_ids(cids) {
-	console.log("HERE")
 	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.1)
     $(".vector").css("opacity", 0.05)
