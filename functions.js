@@ -738,6 +738,7 @@ function finish_selection(){
 									var candidate="";
 									var cx=0, cy=0, cand_id="", name="", d3_candidate="";
 									var div_function=""
+                                                                        var reveal_count=0;
 								  
                                                                         $(".candidate").css("opacity",0.01)
                                                                         $(".vector").css("opacity",0.01)
@@ -753,7 +754,8 @@ function finish_selection(){
                                                                                 
                                                                              
 										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
-                                                                               
+                                                                                        
+                                                                                        reveal_count++;
 											candidate.css("stroke", "orange")
 											candidate.css("stroke-width", 4)
                                                                                         candidate.css("opacity", default_cand_opacity)
@@ -771,6 +773,12 @@ function finish_selection(){
 										  
 										}
 									}
+                                                                        if(reveal_count==0){
+                                                                            
+                                                                            $(".candidate").css("opacity",1)
+                                                                            $(".vector").css("opacity",1)
+                                                                            remove_selection()
+                                                                        }
 								}
 							
 							
