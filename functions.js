@@ -2,10 +2,6 @@ var pi=Math.PI;
 var main_r=300;
 var main_x=500
 var main_y=400
-// =======
-// var main_x=550 //mouse x is 601
-// var main_y=400 //mouse y is 463
-// >>>>>>> 9a2df7e3620e86b461fed16c2138aff3ff3cc127
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
@@ -57,7 +53,7 @@ function jsonCallback(data){
 	colors[2]="#4876b1"
 	colors[3]="#c36929"
 	colors[4]="#8dd3c7"
-	colors[5]="#cf0500"
+	colors[5]="#E6E65C"
 	colors[6]="#bebada"
 	colors[7]="#fb8072"
 	colors[8]="#80b1d3"
@@ -76,9 +72,7 @@ function jsonCallback(data){
 
 	var selection = canvas.selectAll("circle").data(data);
 				
-	selection.enter().append("circle").on("mousedown",function(){
-		console.log("HIIIII");
-	});
+	selection.enter().append("circle")
 
 	canvas.append("svg:circle")
 						.attr("cx", main_x)
@@ -215,6 +209,7 @@ function jsonCallback(data){
 					motion_lock(this)
 				})
 				
+				// TODO: these are not used but deleting them breaks the code.
 			canvas.append("svg:circle")
 				.attr("cx", x)
 				.attr("cy", y)
@@ -269,7 +264,6 @@ function jsonCallback(data){
 					
 			var candidates=$(".candidate")
 			  
-			  console.log("CANDIDATE LENGTH "+candidates.length)
 			for (var i=0;i<candidates.length;i++){
 				
 				var id=$(candidates[i]).attr("id")
@@ -313,14 +307,7 @@ function jsonCallback(data){
 					.attr("id", "main_circle")
 
 						
-						
-						
-                         canvas.append("svg:circle")
-                            .attr("cx", main_x)
-                            .attr("cy", main_y)
-                            .attr("r", 2)
-                            .attr("id", "center")
-			   
+		
 
 	// Hack to make the WHO IS REP lookup work even from the pres page.
 	if (whois_reps_toselect.length > 0) {
@@ -380,7 +367,6 @@ function initialize(filename){
 	// The filename is the racetype: pres, senate, or house.
 	race_type = filename;
 	//nameList = new Array();
-	console.log("CHECKING NAMELIST"+nameList)
 	$(document).ready(function(){
 	    $.ajax({
 	        type: 'get',
@@ -391,6 +377,11 @@ function initialize(filename){
      })	
 }
 
+// Returns a random integer between min and max
+// http://stackoverflow.com/questions/10134237/
+function getRandomInt (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
  
@@ -489,12 +480,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 
 								  if(redraw==false){
 									
-									// Returns a random integer between min and max
-									// http://stackoverflow.com/questions/10134237/
-									function getRandomInt (min, max) {
-									    return Math.floor(Math.random() * (max - min + 1)) + min;
-									}
-
+									
 									var randomInt = getRandomInt(0,3);
 									//if (randomInt == 1) {
 										canvas.append("svg:path")
@@ -1010,6 +996,8 @@ function select_cand_ids(cids) {
 	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.1)
     $(".vector").css("opacity", 0.05)
+    $(".vector").css("display","none")
+
 
  	for (var i = 0; i < cids.length; i++) {
  		var cand_id = cids[i];
@@ -1075,9 +1063,19 @@ var candidates=$(".candidate")
 function select_all_cand()
 {
 	$(".candidate").css("opacity", 1)      
-	//$(".vector").css("display","block")
+	$(".vector").css("display","block")
+
 	$(".vector").css("opacity", 1)  
 	$(".candidate").css("stroke", "black")
+}
+
+function show_random_vectors()
+{
+	if (randomInt == 1 || race_type != "house") {
+		return "block"
+	} else {
+		return "none";
+	};
 }
 
 function getNames() {

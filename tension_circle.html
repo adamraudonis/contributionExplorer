@@ -252,8 +252,7 @@
             console.log(raceTypeVar);
 
             d3.select("svg").remove();
-            var svg = d3.select("body").append("svg")
-          //  .attr("id","canvas").attr("width",1100).attr("height",900);
+            var svg = d3.select("body").append("svg").attr("id","canvas").attr("width",1100).attr("height",900);
             initializeVizAndMenu(raceTypeVar);
         }
 
