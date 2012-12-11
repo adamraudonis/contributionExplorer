@@ -96,7 +96,13 @@ function jsonCallback(data){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
 				nameList.push(d.Name)
 				return d.Name})
-            .attr("title", function(d){ return "<div class='candtip'>"+d.Name+"<br /><a href='www.google.com'>google</a></div>"})
+            .attr("title", function(d){
+                //  console.log(d.Twitter);
+                //  if(d.Twitter != ""){
+                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png'/></a></div>"
+                 // else 
+                 //  return "<div class='candtip'>"+d.Name+"</div>"
+                  })
 			.style("fill", function(d) {
 				
 				var party=d.Party
