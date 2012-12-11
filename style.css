@@ -62,6 +62,7 @@ circle{
     width:950px;
     height:800px;
     position:absolute;
+    background-color:yellow;
     top: 52px;
     left: 0px;
 }
@@ -159,7 +160,9 @@ body{
         height:300px;
         text-align:left;
         overflow:auto;
-        z-index:10;"
+        z-index:10;
+            background-color:blue;
+
 }
 
 .sector_bar{
