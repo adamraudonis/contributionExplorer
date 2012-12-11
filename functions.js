@@ -6,6 +6,7 @@ var all_sectors=new Array();
 var sector_count=0;
 var max_sector=0;
 var y_correction=68;
+var idNameMap = Object();
 
 function write_data(json){
 	
@@ -33,8 +34,6 @@ function jsonCallback(data){
 	"W":"Other",
 	"Y":"Unknown",
 	"Z":"Adminstrative Use"};
-
-    console.log(data);
 
     var canvas = d3.select("#canvas")
 				
@@ -70,9 +69,13 @@ function jsonCallback(data){
 			.attr("cx", main_x)
 			.attr("cy", main_y)
 			.attr("r", 20)
-			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{return ("candidate_" + d.CID)} })
+			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
+				idNameMap["candidate_" + d.CID] = "";
+				return ("candidate_" + d.CID)} })
 			.attr("class", "candidate cand_unlocked")
-			.attr("candidateName", function (d){return d.Name})
+			.attr("candidateName", function (d){
+				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
+				return d.Name})
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -119,26 +122,7 @@ function jsonCallback(data){
 			
 			i++
 		}    
-					
-			  
-						
-	   //my prototype to view data structure in console.     
-	   
-		console.log("all sectors")
-		console.log(all_sectors)
-		console.log("everyone")
-		console.log(selection)
-		// var obama=d3.select("#candidate_N00009638");
-		// var obama_PACs=obama[0][0]["__data__"]["PACs"];
-		// for(var i in obama_PACs){
-			
-		// 	var PAC=obama_PACs[i];
-  
-		// }
-		//end of prototype
-					
-					
-			  
+				
    		// Add the giant main ring circle
 		canvas.append("svg:circle")
 			.attr("cx", main_x)
@@ -163,7 +147,6 @@ function jsonCallback(data){
 		var angle_segment=sector_count+1
 					
 		for (var j in all_sectors){
-						console.log(j);
 		
 			bar_size = 15 + all_sectors[j]/max_sector * 300
 			anchor_angle = i/angle_segment * 2 * pi;
@@ -856,32 +839,52 @@ function remove_selection(){
 	
 }
 
-function committee_select(target){
-    
-    //target will be an array of objects
-    //Obama is N00009683
-    
-    var test_id="N00009638"
+function search_data(name) {
+	name.toLowerCase()
+
+									   
+	var candidates=$(".candidate")
+					
+	var candidates=$(".candidate")
+	var candidate="";
+	var cx=0, cy=0, cand_id="";
+
+	var cidArray = new Array();
+
+	for(var i=0;i<candidates.length;i++){
+		candidate=$("#"+candidates[i].id)	
+		var cand_id=candidate.attr("id")
+		var cand_name = idNameMap[cand_id]
+		if (cand_name.indexOf(name) != -1) {
+			console.log(name)
+			console.log(cand_name.indexOf(name))
+			console.log(cand_name)
+			var index = cand_id.indexOf("_")
+			var passID = cand_id.substring(index+1)
+			cidArray.push(passID)
+		}
+	}
+	select_cand_ids(cidArray);
+
+}
+
+function select_cand_ids(cids) {
+	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.05)
     $(".vector").css("opacity", 0.05)
-    
-    
-    $("#candidate_"+test_id).css("opacity", 1)
-    
-    //.attr("id", "cand_"+candidate_id+"_vector_"+j)
-    
-    
-    for (var j in all_sectors){
+
+ 	for (var i = 0; i < cids.length; i++) {
+ 		var cand_id = cids[i];
+ 		$("#candidate_" + cand_id).css("opacity", 1)
         
-        var vector=$("#cand_candidate_"+test_id+"_vector_"+j)
-        
-        console.log("#cand_candidate_"+test_id+"_vector_"+j)
-        
-        vector.css("opacity", 1)
-        
-        
-    }
-   
+	    for (var j in all_sectors){
+	        
+	        var vector = $("#cand_candidate_" + cand_id + "_vector_" + j)
+	        vector.css("opacity", 1)  
+	    }
+ 	};
+
 }
+
 
 

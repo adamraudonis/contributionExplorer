@@ -20,7 +20,7 @@
     </div>
 
     <form class="searchform">
-        <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+        <input class="searchfield" id="search" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
 
         <button type="button" id="zippopover" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot; id=&quot;zipbutton&quot;>Submit</button>">Find My Rep.</button>
 
@@ -43,7 +43,15 @@
 
         var currentView = null;
         
-        
+        $(document).ready(function(){
+            $("#search").keyup(function(){
+                console.log("searching")
+                // Retrieve the input field text and reset the count to zero
+                var search = $(this).val();
+         
+                search_data(search);
+            });
+        });
         $(function() {
 
           // Select Presidents view initially.
@@ -94,7 +102,6 @@
 
         // Must be placed here. Can't be inside the document click function.
         function whoisrep_callback(jsonData){
-            console.log(jsonData);
             if (jsonData.response.legislators.length > 0) {
                 console.log(jsonData.response.legislators[0].legislator.crp_id);
 
@@ -143,10 +150,10 @@
 
         function initializeVizAndMenu(raceType) {
             initialize(raceType);
-            console.log("BEFORE TEST DATA");
-            //console.log($('#glossyid').children().remove());
+
+            // Remove all children of the glossy menu generated div
             $('#glossyid').children().remove()
-           // $('#glossyid a').remove();
+
             if (raceType == "pres") {
                 $("#glossyid").css("display","none");
             } else {
@@ -154,8 +161,6 @@
             }
 
             testData(raceType);
-
-
         }
         
         function ResetDisplay(){
@@ -172,20 +177,17 @@
 
     <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
     <div id="meta" style="display: none;">
-        <div><span id="mouse_x"></span></div>
-        <div><span id="mouse_y"></span></div>
-        <div><span id="theta"></span></div>
-        <div><span id="mouse_r"></span></div>
-        <div><span id="target"></span></div>
-        <div><span class="selection_data" id="select_point_1_x"></span></div>
-        <div><span class="selection_data" id="select_point_1_y"></span></div>
-        <div><span id="select_status">false</span></div>
+        <div>mouse x: <span id="mouse_x"></span></div>
+        <div>mouse y: <span id="mouse_y"></span></div>
+        <div>theta: <span id="theta"></span></div>
+        <div>mouse r: <span id="mouse_r"></span></div>
+        <div>target: <span id="target"></span></div>
+        <div>select point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
+        <div>select point 1 y: <span class="selection_data" id="select_point_1_y"></span></div>
+        <div>select status<span id="select_status">false</span></div>
     </div>
     </div>
         <div id="selection_list" style="height:10em; overflow:auto" >
-            
-                
-                
             </select>
         </div>
 
@@ -212,23 +214,17 @@
         }
 
         function comdetails_callback(jsonData) {
-            // Parse to get CIDs to highlight
-            console.log("GOT JSON DATA");
-            console.log(jsonData);
+
             var cidArray = new Array();
             var members = jsonData.response.committee.members;
-            console.log(member);
 
             for (var i = 0; i < members.length; i++) {
-                var member = members[i];
-                console.log(member);
-
-                var legislator = member.legislator;
+                var legislator = members[i].legislator;
                 cidArray.push(legislator.crp_id);
             };
             console.log(cidArray);
+            select_cand_ids(cidArray);
         }
-            
 
     function testData(raceType) {
 
@@ -238,9 +234,6 @@
         } else {
             obj = get_house_list();
         }
-                    console.log("IN TEST DATA");
-
-            console.log(obj);
 
         obj = obj.response;
            
@@ -250,7 +243,6 @@
             a.setAttribute("id",obj.committees[f].committee.id);
             var committeename = obj.committees[f].committee.name;
             var firstsubstring = committeename.substring(0,19)
-            console.log(firstsubstring);
             if (raceType == "senate") {
                 if (firstsubstring == "Senate Committee on") {
                     committeename = committeename.substring(20)
@@ -269,10 +261,7 @@
                 }
             }
             
-                console.log(committeename);
-
             committeename = committeename.substring(0,38)
-
 
             a.appendChild (document.createTextNode (committeename));
 
@@ -290,7 +279,7 @@
                     var subcommittee = subcommittees[i];
                     var sub_li = document.createElement ("li");
                     var sub_a = document.createElement ("a");
-                    sub_a.setAttribute("href",'javascript:getCom(\"'+obj.committees[f].committee.id+'\")');
+                    sub_a.setAttribute("href",'javascript:getCom(\"' + subcommittee.committee.id + '\")');
                     sub_a.appendChild (document.createTextNode (subcommittee.committee.name));
                     sub_li.appendChild(sub_a);
                     ul.appendChild(sub_li);
@@ -318,6 +307,5 @@
 
     <!-- For an unknown reason this needs to be here to make the popover work -->
     <script src="js/bootstrap.min.js"></script> 
-    <div onclick="committee_select('fish')">TEST BUTTON DIV</div>
 </body>
 </html>
