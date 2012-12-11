@@ -92,7 +92,7 @@ function jsonCallback(data){
 			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
 				idNameMap["candidate_" + d.CID] = "";
 				return ("candidate_" + d.CID)} })
-			.attr("class", "candidate")
+			.attr("class", "candidate cand_unlocked")
 			.attr("candidateName", function (d){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
 				nameList.push(d.Name)
