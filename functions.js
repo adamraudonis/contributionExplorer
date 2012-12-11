@@ -7,6 +7,7 @@ var sector_count=0;
 var max_sector=0;
 var y_correction=68;
 var idNameMap = Object();
+var default_cand_opacity=1
 
 function write_data(json){
 	
@@ -137,11 +138,11 @@ function jsonCallback(data){
 		var y=0
 		var bar_size=0
 		var d="";
-		var angle_segment=sector_count+1
-					
+		var angle_segment=sector_count
+			
 		for (var j in all_sectors){
 		
-			bar_size = 15 + all_sectors[j]/max_sector * 300
+			bar_size = 15 + all_sectors[j]/max_sector * 100
 			anchor_angle = i/angle_segment * 2 * pi;
 			x = main_x + main_r * Math.cos(anchor_angle)
 			y = main_y + main_r * Math.sin(anchor_angle)
@@ -777,7 +778,7 @@ function lowlight_this(target){
 		
 	}*/
 	
-	$(".cand_unlocked").css("opacity", 0.25)
+	$(".cand_unlocked").css("opacity", default_cand_opacity)
 	
 	
    if($(target).attr("locked")=="true") {return;}
@@ -801,7 +802,7 @@ function remove_selection(){
 	 $(".candidate")
 			.css("stroke", "black")
 			.css("stroke-width", 1.5)
-			.css("opacity", 0.25)
+			.css("opacity", default_cand_opacity)
 
 	var candidates=$(".candidate")
 	var party="", id="", color="";
