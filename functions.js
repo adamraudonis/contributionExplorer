@@ -788,8 +788,8 @@ function finish_selection(){
 									var div_function=""
                                                                         var reveal_count=0;
 								  
-                                                                        $(".candidate").css("opacity",0.01)
-                                                                        $(".vector").css("opacity",0.01)
+                                                                        $(".candidate").css("opacity",0.1)
+                                                                        $(".vector").css("opacity",0.05)
 
 									for(var i=0;i<candidates.length;i++){
 
