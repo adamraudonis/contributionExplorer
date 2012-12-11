@@ -46,7 +46,7 @@ li {
     border-bottom: solid 1px #00008B;
     border-left: solid 1px #00008B;
     border-right: solid 1px #00008B;
-    color: black;
+    color: red;
 }
 
 .ui-autocomplete {
