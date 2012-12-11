@@ -13,7 +13,7 @@ var idNameMap = Object();
 
 var default_cand_opacity=1
 
-var nameList = Array();
+var nameList = new Array();
 
 function write_data(json){
 	
@@ -26,7 +26,7 @@ function jsonCallback(data){
 	all_sectors = new Array();
 	sector_count = 0;
 	max_sector = 0;
-
+	nameList.length = 0;
 	var sectorCodeDict = {"A":"Agribusiness",
 	"B":"Comm./Electronics",
 	"C":"Construction",
@@ -83,7 +83,7 @@ function jsonCallback(data){
 						.style("fill","none")
 						.style("stroke","grey")
 						.style("stroke-width", 1)
-					
+		
 		selection
 			.attr("cx", main_x)
 			.attr("cy", main_y)
@@ -380,7 +380,8 @@ function initialize(filename){
 
 	// The filename is the racetype: pres, senate, or house.
 	race_type = filename;
-	 
+	//nameList = new Array();
+	console.log("CHECKING NAMELIST"+nameList)
 	$(document).ready(function(){
 	    $.ajax({
 	        type: 'get',
@@ -788,8 +789,8 @@ function finish_selection(){
 									var div_function=""
                                                                         var reveal_count=0;
 								  
-                                                                        $(".candidate").css("opacity",0.01)
-                                                                        $(".vector").css("opacity",0.01)
+                                                                        $(".candidate").css("opacity",0.1)
+                                                                        $(".vector").css("opacity",0.05)
 
 									for(var i=0;i<candidates.length;i++){
 
@@ -993,8 +994,6 @@ function search_data(name) {
 		candidate=$("#"+candidates[i].id)	
 		var cand_id=candidate.attr("id")
 		var cand_name = idNameMap[cand_id].toLowerCase()
-		console.log("Candidate Name: " + cand_name)
-		console.log("Search: "+name)
 		if (cand_name.indexOf(name) != -1) {
 			
 			var index = cand_id.indexOf("_")

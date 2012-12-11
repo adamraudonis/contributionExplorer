@@ -52,15 +52,29 @@
                 search_data(search);
             });
         });
-/*
+
        $(function() {
             var names = getNames();
 
             $( "#search" ).autocomplete({
-                source: names
+                width: 320,
+                source: names,
+                messages: {
+                    noResults: "",
+                    results: function() {}
+                },  
+                formatItem: function(rowdata) {
+                    var details = rowdata[0].split(":");
+                    return details[1];
+                },
+                formatResult: function (rowdata) {
+                    var details = rowdata[0].split(":");
+                    $('#hobby_id').val(details[0]);
+                    return details[1];
+                },
             });
         });
-*/
+
 
         $(function() {
 
