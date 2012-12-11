@@ -9,8 +9,8 @@ var main_y=400
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
-var y_correction=63;
-var x_correction=51;
+var y_correction=50;
+var x_correction=0;
 var whois_reps_toselect = new Array();
 var race_type;
 
