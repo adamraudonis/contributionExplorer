@@ -14,6 +14,23 @@ function write_data(json){
 }
 
 function jsonCallback(data){
+
+// {"A":"Agribusiness",
+// "B":"Communications/Electronics",
+// C	Construction
+// D	Defense
+// E	Energy/Natural Resources
+// F	Finance/Insurance/Real Estate
+// H	Health
+// K	Lowyers and Lobbyists
+// M	Transportation
+// N	Misc. Business
+// Q	Ideology/Single Issue
+// P	Labors
+// W	Other
+// Y	Unknown
+// Z	Adminstrative Use
+
     console.log(data);
 
     var canvas = d3.select("#canvas")
