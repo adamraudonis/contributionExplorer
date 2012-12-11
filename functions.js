@@ -9,8 +9,8 @@ var main_y=400
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
-var y_correction=63;
-var x_correction=51;
+var y_correction=50;
+var x_correction=0;
 var whois_reps_toselect = new Array();
 var race_type;
 
@@ -223,7 +223,7 @@ function jsonCallback(data){
 				.attr("cx", x)
 				.attr("cy", y)
 				.attr("r", 20)
-				.style("fill", colors_assigned[j])
+				.style("display", "none")
 				.attr("class", "sector_circle")
 				.attr("theta", anchor_angle)
 				.attr("id", "sector_"+j)
@@ -315,11 +315,7 @@ function jsonCallback(data){
 					.attr("cy", main_y)
 					.attr("r", main_r)
 					.attr("id", "main_circle")
-                                        .on("mousedown", function(){
-                                            
-                                            alert('click')
-                                        })
-					
+                                       
 					
 					
 						
