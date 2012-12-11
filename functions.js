@@ -98,11 +98,11 @@ function jsonCallback(data){
 				return d.Name})
             .attr("title", function(d){
                 //  console.log(d.Twitter);
-                //  if(d.Twitter != ""){
-                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png'/></a></div>"
-                 // else 
-                 //  return "<div class='candtip'>"+d.Name+"</div>"
-                  })
+                  if(d.Twitter != "")
+                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
+                  else 
+                    return "<div class='candtip'>"+d.Name+"</div>"
+                })
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -152,6 +152,7 @@ function jsonCallback(data){
                
             })
             .on("click", function(d, i){
+                console.log(d.Twitter);
                 var id = $(this).attr('id');
                 SocialMediaData(id);
             })
@@ -345,6 +346,13 @@ function run_qtip(){
 
     $('.candidate')
             .qtip({
+                
+               show: { when: { event: 'click' } },
+                  hide: { when: { event: 'mouseout' }, 
+                  delay: 1000, 
+                 // effect: function() { $(this).qtip("destroy"); }
+                },
+                 // hide: { when: {event: 'click' }},//
                 corner: {
                     target: 'bottomLeft',
                     tooltip: 'bottomLeft'
