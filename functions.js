@@ -432,6 +432,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 									//if (randomInt == 1) {
 										canvas.append("svg:path")
 											.attr("d",d)
+											.attr("class","vector")
 											.attr("id", "cand_"+candidate_id+"_vector_"+j)
 											.style("stroke",colors_assigned[j])
 											.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
