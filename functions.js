@@ -355,6 +355,9 @@ function run_qtip(){
     $('.candidate').each( function() {
         var name = this.getAttribute("candidateName");
         $(this).qtip({
+                     
+                    // background: <img src="plus.gif"/>
+                     
                      content: name,
                      show: {delay: 0, effect: {type: 'slide', length:0}},
                      position: {
@@ -863,6 +866,7 @@ function highlight_this(target){
     
     var el=document.getElementById(target_circle);
     el.ownerSVGElement.appendChild(el);
+    $("#"+target_circle).css("fill", "gold");
    
    
 	var candidates=$(".cand_unlocked")
@@ -897,6 +901,14 @@ function lowlight_this(target){
 
 	
 	var target_circle=$(target).attr("for")
+    
+    var party = target.getAttribute("Party");
+    if(party == "R")
+        $("#"+target_circle).css("fill", "red")
+    else if(party == "D")
+        $("#"+target_circle).css("fill", "blue")
+    else
+        $("#"+target_circle).css("fill", "green")
 	
 	
         var candidates=$(".candidate")
