@@ -339,9 +339,7 @@ function run_qtip(){
                show: { when: { event: 'click' } },
                   hide: { when: { event: 'mouseout' }, 
                   delay: 1000, 
-                 // effect: function() { $(this).qtip("destroy"); }
                 },
-                 // hide: { when: {event: 'click' }},//
                 corner: {
                     target: 'bottomLeft',
                     tooltip: 'bottomLeft'
@@ -369,7 +367,7 @@ function contributor(cid){
 	$(document).ready(function(){
 	    $.ajax({
 	        type: 'get',
-	        url: 'http://www.stanford.edu/~gdykho/cgi-bin/'+cid+'.json&jsonp=candCallback',
+	        url: 'http://www.stanford.edu/~gdykho/cgi-bin/callback/'+cid+'.json&jsonp=candCallback',
 	        dataType: 'jsonp',
 	        success: candCallback
 	    });
