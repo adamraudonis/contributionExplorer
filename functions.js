@@ -1,6 +1,6 @@
 var pi=Math.PI;
 var main_r=300;
-var main_x=550
+var main_x=500
 var main_y=400
 var all_sectors = new Array();
 var sector_count=0;
@@ -32,7 +32,7 @@ function jsonCallback(data){
 	"C":"Construction",
 	"D":"Defense",
 	"E":"Energy/Nat. Resources",
-	"F":"Finance/Insurance/Real Estate",
+	"F":"Finance/Insur/Estate",
 	"H":"Health",
 	"K":"Lawyers / Lobbyists",
 	"M":"Transport",
