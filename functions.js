@@ -301,7 +301,7 @@ function jsonCallback(data){
 						.attr("r", 2)
 						.attr("id", "center")
 			   
-			   
+
 }
 	
 function initialize(filename){
@@ -419,6 +419,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 								  canvas.append("svg:path")
 									.attr("d",d)
 									.attr("id", "cand_"+candidate_id+"_vector_"+j)
+                                                                        .attr("class", "vector")
 									.style("stroke",colors_assigned[j])
 									.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
 									.style("opacity", 1+0*tension_fraction)
@@ -485,7 +486,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 
 function mouse_tracker(canvas, colors_assigned){
 				
- 
+
 				var mouse_x=0;
 				var mouse_y=0;
 				var mouse_r=0;
@@ -690,7 +691,7 @@ function finish_selection(){
 										cx=candidate.attr("cx")
 										cy=candidate.attr("cy")
 										cand_id=candidate.attr("id")
-										name=d3_candidate[0][0]["__data__"]["candidateName"]
+										name=d3_candidate[0][0]["__data__"]["Name"]
 										console.log(name)
 
 										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
@@ -699,7 +700,8 @@ function finish_selection(){
 											candidate.css("stroke-width", 4)
 										   
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
-												
+											
+													
 
 										  
 										}
@@ -786,10 +788,11 @@ function lowlight_this(target){
 }
 
 function remove_selection(){
+    
+         //goes back to state where no candidates were ever selected. Clearing of selection_list occurs somewhere else. 
+    
 	
 	 $("#selection_rect").remove()
-	 
-	
 	
 	 $(".cand_locked").attr("class", "candidate cand_unlocked")
 	 
@@ -816,6 +819,35 @@ function remove_selection(){
 	}
 	*/
 	
+}
+
+
+function committee_select(target){
+    
+    //target will be an array of objects
+    //Obama is N00009683
+    
+    var test_id="N00009638"
+    $(".candidate").css("opacity", 0.05)
+    $(".vector").css("opacity", 0.05)
+    
+    
+    $("#candidate_"+test_id).css("opacity", 1)
+    
+    //.attr("id", "cand_"+candidate_id+"_vector_"+j)
+    
+    
+    for (var j in all_sectors){
+        
+        var vector=$("#cand_candidate_"+test_id+"_vector_"+j)
+        
+        console.log("#cand_candidate_"+test_id+"_vector_"+j)
+        
+        vector.css("opacity", 1)
+        
+        
+    }
+   
 }
 
 
