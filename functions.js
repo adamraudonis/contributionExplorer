@@ -691,6 +691,8 @@ function finish_selection(){
 									var cx=0, cy=0, cand_id="", name="", d3_candidate="";
 									var div_function=""
 								  
+                                                                        $(".cand_unlocked").css("opacity",0.01)
+                                                                        $(".vector").css("opacity",0.01)
 
 									for(var i=0;i<candidates.length;i++){
 
@@ -700,16 +702,26 @@ function finish_selection(){
 										cy=candidate.attr("cy")
 										cand_id=candidate.attr("id")
 										name=d3_candidate[0][0]["__data__"]["Name"]
-										console.log(name)
-
-										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
+                                                                                
+                                                                                
+                                                                                
+										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y-y_correction))){
 
 											candidate.css("stroke", "orange")
 											candidate.css("stroke-width", 4)
-										   
+                                                                                        candidate.css("opacity", default_cand_opacity)
+                                                                                        candidate.attr("in_selection", "true")
+										        console.log("in selection is "+candidate)
+                                                                                        
+                                                                                        console.log(candidate.attr("in_selection"))
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
 											
-													
+                                                                                        
+											for (var j in all_sectors){
+	        
+                                                                                            var vector = $("#cand_" + cand_id + "_vector_" + j)
+                                                                                            vector.css("opacity", 1)  
+                                                                                        }		
 
 										  
 										}
@@ -745,10 +757,31 @@ function lock_candidate(target){
 
 
 function highlight_this(target){
+    
+    console.log("start highlight this")
+    
+       $(".cand_unlocked").css("opacity", 0.01)
+       $(".vector").css("opacity", 0.01)
+
+       var target_circle=$(target).attr("for")
    
-   var target_circle=$(target).attr("for")
-   
-	$(".cand_unlocked").css("opacity",0.1)
+	var candidates=$(".cand_unlocked")
+    
+        
+       var sectors=$("#"+target_circle)[0]["__data__"]["SectorTotals"]
+       var cand_id=$("#"+target_circle).attr("id")
+       for (var j in sectors){
+           
+           $("#cand_"+cand_id+"_vector_"+j).css("opacity", 1)
+           
+       }
+        
+        
+  
+        
+        
+        
+        
 	$("#"+target_circle).css("opacity", 1)
 	
 	
@@ -762,28 +795,37 @@ function highlight_this(target){
 
 function lowlight_this(target){
 	
-
+    console.log("start lowlight_this")
 	
 	var target_circle=$(target).attr("for")
 	
 	
-	/*
-	 *var candidates=$(".candidate")
-	 *var party="", id="", color="";
-	for (var i=0;i<candidates.length;i++){
-		
-		party=candidates[i]['__data__']['Party']
-		id="candidate_"+candidates[i]['__data__']['CID']
-		if(party=="R"){color="red"}
-		else if(party=="D"){color="blue"}
-		else{color="green"}
+        var candidates=$(".candidate")
+        var candidate=""
+        var sectors=""
 
-	   
-		$("#"+id).css("fill", color)
-		
-	}*/
-	
-	$(".cand_unlocked").css("opacity", default_cand_opacity)
+        for (var j=0;j<candidates.length;j++){
+            
+            candidate=$("#"+candidates[j].id)
+            
+           
+            
+            if (candidate.attr("in_selection")=="true"){
+              
+                candidate.css("opacity", default_cand_opacity)
+                
+                sectors=candidate[0]["__data__"]["SectorTotals"]
+                for (var m in sectors){
+           
+                   $("#cand_"+candidate.attr("id")+"_vector_"+m).css("opacity", 1)
+
+               }
+                
+            }
+            
+        }
+        
+	//$(".cand_unlocked").css("opacity", default_cand_opacity)
 	
 	
    if($(target).attr("locked")=="true") {return;}
@@ -798,9 +840,13 @@ function lowlight_this(target){
 function remove_selection(){
     
          //goes back to state where no candidates were ever selected. Clearing of selection_list occurs somewhere else. 
-    
+        console.log('removing')
 	
 	 $("#selection_rect").remove()
+         
+         $(".candidate").attr("in_selection", "false")
+         console.log("in_selection all set to false")
+         $(".vector").css("opacity", 1)
 	
 	 $(".cand_locked").attr("class", "candidate cand_unlocked")
 	 
@@ -812,20 +858,7 @@ function remove_selection(){
 	var candidates=$(".candidate")
 	var party="", id="", color="";
 	
-	/*
-	for (var i=0;i<candidates.length;i++){
-		
-		party=candidates[i]['__data__']['Party']
-		id="candidate_"+candidates[i]['__data__']['CID']
-		if(party=="R"){color="red"}
-		else if(party=="D"){color="blue"}
-		else{color="green"}
 
-	   
-		$("#"+id).css("fill", color)
-		
-	}
-	*/
 	
 }
 
