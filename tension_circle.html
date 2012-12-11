@@ -188,6 +188,18 @@
             // Parse to get CIDs to highlight
             console.log("GOT JSON DATA");
             console.log(jsonData);
+            var cidArray = new Array();
+            var members = jsonData.response.committee.members;
+            console.log(member);
+
+            for (var i = 0; i < members.length; i++) {
+                var member = members[i];
+                console.log(member);
+
+                var legislator = member.legislator;
+                cidArray.push(legislator.crp_id);
+            };
+            console.log(cidArray);
         }
             
 
