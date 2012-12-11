@@ -8,6 +8,7 @@
     <link href="glossymenustyle.css" rel="stylesheet" type="text/css" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v2.js"></script>
@@ -45,13 +46,23 @@
         
         $(document).ready(function(){
             $("#search").keyup(function(){
-                console.log("searching")
+                
                 // Retrieve the input field text and reset the count to zero
                 var search = $(this).val();
-         
+                search.toLowerCase()
                 search_data(search);
             });
         });
+/*
+       $(function() {
+            var names = getNames();
+
+            $( "#search" ).autocomplete({
+                source: names
+            });
+        });
+*/
+
         $(function() {
 
           // Select Presidents view initially.

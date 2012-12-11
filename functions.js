@@ -7,11 +7,13 @@ var sector_count=0;
 var max_sector=0;
 var y_correction=68;
 var idNameMap = Object();
+var nameList = Array();
 
 function write_data(json){
 	
 	return json
 }
+
 
 function jsonCallback(data){
 
@@ -75,6 +77,7 @@ function jsonCallback(data){
 			.attr("class", "candidate cand_unlocked")
 			.attr("candidateName", function (d){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
+				nameList.push(d.Name)
 				return d.Name})
 			.style("fill", function(d) {
 				
@@ -824,9 +827,9 @@ function remove_selection(){
 }
 
 function search_data(name) {
-	name.toLowerCase()
+	name = name.toLowerCase()
 
-									   
+								   
 	var candidates=$(".candidate")
 					
 	var candidates=$(".candidate")
@@ -838,11 +841,11 @@ function search_data(name) {
 	for(var i=0;i<candidates.length;i++){
 		candidate=$("#"+candidates[i].id)	
 		var cand_id=candidate.attr("id")
-		var cand_name = idNameMap[cand_id]
+		var cand_name = idNameMap[cand_id].toLowerCase()
+		console.log("Candidate Name: " + cand_name)
+		console.log("Search: "+name)
 		if (cand_name.indexOf(name) != -1) {
-			console.log(name)
-			console.log(cand_name.indexOf(name))
-			console.log(cand_name)
+			
 			var index = cand_id.indexOf("_")
 			var passID = cand_id.substring(index+1)
 			cidArray.push(passID)
@@ -870,5 +873,8 @@ function select_cand_ids(cids) {
 
 }
 
+function getNames() {
+	return nameList
+}
 
 
