@@ -88,6 +88,7 @@ function jsonCallback(data){
 			.attr("cx", main_x)
 			.attr("cy", main_y)
 			.attr("r", 20)
+            .attr("party", function(d){ return d.Party; })
 			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
 				idNameMap["candidate_" + d.CID] = "";
 				return ("candidate_" + d.CID)} })
@@ -122,6 +123,32 @@ function jsonCallback(data){
 				}
 				return total
 			})
+            .on("mouseover", function(d, i){
+                
+               // $(this).css("stroke", "gold")
+                $(this).css("fill", "gold")
+                var id = $(this).attr('id');
+                var el=document.getElementById(id);
+                el.ownerSVGElement.appendChild(el);
+
+            })
+            .on("mouseout", function(d, i){
+              // $(this).attr("class", "candidate");
+               //$(this).attr("class", "candidate");
+                
+                var party = d.Party;
+                
+              //  $(this).css("stroke", "none");
+                
+                if(party == "R") $(this).css("fill", "red");
+                else if(party == "D") $(this).css("fill", "blue");
+                else $(this).css("fill", "green");
+               
+            })
+          
+    
+
+    
 			
 		var i = 0;   
 		for (var j in all_sectors){
@@ -273,47 +300,27 @@ function jsonCallback(data){
 			   
 			   
 			   
-			   
-			   // canvas.append("svg:circle")
-						// .attr("cx", main_x)
-						// .attr("cy", main_y)
-						// .attr("r", main_r)
-						// .attr("id", "main_circle")
-						// .on("mousedown",function(){
-							
-						// 	remove_selection()
-								
-							
-						// 	$("#select_status").html("true")
-							
-                                                       
-                                                        
-						// 	var mouse_x=$("#mouse_x").html()
-						// 	var mouse_y=$("#mouse_y").html()-y_correction
-						// 	var width=1
-						// 	var height=1
-							
-						// 	var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
-							
-
-						// 	canvas.append("svg:path")
-						// 		.attr("id","selection_rect")
-						// 		.attr("d",d)
-						// 	$("#select_point_1_x").html(mouse_x)
-						// 	$("#select_point_1_y").html(mouse_y)  
-								
-							
-						// })
-						
+			  
+			  canvas.append("svg:circle")
+					.attr("cx", main_x)
+					.attr("cy", main_y)
+					.attr("r", main_r)
+					.attr("id", "main_circle")
+                                        .on("mousedown", function(){
+                                            
+                                            alert('click')
+                                        })
+					
+					
 					
 						
 						
 						
-						// canvas.append("svg:circle")
-						// .attr("cx", main_x)
-						// .attr("cy", main_y)
-						// .attr("r", 2)
-						// .attr("id", "center")
+                         canvas.append("svg:circle")
+                            .attr("cx", main_x)
+                            .attr("cy", main_y)
+                            .attr("r", 2)
+                            .attr("id", "center")
 			   
 
 	// Hack to make the WHO IS REP lookup work even from the pres page.
@@ -321,7 +328,53 @@ function jsonCallback(data){
 		select_cand_ids(whois_reps_toselect);
 	};
 	whois_reps_toselect = new Array();
+    
+    run_qtip();
+    
+  // setTimeout(function(){run_qtip()},100);
+
+    
+
 }
+
+function run_qtip(){
+//    
+//                        $.fn.qtip.styles.tooltipDefault = {
+//                        background  : '#132531',
+//                        color       : '#FFFFFF',
+//                        textAlign   : 'left',
+//                        border      : {
+//                            width   : 10,
+//                            radius  : 10,
+//                            color   : '#C1CFDD'
+//                        },
+//                        width       : 220
+//                        
+//                        }
+//    }
+    
+    $('.candidate').each( function() {
+        var name = this.getAttribute("candidateName");
+        $(this).qtip({
+                     
+                    // background: <img src="plus.gif"/>
+                     
+                     content: name,
+                     show: {delay: 0, effect: {type: 'slide', length:0}},
+                     position: {
+                        corner: {
+                            target: 'topRight',
+                            tooltip: 'bottomLeft'
+                        },
+                        adjust: {x: 20, y: 0}
+                     }
+                    
+          
+          
+        })
+    })
+}
+
 	
 function initialize(filename){
 
@@ -501,8 +554,10 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					  
 					   
 						   candidate
-						   .attr("cx", parseFloat(candidate_x))
-						   .attr("cy", parseFloat(candidate_y))
+                            .attr("cx", parseFloat(candidate_x))
+                            .attr("cy", parseFloat(candidate_y))
+                         
+                           
 						   
 					  
 					  //el.parentNode.appendChild(el)
@@ -511,6 +566,9 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					   
 					   
 				   //end of code for each candidat
+   // setTimeout(function(){run_qtip()},900);
+
+
 	
 }
 
@@ -531,6 +589,8 @@ function mouse_tracker(canvas, colors_assigned){
 						document.captureEvents(Event.MOUSEMOVE); // Specifies that you want all mouse movement events passed to the document
 						document.captureEvents(Event.MOUSEDOWN);
 						document.captureEvents(Event.MOUSEUP);
+                        document.captureEvents(Event.mouseover);
+                        document.captureEvents(Event.click);
 					}  
 				
 				document.onmousemove = function(event){
@@ -609,6 +669,11 @@ function mouse_tracker(canvas, colors_assigned){
 						 
 					}                                    
 				};
+                                
+                                document.onmousedown = function(){
+                                    
+                                    start_selection_rect()
+                                }
 				
 				document.onmouseup = function (event){
 					if($("#select_status").html()=='true'){
@@ -633,6 +698,7 @@ function motion_lock(target){
 }
 
 function between(x, min, max) {
+    
   return x > min && x < max;
 }
 
@@ -691,8 +757,8 @@ function finish_selection(){
 								if(x_1<x_2){min_x=x_1; max_x=x_2}
 								else {min_x=x_2; max_x=x_1}
 
-								var y_1=$("#select_point_1_y").html()
-								var y_2=$("#mouse_y").html()
+								var y_1=$("#select_point_1_y").html()  //y_1 should have been already corrected
+								var y_2=$("#mouse_y").html()-y_correction
 								var min_y=0
 								var max_y=0
 								
@@ -701,6 +767,11 @@ function finish_selection(){
 								
 								var width=max_x-min_x
 								var height=max_y-min_y
+                                                                
+                                                                console.log("x min "+min_x)
+                                                                console.log("x max "+max_x)
+                                                                console.log("y min "+min_y)
+                                                                console.log("y max "+max_y)
 							
 								if(width<2 || height < 2){
 									
@@ -715,7 +786,10 @@ function finish_selection(){
 									var candidate="";
 									var cx=0, cy=0, cand_id="", name="", d3_candidate="";
 									var div_function=""
+                                                                        var reveal_count=0;
 								  
+                                                                        $(".candidate").css("opacity",0.01)
+                                                                        $(".vector").css("opacity",0.01)
 
 									for(var i=0;i<candidates.length;i++){
 
@@ -725,20 +799,34 @@ function finish_selection(){
 										cy=candidate.attr("cy")
 										cand_id=candidate.attr("id")
 										name=d3_candidate[0][0]["__data__"]["Name"]
-										console.log(name)
-
+                                                                                
+                                                                             
 										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
-
+                                                                                        
+                                                                                        reveal_count++;
 											candidate.css("stroke", "orange")
 											candidate.css("stroke-width", 4)
-										   
+                                                                                        candidate.css("opacity", default_cand_opacity)
+                                                                                        candidate.attr("in_selection", "true")
+										        
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
 											
-													
+                                                                                        
+											for (var j in all_sectors){
+	        
+                                                                                            var vector = $("#cand_" + cand_id + "_vector_" + j)
+                                                                                            vector.css("opacity", 1)  
+                                                                                        }		
 
 										  
 										}
 									}
+                                                                        if(reveal_count==0){
+                                                                            
+                                                                            $(".candidate").css("opacity",1)
+                                                                            $(".vector").css("opacity",1)
+                                                                            remove_selection()
+                                                                        }
 								}
 							
 							
@@ -771,9 +859,34 @@ function lock_candidate(target){
 
 function highlight_this(target){
    
-   var target_circle=$(target).attr("for")
+    
+       $(".cand_unlocked").css("opacity", 0.01)
+       $(".vector").css("opacity", 0.01)
+
+       var target_circle=$(target).attr("for")
+    
+    var el=document.getElementById(target_circle);
+    el.ownerSVGElement.appendChild(el);
+    $("#"+target_circle).css("fill", "gold");
    
-	$(".cand_unlocked").css("opacity",0.1)
+   
+	var candidates=$(".cand_unlocked")
+    
+        
+       var sectors=$("#"+target_circle)[0]["__data__"]["SectorTotals"]
+       var cand_id=$("#"+target_circle).attr("id")
+       for (var j in sectors){
+           
+           $("#cand_"+cand_id+"_vector_"+j).css("opacity", 1)
+           
+       }
+        
+        
+  
+        
+        
+        
+        
 	$("#"+target_circle).css("opacity", 1)
 	
 	
@@ -786,29 +899,45 @@ function highlight_this(target){
 }
 
 function lowlight_this(target){
-	
 
 	
 	var target_circle=$(target).attr("for")
+    
+    var party = target.getAttribute("Party");
+    if(party == "R")
+        $("#"+target_circle).css("fill", "red")
+    else if(party == "D")
+        $("#"+target_circle).css("fill", "blue")
+    else
+        $("#"+target_circle).css("fill", "green")
 	
 	
-	/*
-	 *var candidates=$(".candidate")
-	 *var party="", id="", color="";
-	for (var i=0;i<candidates.length;i++){
-		
-		party=candidates[i]['__data__']['Party']
-		id="candidate_"+candidates[i]['__data__']['CID']
-		if(party=="R"){color="red"}
-		else if(party=="D"){color="blue"}
-		else{color="green"}
+        var candidates=$(".candidate")
+        var candidate=""
+        var sectors=""
 
-	   
-		$("#"+id).css("fill", color)
-		
-	}*/
-	
-	$(".cand_unlocked").css("opacity", default_cand_opacity)
+        for (var j=0;j<candidates.length;j++){
+            
+            candidate=$("#"+candidates[j].id)
+            
+           
+            
+            if (candidate.attr("in_selection")=="true"){
+              
+                candidate.css("opacity", default_cand_opacity)
+                
+                sectors=candidate[0]["__data__"]["SectorTotals"]
+                for (var m in sectors){
+           
+                   $("#cand_"+candidate.attr("id")+"_vector_"+m).css("opacity", 1)
+
+               }
+                
+            }
+            
+        }
+        
+	//$(".cand_unlocked").css("opacity", default_cand_opacity)
 	
 	
    if($(target).attr("locked")=="true") {return;}
@@ -823,9 +952,13 @@ function lowlight_this(target){
 function remove_selection(){
     
          //goes back to state where no candidates were ever selected. Clearing of selection_list occurs somewhere else. 
-    
+       
 	
 	 $("#selection_rect").remove()
+         
+         $(".candidate").attr("in_selection", "false")
+         
+         $(".vector").css("opacity", 1)
 	
 	 $(".cand_locked").attr("class", "candidate cand_unlocked")
 	 
@@ -837,20 +970,7 @@ function remove_selection(){
 	var candidates=$(".candidate")
 	var party="", id="", color="";
 	
-	/*
-	for (var i=0;i<candidates.length;i++){
-		
-		party=candidates[i]['__data__']['Party']
-		id="candidate_"+candidates[i]['__data__']['CID']
-		if(party=="R"){color="red"}
-		else if(party=="D"){color="blue"}
-		else{color="green"}
 
-	   
-		$("#"+id).css("fill", color)
-		
-	}
-	*/
 	
 }
 
@@ -886,37 +1006,27 @@ function search_data(name) {
 function select_cand_ids(cids) {
 	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.1)
-   // $(".candidate").css("opacity", 0.1)
-    
-   // $(".candidate").css("stroke-width", 5)
-
-
-
     $(".vector").css("opacity", 0.05)
 
  	for (var i = 0; i < cids.length; i++) {
  		var cand_id = cids[i];
  		$("#candidate_" + cand_id).css("opacity", 1)
  		$("#candidate_" + cand_id).css("stroke", "white")//ff9912
- 		//var id = "candidate_" + cand_id;
- 		//console.log(id)
- 		//var el=document.getElementById(id)
- 		 //		console.log(el)
- 		// console.log();
-		//$("#candidate_" + cand_id).parentNode.appendChild($("#candidate_" + cand_id)) 	
-
-		//var el=document.getElementById($("#candidate_" + cand_id).attr("id"))
-		//	   		el.parentNode.appendChild(el) 	
-
-		//console.log("cand_id " + cand_id + " num " + i);
-		//console.log($("#candidate_" + cand_id).attr("id"));
-		//console.log($("#candidate_" + cand_id).attr("candidateName"))
+ 		
 		if ($("#candidate_" + cand_id).attr("id")) {
 			var el=document.getElementById($("#candidate_" + cand_id).attr("id"))
-
 			el.parentNode.appendChild(el)
 		};
-		//console.log($("#candidate_" + cand_id)[0]);
+
+        if(cids.length == 1){
+            $("#candidate_" + cand_id).css("stroke", "#ff9912");
+            $("#candidate_" + cand_id).css("stroke-width", 5);
+        }    
+        else
+        {
+            $("#candidate_" + cand_id).css("stroke", "black");
+            $("#candidate_" + cand_id).css("stroke-width", 3);
+        }
         
 	    for (var j in all_sectors){
 	        
@@ -969,6 +1079,43 @@ function select_all_cand()
 
 function getNames() {
 	return nameList
+}
+
+
+function start_selection_rect(){
+    
+        var mouse_x=$("#mouse_x").html()
+        var mouse_y=$("#mouse_y").html()-y_correction
+        
+        var delta_x=mouse_x-main_x
+        var delta_y=mouse_y-main_y
+        var length_squared=Math.pow(delta_x, 2)+Math.pow(delta_y, 2)
+        
+        if(length_squared > Math.pow(main_r, 2)){return ""}
+        
+   
+        var canvas = d3.select("#canvas")
+        
+        remove_selection()
+								
+							
+        $("#select_status").html("true")
+
+
+
+        
+        var width=1
+        var height=1
+
+        var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
+
+
+        canvas.append("svg:path")
+                        .attr("id","selection_rect")
+                        .attr("d",d)
+                $("#select_point_1_x").html(mouse_x)
+                $("#select_point_1_y").html(mouse_y)
+    
 }
 
 
