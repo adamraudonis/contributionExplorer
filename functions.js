@@ -150,6 +150,10 @@ function jsonCallback(data){
                 else $(this).css("fill", "green");
                
             })
+            .on("click", function(d, i){
+                var id = $(this).attr('id');
+                SocialMediaData(id);
+            })
           
     
 
@@ -340,6 +344,13 @@ function jsonCallback(data){
 
     
 
+}
+
+
+function SocialMediaData(id)
+{
+    var candidate = d3.select(id);
+    
 }
 
 function run_qtip(){
