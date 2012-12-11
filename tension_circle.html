@@ -217,6 +217,7 @@
 
                 var clickedClass = e.target.getAttribute("class");
                 if (clickedClass != "candidate cand_unlocked" && clickedClass != "subcl" && clickedClass != "menuitem" && clickedClass != "sector_bar") {
+                    $("#search").attr("value", "");
                     select_all_cand();
                 };
 
