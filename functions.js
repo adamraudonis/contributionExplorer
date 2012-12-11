@@ -73,7 +73,7 @@ function jsonCallback(data){
 	var selection = canvas.selectAll("circle").data(data);
 				
 	selection.enter().append("circle")
-	
+
 	canvas.append("svg:circle")
 						.attr("cx", main_x)
 						.attr("cy", main_y)
@@ -307,14 +307,7 @@ function jsonCallback(data){
 					.attr("id", "main_circle")
 
 						
-						
-						
-                         canvas.append("svg:circle")
-                            .attr("cx", main_x)
-                            .attr("cy", main_y)
-                            .attr("r", 2)
-                            .attr("id", "center")
-			   
+		
 
 	// Hack to make the WHO IS REP lookup work even from the pres page.
 	if (whois_reps_toselect.length > 0) {
