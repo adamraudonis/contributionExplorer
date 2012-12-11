@@ -125,8 +125,6 @@ function jsonCallback(data){
 			})
             .on("mouseover", function(d, i){
                 
-               // $(this).attr("class", "candidate_highlight2");
-                //$(this).attr("class", "candidate_highlight2");
                // $(this).css("stroke", "gold")
                 $(this).css("fill", "gold")
                 var id = $(this).attr('id');
@@ -850,6 +848,9 @@ function highlight_this(target){
        $(".vector").css("opacity", 0.01)
 
        var target_circle=$(target).attr("for")
+    
+    var el=document.getElementById(target_circle);
+    el.ownerSVGElement.appendChild(el);
    
 	var candidates=$(".cand_unlocked")
     
