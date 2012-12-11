@@ -1,13 +1,11 @@
-
-
-
-var pi = Math.PI;
-var main_r = 300;
-var main_x = 500
-var main_y = 400
-var all_sectors = new Array();
-var sector_count = 0;
-var max_sector = 0;
+var pi=Math.PI;
+var main_r=300;
+var main_x=500
+var main_y=400
+var all_sectors=new Array();
+var sector_count=0;
+var max_sector=0;
+var y_correction=68;
 
 function write_data(json){
 	
@@ -275,8 +273,10 @@ function jsonCallback(data){
 							
 							$("#select_status").html("true")
 							
+                                                       
+                                                        
 							var mouse_x=$("#mouse_x").html()
-							var mouse_y=$("#mouse_y").html()
+							var mouse_y=$("#mouse_y").html()-y_correction
 							var width=1
 							var height=1
 							
@@ -520,9 +520,9 @@ function mouse_tracker(canvas, colors_assigned){
 					$('#mouse_x').html(mouse_x)
 					$('#mouse_y').html(mouse_y)
 		 
-					 var correction=9
-					 var delta_xc=mouse_x-main_x-correction
-					 var delta_yc=mouse_y-main_y-correction
+					 //var correction=0
+					 var delta_xc=mouse_x-main_x
+					 var delta_yc=mouse_y-main_y-y_correction
 					 var r=Math.sqrt(Math.pow(delta_xc,2)+Math.pow(delta_yc, 2))
 
 					 var theta=Math.acos(delta_xc/r)
@@ -613,8 +613,11 @@ function between(x, min, max) {
 function track_selection(){
 							var select_status=$("#select_status").html()
 							if(select_status=="true"){
+                                                            
+                                                                
+                                                                
 								var mouse_x=$("#mouse_x").html()
-								var mouse_y=$("#mouse_y").html()
+								var mouse_y=$("#mouse_y").html()-y_correction
 
 								var origin_x=$("#select_point_1_x").html()
 								var origin_y=$("#select_point_1_y").html()
