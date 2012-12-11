@@ -2,16 +2,24 @@ var pi=Math.PI;
 var main_r=300;
 var main_x=500
 var main_y=400
-var all_sectors=new Array();
+var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
 var y_correction=68;
+var whois_reps_toselect = new Array();
+var race_type;
+
 var idNameMap = Object();
+
+var default_cand_opacity=1
+
+var nameList = Array();
 
 function write_data(json){
 	
 	return json
 }
+
 
 function jsonCallback(data){
 
@@ -61,9 +69,20 @@ function jsonCallback(data){
 	var sector_x=0 
 	var sector_y=0
 
-		var selection = canvas.selectAll("circle").data(data);
-					
-		selection.enter().append("circle");
+	var selection = canvas.selectAll("circle").data(data);
+				
+	selection.enter().append("circle").on("mousedown",function(){
+		console.log("HIIIII");
+	});
+
+	canvas.append("svg:circle")
+						.attr("cx", main_x)
+						.attr("cy", main_y)
+						.attr("r", main_r)
+						.attr("id", "main_circle_outline")
+						.style("fill","none")
+						.style("stroke","grey")
+						.style("stroke-width", 1)
 					
 		selection
 			.attr("cx", main_x)
@@ -75,6 +94,7 @@ function jsonCallback(data){
 			.attr("class", "candidate cand_unlocked")
 			.attr("candidateName", function (d){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
+				nameList.push(d.Name)
 				return d.Name})
 			.style("fill", function(d) {
 				
@@ -122,19 +142,22 @@ function jsonCallback(data){
 			
 			i++
 		}    
+
+
+
 				
-   		// Add the giant main ring circle
-		canvas.append("svg:circle")
-			.attr("cx", main_x)
-			.attr("cy", main_y)
-			.attr("r", main_r)
-			.attr("id", "main_circle")
+  //  		// Add the giant main ring circle
+		// canvas.append("svg:circle")
+		// 	.attr("cx", main_x)
+		// 	.attr("cy", main_y)
+		// 	.attr("r", main_r)
+		// 	.attr("id", "main_circle")
 			
-		canvas.append("svg:circle")
-			.attr("cx", main_x)
-			.attr("cy", main_y)
-			.attr("r", 2)
-			.attr("id", "center")
+		// canvas.append("svg:circle")
+		// 	.attr("cx", main_x)
+		// 	.attr("cy", main_y)
+		// 	.attr("r", 2)
+		// 	.attr("id", "center")
 			
 						
 		//create sectors
@@ -144,11 +167,11 @@ function jsonCallback(data){
 		var y=0
 		var bar_size=0
 		var d="";
-		var angle_segment=sector_count+1
-					
+		var angle_segment=sector_count
+			
 		for (var j in all_sectors){
 		
-			bar_size = 15 + all_sectors[j]/max_sector * 300
+			bar_size = 15 + all_sectors[j]/max_sector * 100
 			anchor_angle = i/angle_segment * 2 * pi;
 			x = main_x + main_r * Math.cos(anchor_angle)
 			y = main_y + main_r * Math.sin(anchor_angle)
@@ -216,6 +239,8 @@ function jsonCallback(data){
 			   
 				i++
 			}
+
+
 					
 			var candidates=$(".candidate")
 			  
@@ -231,6 +256,8 @@ function jsonCallback(data){
  				//};
 			   
 			 }
+
+
 			   
 			for (var i=0;i<candidates.length;i++){       
 			   //bring candidate circles above vectors
@@ -244,6 +271,8 @@ function jsonCallback(data){
 			   		el.parentNode.appendChild(el) 					
 				//}; 
 			}
+
+
 			   
 			   
 			mouse_tracker(canvas, colors_assigned)
@@ -251,58 +280,59 @@ function jsonCallback(data){
 			   
 			   
 			   
-			   canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", main_r)
-						.attr("id", "main_circle")
-						.on("mousedown",function(){
+			   // canvas.append("svg:circle")
+						// .attr("cx", main_x)
+						// .attr("cy", main_y)
+						// .attr("r", main_r)
+						// .attr("id", "main_circle")
+						// .on("mousedown",function(){
 							
-							remove_selection()
+						// 	remove_selection()
 								
 							
-							$("#select_status").html("true")
+						// 	$("#select_status").html("true")
 							
                                                        
                                                         
-							var mouse_x=$("#mouse_x").html()
-							var mouse_y=$("#mouse_y").html()-y_correction
-							var width=1
-							var height=1
+						// 	var mouse_x=$("#mouse_x").html()
+						// 	var mouse_y=$("#mouse_y").html()-y_correction
+						// 	var width=1
+						// 	var height=1
 							
-							var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
+						// 	var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
 							
 
-							canvas.append("svg:path")
-								.attr("id","selection_rect")
-								.attr("d",d)
-							$("#select_point_1_x").html(mouse_x)
-							$("#select_point_1_y").html(mouse_y)  
+						// 	canvas.append("svg:path")
+						// 		.attr("id","selection_rect")
+						// 		.attr("d",d)
+						// 	$("#select_point_1_x").html(mouse_x)
+						// 	$("#select_point_1_y").html(mouse_y)  
 								
 							
-						})
+						// })
 						
 					
 						
-						canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", main_r)
-						.attr("id", "main_circle_outline")
-						.style("fill","none")
-						.style("stroke","grey")
-						.style("stroke-width", 1)
 						
-						canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", 2)
-						.attr("id", "center")
+						
+						// canvas.append("svg:circle")
+						// .attr("cx", main_x)
+						// .attr("cy", main_y)
+						// .attr("r", 2)
+						// .attr("id", "center")
 			   
 
+	// Hack to make the WHO IS REP lookup work even from the pres page.
+	if (whois_reps_toselect.length > 0) {
+		select_cand_ids(whois_reps_toselect);
+	};
+	whois_reps_toselect = new Array();
 }
 	
 function initialize(filename){
+
+	// The filename is the racetype: pres, senate, or house.
+	race_type = filename;
 	 
 	$(document).ready(function(){
 	    $.ajax({
@@ -418,7 +448,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 									    return Math.floor(Math.random() * (max - min + 1)) + min;
 									}
 
-									var randomInt = 1;// = getRandomInt(0,3);
+									var randomInt = getRandomInt(0,3);
 									//if (randomInt == 1) {
 										canvas.append("svg:path")
 											.attr("d",d)
@@ -427,11 +457,13 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 											.style("stroke",colors_assigned[j])
 											.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
 											.style("opacity",function() {
-												if (randomInt == 1) { 
-													return 1+0*tension_fraction;
-												}
-												else {
-													return 1+0*tension_fraction;
+												return 1+0*tension_fraction;
+											})
+											.style("display",function() {
+												if (randomInt == 1 || race_type != "house") {
+													return "block"
+												} else {
+													return "none";
 												};
 											})
 									//}
@@ -491,9 +523,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					   //end of create candidate circle
 					   
 					   
-				   //end of code for each candidate
-	
-	
+				   //end of code for each candidat
 	
 }
 
@@ -793,7 +823,7 @@ function lowlight_this(target){
 		
 	}*/
 	
-	$(".cand_unlocked").css("opacity", 0.25)
+	$(".cand_unlocked").css("opacity", default_cand_opacity)
 	
 	
    if($(target).attr("locked")=="true") {return;}
@@ -817,7 +847,7 @@ function remove_selection(){
 	 $(".candidate")
 			.css("stroke", "black")
 			.css("stroke-width", 1.5)
-			.css("opacity", 0.25)
+			.css("opacity", default_cand_opacity)
 
 	var candidates=$(".candidate")
 	var party="", id="", color="";
@@ -840,9 +870,9 @@ function remove_selection(){
 }
 
 function search_data(name) {
-	name.toLowerCase()
+	name = name.toLowerCase()
 
-									   
+								   
 	var candidates=$(".candidate")
 					
 	var candidates=$(".candidate")
@@ -854,11 +884,11 @@ function search_data(name) {
 	for(var i=0;i<candidates.length;i++){
 		candidate=$("#"+candidates[i].id)	
 		var cand_id=candidate.attr("id")
-		var cand_name = idNameMap[cand_id]
+		var cand_name = idNameMap[cand_id].toLowerCase()
+		console.log("Candidate Name: " + cand_name)
+		console.log("Search: "+name)
 		if (cand_name.indexOf(name) != -1) {
-			console.log(name)
-			console.log(cand_name.indexOf(name))
-			console.log(cand_name)
+			
 			var index = cand_id.indexOf("_")
 			var passID = cand_id.substring(index+1)
 			cidArray.push(passID)
@@ -880,11 +910,15 @@ function select_cand_ids(cids) {
 	    for (var j in all_sectors){
 	        
 	        var vector = $("#cand_candidate_" + cand_id + "_vector_" + j)
+	        vector.css("display","block")
 	        vector.css("opacity", 1)  
 	    }
  	};
 
 }
 
+function getNames() {
+	return nameList
+}
 
 

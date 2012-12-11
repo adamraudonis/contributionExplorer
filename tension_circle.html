@@ -8,6 +8,7 @@
     <link href="glossymenustyle.css" rel="stylesheet" type="text/css" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v2.js"></script>
@@ -45,13 +46,23 @@
         
         $(document).ready(function(){
             $("#search").keyup(function(){
-                console.log("searching")
+                
                 // Retrieve the input field text and reset the count to zero
                 var search = $(this).val();
-         
+                search.toLowerCase()
                 search_data(search);
             });
         });
+/*
+       $(function() {
+            var names = getNames();
+
+            $( "#search" ).autocomplete({
+                source: names
+            });
+        });
+*/
+
         $(function() {
 
           // Select Presidents view initially.
@@ -103,7 +114,13 @@
         // Must be placed here. Can't be inside the document click function.
         function whoisrep_callback(jsonData){
             if (jsonData.response.legislators.length > 0) {
-                console.log(jsonData.response.legislators[0].legislator.crp_id);
+                console.log(jsonData.response.legislators);
+
+                // TODO handle multiple reps per zip code.
+                // if (jsonData.response.legislators.length > 3) {
+                //     alert("Multiple reps found for that zip code. Try entering your full zip such as 91361-2038");
+                // };
+
 
                 // Switch to Rep. View if not in it already
                 if(!$('#house').hasClass('active')) {
@@ -111,9 +128,13 @@
                     d3.select("svg").remove();
                     var svg = d3.select("body").append("svg")
                         .attr("id","canvas").attr("width",900).attr("height",900);
+                    whois_reps_toselect.push(jsonData.response.legislators[0].legislator.crp_id);
                     initializeVizAndMenu("house");
-                } 
-
+                } else {
+                    var oneArray = new Array();
+                    oneArray.push(jsonData.response.legislators[0].legislator.crp_id);
+                    select_cand_ids(oneArray);
+                }
             } else {
                 alert("A representative for that zipcode could not be found. Try entering your full zip code ex: 91361-2038");
             };
@@ -204,7 +225,6 @@
 
         // Callback for tapping the menu committees
         function getCom(committee_id) {
-            console.log(committee_id);
             $.ajax({
                 type: 'get',
                 url: 'http://services.sunlightlabs.com/api/committees.get.json?apikey=de9c6b058ea542a4a5aab1d845d56c83&id=' + committee_id + '&jsonp=comdetails_callback',
@@ -222,7 +242,6 @@
                 var legislator = members[i].legislator;
                 cidArray.push(legislator.crp_id);
             };
-            console.log(cidArray);
             select_cand_ids(cidArray);
         }
 
