@@ -59,11 +59,12 @@ circle{
 }
 
 #canvas{
-    width:1100;
-    height:900;
+    width:950px;
+    height:800px;
     position:absolute;
-    top: 60px;
-    left: 50px;
+    background-color:yellow;
+    top: 52px;
+    left: 0px;
 }
 
 #center{
@@ -153,12 +154,15 @@ body{
 
 #selection_list{
         position:fixed;
-        left:3em;
-        top:5em;
-        width:10em;
+        left:3px;
+        top:60px;
+        width:150px;
+        height:300px;
         text-align:left;
-        
-    
+        overflow:auto;
+        z-index:10;
+            background-color:blue;
+
 }
 
 .sector_bar{

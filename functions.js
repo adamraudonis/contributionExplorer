@@ -1,12 +1,16 @@
 var pi=Math.PI;
 var main_r=300;
-var main_x=550 //mouse x is 601
-var main_y=400 //mouse y is 463
+var main_x=500
+var main_y=400
+// =======
+// var main_x=550 //mouse x is 601
+// var main_y=400 //mouse y is 463
+// >>>>>>> 9a2df7e3620e86b461fed16c2138aff3ff3cc127
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
-var y_correction=63;
-var x_correction=51;
+var y_correction=50;
+var x_correction=0;
 var whois_reps_toselect = new Array();
 var race_type;
 
@@ -33,7 +37,7 @@ function jsonCallback(data){
 	"C":"Construction",
 	"D":"Defense",
 	"E":"Energy/Nat. Resources",
-	"F":"Finance/Insurance/Real Estate",
+	"F":"Finance/Insur/Estate",
 	"H":"Health",
 	"K":"Lawyers / Lobbyists",
 	"M":"Transport",
