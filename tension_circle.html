@@ -34,9 +34,6 @@
 
         </div>
             <button type="button" class="btn btn-small" id="reset" onClick="ResetDisplay()">Reset</button>
-        
-
-
     </form>
 
     <!-- The list of all the congressional committees. Display none hides it. style="display: none;"-->
@@ -88,20 +85,16 @@
                 
           $ref = $(".btn-group");
           $("body").on('click',$ref.selector+' .btn',function() {
-                       if(!$(this).hasClass('active')){
-                       
-                         
-                       
-                                // Remove the SVG and initialize with different data
-                                // Note: This is move any html under the visualization to the top.
-                                d3.select("svg").remove();
-                                var svg = d3.select("body").append("svg")
-                                .attr("id","canvas").attr("width",900).attr("height",900);
-                                currentView = $(this).attr("id");
-                                initializeVizAndMenu($(this).attr("id"));
-                       
-                               
-                       }
+               if(!$(this).hasClass('active')){
+               
+                    // Remove the SVG and initialize with different data
+                    // Note: This is move any html under the visualization to the top.
+                    d3.select("svg").remove();
+                    var svg = d3.select("body").append("svg")
+                    .attr("id","canvas").attr("width",900).attr("height",900);
+                    currentView = $(this).attr("id");
+                    initializeVizAndMenu($(this).attr("id"));
+               }
             });
 
             // Create the visualization with the president data
@@ -136,22 +129,29 @@
                 //     alert("Multiple reps found for that zip code. Try entering your full zip such as 91361-2038");
                 // };
 
-
+                // Special case for the district that stanford is in because
+                // the current rep lost and we are showing future reps.
+                var crpid = jsonData.response.legislators[0].legislator.crp_id;
+                if (crpid == "N00007364") {
+                    crpid = "N00029649";
+                };
+               // N00029649 - new
+               // N00007364 - old
                 // Switch to Rep. View if not in it already
                 if(!$('#house').hasClass('active')) {
                     $('#house').button('toggle');
                     d3.select("svg").remove();
                     var svg = d3.select("body").append("svg")
                         .attr("id","canvas").attr("width",900).attr("height",900);
-                    whois_reps_toselect.push(jsonData.response.legislators[0].legislator.crp_id);
+                    whois_reps_toselect.push(crpid);
                     initializeVizAndMenu("house");
                 } else {
                     var oneArray = new Array();
-                    oneArray.push(jsonData.response.legislators[0].legislator.crp_id);
+                    oneArray.push(crpid);
                     select_cand_ids(oneArray);
                 }
             } else {
-                alert("A representative for that zipcode could not be found. Try entering your full zip code ex: 91361-2038");
+                alert("A representative for that zipcode could not be found. Try ex: 91361");
             };
         }
 
@@ -173,6 +173,14 @@
 
             // Don't close if you are touching the zip textfield
             if (e.target.id != "zip") {
+
+                //console.log(e.target);
+
+                var clickedClass = e.target.getAttribute("class");
+                if (clickedClass != "candidate cand_unlocked" && clickedClass != "subcl" && clickedClass != "menuitem" && clickedClass != "sector_bar") {
+                    select_all_cand();
+                };
+
 
                 if(isVisible & clickedAway) {
                     $('#zippopover').popover('hide')
@@ -196,17 +204,26 @@
                 $("#glossyid").css("display","block");
             }
 
-            testData(raceType);
+            generateCommitteeHTML(raceType);
         }
         
-        function ResetDisplay(){
-            if(currentView != null){
-                d3.select("svg").remove();
-                var svg = d3.select("body").append("svg")
-                .attr("id","canvas").attr("width",900).attr("height",900);
-                initializeVizAndMenu(currentView);
-                
+        function ResetDisplay() {
+
+            var raceTypeVar = "pres";
+            if($('#house').hasClass('active')) {
+                raceTypeVar = "house";
+            } else if($('#senate').hasClass('active')) {
+                raceTypeVar = "senate";
+            } else {
+                raceTypeVar = "pres";
             }
+
+            console.log(raceTypeVar);
+
+            d3.select("svg").remove();
+            var svg = d3.select("body").append("svg")
+            .attr("id","canvas").attr("width",900).attr("height",900);
+            initializeVizAndMenu(raceTypeVar);
         }
 
     </script>
@@ -223,9 +240,9 @@
         <div>select status<span id="select_status">false</span></div>
     </div>
     </div>
-        <div id="selection_list" style="height:10em; overflow:auto" >
+        <!-- <div id="selection_list" style="height:10em; overflow:auto" >
             </select>
-        </div>
+        </div> -->
 
     <script type="text/javascript" src="ddaccordion.js"></script>
     <script type="text/javascript" src="senate_committees.js"></script>
@@ -260,7 +277,7 @@
             select_cand_ids(cidArray);
         }
 
-    function testData(raceType) {
+    function generateCommitteeHTML(raceType) {
 
         var obj;
         if (raceType == "senate") {
@@ -314,6 +331,7 @@
                     var sub_li = document.createElement ("li");
                     var sub_a = document.createElement ("a");
                     sub_a.setAttribute("href",'javascript:getCom(\"' + subcommittee.committee.id + '\")');
+                    sub_a.setAttribute("class","subcl");
                     sub_a.appendChild (document.createTextNode (subcommittee.committee.name));
                     sub_li.appendChild(sub_a);
                     ul.appendChild(sub_li);

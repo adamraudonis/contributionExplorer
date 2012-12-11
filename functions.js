@@ -264,7 +264,7 @@ function jsonCallback(data){
 					
 			var candidates=$(".candidate")
 			  
-			  
+			  console.log("CANDIDATE LENGTH "+candidates.length)
 			for (var i=0;i<candidates.length;i++){
 				
 				var id=$(candidates[i]).attr("id")
@@ -284,6 +284,7 @@ function jsonCallback(data){
 			   
 				var id=$(candidates[i]).attr("id")
 				var totalCash=$(candidates[i]).attr("total_cash")
+
 				// Make sure we don't include candidates that have no money
 				// coming from any sectors.
 				//if (totalCash > 0) {
@@ -1004,24 +1005,27 @@ function search_data(name) {
 
 function select_cand_ids(cids) {
 	// Grey out all candidates and vectors
-    $(".candidate").css("opacity", 0.05)
+    $(".candidate").css("opacity", 0.1)
     $(".vector").css("opacity", 0.05)
 
  	for (var i = 0; i < cids.length; i++) {
  		var cand_id = cids[i];
  		$("#candidate_" + cand_id).css("opacity", 1)
+ 		$("#candidate_" + cand_id).css("stroke", "white")//ff9912
+ 		
+		if ($("#candidate_" + cand_id).attr("id")) {
+			var el=document.getElementById($("#candidate_" + cand_id).attr("id"))
+			el.parentNode.appendChild(el)
+		};
+
         if(cids.length == 1){
             $("#candidate_" + cand_id).css("stroke", "#ff9912");
             $("#candidate_" + cand_id).css("stroke-width", 5);
-        }
-            
+        }    
         else
         {
             $("#candidate_" + cand_id).css("stroke", "black");
             $("#candidate_" + cand_id).css("stroke-width", 3);
-
-
-
         }
         
 	    for (var j in all_sectors){
@@ -1031,7 +1035,46 @@ function select_cand_ids(cids) {
 	        vector.css("opacity", 1)  
 	    }
  	};
+}
 
+/*
+var candidates=$(".candidate")
+			  
+			  
+			for (var i=0;i<candidates.length;i++){
+				
+				var id=$(candidates[i]).attr("id")
+				var totalCash=$(candidates[i]).attr("total_cash")
+				// Make sure we don't include candidates that have no money
+				// coming from any sectors.
+ 				//if (totalCash > 0) {
+ 					draw_candidates(id, canvas, colors_assigned, false)
+ 				//};
+			   
+			 }
+
+
+			   
+			for (var i=0;i<candidates.length;i++){       
+			   //bring candidate circles above vectors
+			   
+				var id=$(candidates[i]).attr("id")
+				var totalCash=$(candidates[i]).attr("total_cash")
+				// Make sure we don't include candidates that have no money
+				// coming from any sectors.
+				//if (totalCash > 0) {
+					var el=document.getElementById(id)
+			   		el.parentNode.appendChild(el) 					
+				//}; 
+			}
+*/
+
+function select_all_cand()
+{
+	$(".candidate").css("opacity", 1)      
+	//$(".vector").css("display","block")
+	$(".vector").css("opacity", 1)  
+	$(".candidate").css("stroke", "black")
 }
 
 function getNames() {
