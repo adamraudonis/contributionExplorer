@@ -421,20 +421,31 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 
 
 								  if(redraw==false){
-								  
-								 
-								 
-								  canvas.append("svg:path")
-									.attr("d",d)
-									.attr("id", "cand_"+candidate_id+"_vector_"+j)
-                                                                        .attr("class", "vector")
-									.style("stroke",colors_assigned[j])
-									.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
-									.style("opacity", 1+0*tension_fraction)
 									
-									// 
-								  }
+									// Returns a random integer between min and max
+									// http://stackoverflow.com/questions/10134237/
+									function getRandomInt (min, max) {
+									    return Math.floor(Math.random() * (max - min + 1)) + min;
+									}
 
+									var randomInt = 1;// = getRandomInt(0,3);
+									//if (randomInt == 1) {
+										canvas.append("svg:path")
+											.attr("d",d)
+											.attr("class","vector")
+											.attr("id", "cand_"+candidate_id+"_vector_"+j)
+											.style("stroke",colors_assigned[j])
+											.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
+											.style("opacity",function() {
+												if (randomInt == 1) { 
+													return 1+0*tension_fraction;
+												}
+												else {
+													return 1+0*tension_fraction;
+												};
+											})
+									//}
+								  }
 								  else{
 									  $("#cand_"+candidate_id+"_vector_"+j)
 										.attr("d",d)
@@ -828,7 +839,6 @@ function remove_selection(){
 	*/
 	
 }
-
 
 function committee_select(target){
     
