@@ -147,8 +147,7 @@ body{
     right: 5em;
     width:20em;
     text-align:left;
-    opacity:0;
-    display: none
+    opacity:1;
 }
 
 #selection_list{
