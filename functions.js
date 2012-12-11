@@ -2,10 +2,13 @@ var pi=Math.PI;
 var main_r=300;
 var main_x=500
 var main_y=400
-var all_sectors=new Array();
+var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
 var y_correction=68;
+var whois_reps_toselect = new Array();
+var race_type;
+
 
 function write_data(json){
 	
@@ -60,9 +63,20 @@ function jsonCallback(data){
 	var sector_x=0 
 	var sector_y=0
 
-		var selection = canvas.selectAll("circle").data(data);
-					
-		selection.enter().append("circle");
+	var selection = canvas.selectAll("circle").data(data);
+				
+	selection.enter().append("circle").on("mousedown",function(){
+		console.log("HIIIII");
+	});
+
+	canvas.append("svg:circle")
+						.attr("cx", main_x)
+						.attr("cy", main_y)
+						.attr("r", main_r)
+						.attr("id", "main_circle_outline")
+						.style("fill","none")
+						.style("stroke","grey")
+						.style("stroke-width", 1)
 					
 		selection
 			.attr("cx", main_x)
@@ -110,19 +124,22 @@ function jsonCallback(data){
 			
 			i++
 		}    
+
+
+
 				
-   		// Add the giant main ring circle
-		canvas.append("svg:circle")
-			.attr("cx", main_x)
-			.attr("cy", main_y)
-			.attr("r", main_r)
-			.attr("id", "main_circle")
+  //  		// Add the giant main ring circle
+		// canvas.append("svg:circle")
+		// 	.attr("cx", main_x)
+		// 	.attr("cy", main_y)
+		// 	.attr("r", main_r)
+		// 	.attr("id", "main_circle")
 			
-		canvas.append("svg:circle")
-			.attr("cx", main_x)
-			.attr("cy", main_y)
-			.attr("r", 2)
-			.attr("id", "center")
+		// canvas.append("svg:circle")
+		// 	.attr("cx", main_x)
+		// 	.attr("cy", main_y)
+		// 	.attr("r", 2)
+		// 	.attr("id", "center")
 			
 						
 		//create sectors
@@ -133,6 +150,8 @@ function jsonCallback(data){
 		var bar_size=0
 		var d="";
 		var angle_segment=sector_count+1
+
+
 					
 		for (var j in all_sectors){
 		
@@ -204,6 +223,8 @@ function jsonCallback(data){
 			   
 				i++
 			}
+
+
 					
 			var candidates=$(".candidate")
 			  
@@ -219,6 +240,8 @@ function jsonCallback(data){
  				//};
 			   
 			 }
+
+
 			   
 			for (var i=0;i<candidates.length;i++){       
 			   //bring candidate circles above vectors
@@ -232,6 +255,8 @@ function jsonCallback(data){
 			   		el.parentNode.appendChild(el) 					
 				//}; 
 			}
+
+
 			   
 			   
 			mouse_tracker(canvas, colors_assigned)
@@ -239,58 +264,59 @@ function jsonCallback(data){
 			   
 			   
 			   
-			   canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", main_r)
-						.attr("id", "main_circle")
-						.on("mousedown",function(){
+			   // canvas.append("svg:circle")
+						// .attr("cx", main_x)
+						// .attr("cy", main_y)
+						// .attr("r", main_r)
+						// .attr("id", "main_circle")
+						// .on("mousedown",function(){
 							
-							remove_selection()
+						// 	remove_selection()
 								
 							
-							$("#select_status").html("true")
+						// 	$("#select_status").html("true")
 							
                                                        
                                                         
-							var mouse_x=$("#mouse_x").html()
-							var mouse_y=$("#mouse_y").html()-y_correction
-							var width=1
-							var height=1
+						// 	var mouse_x=$("#mouse_x").html()
+						// 	var mouse_y=$("#mouse_y").html()-y_correction
+						// 	var width=1
+						// 	var height=1
 							
-							var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
+						// 	var d="M"+mouse_x+" "+mouse_y+" l"+width+" 0 l0 "+height+" h-"+width+" 0 v0 -"+height
 							
 
-							canvas.append("svg:path")
-								.attr("id","selection_rect")
-								.attr("d",d)
-							$("#select_point_1_x").html(mouse_x)
-							$("#select_point_1_y").html(mouse_y)  
+						// 	canvas.append("svg:path")
+						// 		.attr("id","selection_rect")
+						// 		.attr("d",d)
+						// 	$("#select_point_1_x").html(mouse_x)
+						// 	$("#select_point_1_y").html(mouse_y)  
 								
 							
-						})
+						// })
 						
 					
 						
-						canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", main_r)
-						.attr("id", "main_circle_outline")
-						.style("fill","none")
-						.style("stroke","grey")
-						.style("stroke-width", 1)
 						
-						canvas.append("svg:circle")
-						.attr("cx", main_x)
-						.attr("cy", main_y)
-						.attr("r", 2)
-						.attr("id", "center")
+						
+						// canvas.append("svg:circle")
+						// .attr("cx", main_x)
+						// .attr("cy", main_y)
+						// .attr("r", 2)
+						// .attr("id", "center")
 			   
 
+	// Hack to make the WHO IS REP lookup work even from the pres page.
+	if (whois_reps_toselect.length > 0) {
+		select_cand_ids(whois_reps_toselect);
+	};
+	whois_reps_toselect = new Array();
 }
 	
 function initialize(filename){
+
+	// The filename is the racetype: pres, senate, or house.
+	race_type = filename;
 	 
 	$(document).ready(function(){
 	    $.ajax({
@@ -406,7 +432,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 									    return Math.floor(Math.random() * (max - min + 1)) + min;
 									}
 
-									var randomInt = 1;// = getRandomInt(0,3);
+									var randomInt = getRandomInt(0,3);
 									//if (randomInt == 1) {
 										canvas.append("svg:path")
 											.attr("d",d)
@@ -415,11 +441,13 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 											.style("stroke",colors_assigned[j])
 											.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
 											.style("opacity",function() {
-												if (randomInt == 1) { 
-													return 1+0*tension_fraction;
-												}
-												else {
-													return 1+0*tension_fraction;
+												return 1+0*tension_fraction;
+											})
+											.style("display",function() {
+												if (randomInt == 1 || race_type != "house") {
+													return "block"
+												} else {
+													return "none";
 												};
 											})
 									//}
@@ -472,9 +500,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					   //end of create candidate circle
 					   
 					   
-				   //end of code for each candidate
-	
-	
+				   //end of code for each candidat
 	
 }
 
@@ -831,6 +857,7 @@ function select_cand_ids(cids) {
 	    for (var j in all_sectors){
 	        
 	        var vector = $("#cand_candidate_" + cand_id + "_vector_" + j)
+	        vector.css("display","block")
 	        vector.css("opacity", 1)  
 	    }
  	};
