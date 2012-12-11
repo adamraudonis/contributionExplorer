@@ -805,7 +805,7 @@ function finish_selection(){
                                                                                         
                                                                                         reveal_count++;
 											candidate.css("stroke", "orange")
-											candidate.css("stroke-width", 4)
+											//candidate.css("stroke-width", 4)
                                                                                         candidate.css("opacity", default_cand_opacity)
                                                                                         candidate.attr("in_selection", "true")
 										        
