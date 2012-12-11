@@ -88,6 +88,7 @@ function jsonCallback(data){
 			.attr("cx", main_x)
 			.attr("cy", main_y)
 			.attr("r", 20)
+            .attr("party", function(d){ return d.Party; })
 			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
 				idNameMap["candidate_" + d.CID] = "";
 				return ("candidate_" + d.CID)} })
@@ -122,12 +123,27 @@ function jsonCallback(data){
 				}
 				return total
 			})
-            .on("click", function(d, i){
+            .on("mouseover", function(d, i){
                 $(this).attr("class", "candidate_highlight2");
+               // $(this).css("stroke", "gold")
+                $(this).css("fill", "gold")
+
             })
-          //  .on("mouseout", function(d){
-          ////      $(this).attr("class", "candidate");
-          //  })
+            .on("mouseout", function(d, i){
+               $(this).attr("class", "candidate");
+                
+                var party = d.Party;
+                
+              //  $(this).css("stroke", "none");
+                
+                if(party == "R") $(this).css("fill", "red");
+                else if(party == "D") $(this).css("fill", "blue");
+                else $(this).css("fill", "green");
+               
+            })
+          
+    
+
     
 			
 		var i = 0;   
@@ -327,7 +343,11 @@ function jsonCallback(data){
 		select_cand_ids(whois_reps_toselect);
 	};
 	whois_reps_toselect = new Array();
+    
+
 }
+
+
 	
 function initialize(filename){
 
@@ -509,12 +529,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 						   candidate
                             .attr("cx", parseFloat(candidate_x))
                             .attr("cy", parseFloat(candidate_y))
-                          //  .on("mouseover", function(){
-                           //     $(this).attr("class", "candidate_highlight2");
-                          ///  })
-                           // .on("mouseout", function(){
-                           //     $(this).attr("class", "candidate");
-                          //  })
+                         
                            
 						   
 					  
@@ -524,6 +539,8 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					   
 					   
 				   //end of code for each candidat
+    
+
 	
 }
 
@@ -906,6 +923,19 @@ function select_cand_ids(cids) {
  	for (var i = 0; i < cids.length; i++) {
  		var cand_id = cids[i];
  		$("#candidate_" + cand_id).css("opacity", 1)
+        if(cids.length == 1){
+            $("#candidate_" + cand_id).css("stroke", "#ff9912");
+            $("#candidate_" + cand_id).css("stroke-width", 5);
+        }
+            
+        else
+        {
+            $("#candidate_" + cand_id).css("stroke", "black");
+            $("#candidate_" + cand_id).css("stroke-width", 3);
+
+
+
+        }
         
 	    for (var j in all_sectors){
 	        
