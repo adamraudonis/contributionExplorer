@@ -194,6 +194,9 @@
         });
 
         function initializeVizAndMenu(raceType) {
+
+            $("#selection_list").empty();
+
             initialize(raceType);
 
             // Remove all children of the glossy menu generated div
@@ -241,7 +244,7 @@
         <div>select status<span id="select_status">false</span></div>
     </div>
     </div>
-        <div id="selection_list" style="height:10em; overflow:auto" >
+        <div id="selection_list">
             </select>
         </div> 
 
