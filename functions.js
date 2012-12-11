@@ -136,7 +136,7 @@ function jsonCallback(data){
               // $(this).attr("class", "candidate");
                //$(this).attr("class", "candidate");
                 
-                var party = d.Party;
+                var party = this.getAttribute("party");
                 
               //  $(this).css("stroke", "none");
                 
@@ -789,8 +789,8 @@ function finish_selection(){
 									var div_function=""
                                                                         var reveal_count=0;
 								  
-                                                                        $(".candidate").css("opacity",0.01)
-                                                                        $(".vector").css("opacity",0.01)
+                                                                        $(".candidate").css("opacity",0.1)
+                                                                        $(".vector").css("opacity",0.05)
 
 									for(var i=0;i<candidates.length;i++){
 
@@ -806,7 +806,7 @@ function finish_selection(){
                                                                                         
                                                                                         reveal_count++;
 											candidate.css("stroke", "orange")
-											candidate.css("stroke-width", 4)
+											//candidate.css("stroke-width", 4)
                                                                                         candidate.css("opacity", default_cand_opacity)
                                                                                         candidate.attr("in_selection", "true")
 										        
@@ -903,8 +903,10 @@ function lowlight_this(target){
 
 	
 	var target_circle=$(target).attr("for")
-    
-    var party = target.getAttribute("Party");
+    var circle = $("#"+target_circle)
+    var party=circle[0]["__data__"]["Party"]
+    console.log(party)
+    //var party = circle.getAttribute("party");
     if(party == "R")
         $("#"+target_circle).css("fill", "red")
     else if(party == "D")
@@ -1017,15 +1019,15 @@ function select_cand_ids(cids) {
 			el.parentNode.appendChild(el)
 		};
 
-        if(cids.length == 1){
-            $("#candidate_" + cand_id).css("stroke", "#ff9912");
-            $("#candidate_" + cand_id).css("stroke-width", 5);
-        }    
-        else
-        {
-            $("#candidate_" + cand_id).css("stroke", "black");
-            $("#candidate_" + cand_id).css("stroke-width", 3);
-        }
+        // if(cids.length == 1){
+        //     $("#candidate_" + cand_id).css("stroke", "#ff9912");
+        //     $("#candidate_" + cand_id).css("stroke-width", 5);
+        // }    
+        // else
+        // {
+        //     $("#candidate_" + cand_id).css("stroke", "black");
+        //     $("#candidate_" + cand_id).css("stroke-width", 3);
+        // }
         
 	    for (var j in all_sectors){
 	        
