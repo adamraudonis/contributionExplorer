@@ -136,7 +136,7 @@ function jsonCallback(data){
               // $(this).attr("class", "candidate");
                //$(this).attr("class", "candidate");
                 
-                var party = d.Party;
+                var party = this.getAttribute("party");
                 
               //  $(this).css("stroke", "none");
                 
@@ -901,8 +901,10 @@ function lowlight_this(target){
 
 	
 	var target_circle=$(target).attr("for")
-    
-    var party = target.getAttribute("Party");
+    var circle = $("#"+target_circle)
+    var party=circle[0]["__data__"]["Party"]
+    console.log(party)
+    //var party = circle.getAttribute("party");
     if(party == "R")
         $("#"+target_circle).css("fill", "red")
     else if(party == "D")
