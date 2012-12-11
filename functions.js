@@ -74,7 +74,7 @@ function jsonCallback(data){
 				return ("candidate_" + d.CID)} })
 			.attr("class", "candidate cand_unlocked")
 			.attr("candidateName", function (d){
-				idNameMap["candidate_" + d.CID] = d.Name
+				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
 				return d.Name})
 			.style("fill", function(d) {
 				
@@ -824,7 +824,7 @@ function remove_selection(){
 }
 
 function search_data(name) {
-	console.log(name)
+	name.toLowerCase()
 
 									   
 	var candidates=$(".candidate")
