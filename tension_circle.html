@@ -91,18 +91,29 @@
             });
         });
 
+
+        function OnSubtreeModified () {
+            var searchTerm = document.getElementById('search').value;
+            search_data(searchTerm);
+        }
+
         setInterval(function(){
             var searchBar = document.getElementById('search');
             var searchTerm = document.getElementById('search').value;
             if ((searchTerm.length > 0 && oldValue != searchTerm )|| search.valueOf() === "Search..."){
+                var anchors = document.getElementsByTagName('a')
+                for ( var i = 0; i < anchors.length + anchors.length; i++ ) {
+                    var anchor = ( i < anchors.length ) ? anchors[i] : anchors[i-anchors.length];
+                    anchor.addEventListener("click", OnSubtreeModified, false);
+                }
+                
+
                 oldValue = searchTerm;
                 console.log(searchTerm);
                 search_data(searchTerm);
             }
         }, 100);
-
-     //   document.getElementById('search').addEventListener('DOMSubtreeModified', OnSubtreeModified, false);
-
+        
         $(function() {
 
           // Select Presidents view initially.
