@@ -22,6 +22,11 @@ root {
     display: block;
 }
 
+.candtip{
+    width: 100px;
+}
+
+
 rect{
     
     fill:#619f3a;
