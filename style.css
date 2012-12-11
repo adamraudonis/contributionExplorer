@@ -58,6 +58,14 @@ circle{
     fill:#e37e23; ;
 }
 
+#canvas{
+    width:1100;
+    height:900;
+    position:absolute;
+    top: 60px;
+    left: 50px;
+}
+
 #center{
     opacity:1;
     fill:"black"
