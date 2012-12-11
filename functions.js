@@ -96,6 +96,7 @@ function jsonCallback(data){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
 				nameList.push(d.Name)
 				return d.Name})
+            .attr("title", function(d){ return "<div class='candtip'>"+d.Name+"<br /><a href='www.google.com'>google</a></div>"})
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -125,7 +126,7 @@ function jsonCallback(data){
             .on("mouseover", function(d, i){
                 
                // $(this).css("stroke", "gold")
-                $(this).css("fill", "gold")
+                $(this).css("fill", "#FFFAAA")
                 var id = $(this).attr('id');
                 var el=document.getElementById(id);
                 el.ownerSVGElement.appendChild(el);
@@ -143,6 +144,10 @@ function jsonCallback(data){
                 else if(party == "D") $(this).css("fill", "blue");
                 else $(this).css("fill", "green");
                
+            })
+            .on("click", function(d, i){
+                var id = $(this).attr('id');
+                SocialMediaData(id);
             })
           
     
@@ -323,42 +328,31 @@ function jsonCallback(data){
 
 }
 
-function run_qtip(){
-//    
-//                        $.fn.qtip.styles.tooltipDefault = {
-//                        background  : '#132531',
-//                        color       : '#FFFFFF',
-//                        textAlign   : 'left',
-//                        border      : {
-//                            width   : 10,
-//                            radius  : 10,
-//                            color   : '#C1CFDD'
-//                        },
-//                        width       : 220
-//                        
-//                        }
-//    }
+
+function SocialMediaData(id)
+{
+    var candidate = d3.select(id);
     
-    $('.candidate').each( function() {
-        var name = this.getAttribute("candidateName");
-        $(this).qtip({
-                     
-                    // background: <img src="plus.gif"/>
-                     
-                     content: name,
-                     show: {delay: 0, effect: {type: 'slide', length:0}},
-                     position: {
-                        corner: {
-                            target: 'topRight',
-                            tooltip: 'bottomLeft'
-                        },
-                        adjust: {x: 20, y: 0}
-                     }
-                    
-          
-          
+}
+
+function run_qtip(){
+
+    $('.candidate')
+            .qtip({
+                corner: {
+                    target: 'bottomLeft',
+                    tooltip: 'bottomLeft'
+                },
+                style: { 
+                  name: 'cream',
+                  border: {
+                    width: 2,
+                    radius: 4,
+                    color: '#8B5A00'
+                  },
+                  width: 140
+                } 
         })
-    })
 }
 
 	
@@ -856,7 +850,7 @@ function highlight_this(target){
     
     var el=document.getElementById(target_circle);
     el.ownerSVGElement.appendChild(el);
-    $("#"+target_circle).css("fill", "gold");
+    $("#"+target_circle).css("fill", "#FFFAAA");
    
    
 	var candidates=$(".cand_unlocked")
