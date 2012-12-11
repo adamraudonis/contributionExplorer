@@ -149,18 +149,22 @@
 
     <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
     <div id="meta">
-        <div><span id="mouse_x"></span></div>
-        <div><span id="mouse_y"></span></div>
-        <div><span id="theta"></span></div>
-        <div><span id="mouse_r"></span></div>
-        <div><span id="target"></span></div>
-        <div><span class="selection_data" id="select_point_1_x"></span></div>
-        <div><span class="selection_data" id="select_point_1_y"></span></div>
-        <div><span id="select_status">false</span></div>
+        <div>mouse x: <span id="mouse_x"></span></div>
+        <div>mouse y: <span id="mouse_y"></span></div>
+        <div>theta: <span id="theta"></span></div>
+        <div>mouse r: <span id="mouse_r"></span></div>
+        <div>target: <span id="target"></span></div>
+        <div>select point 1 x: <span class="selection_data" id="select_point_1_x"></span></div>
+        <div>select point 1 y: <span class="selection_data" id="select_point_1_y"></span></div>
+        <div>select status<span id="select_status">false</span></div>
     </div>
     </div>
-        <div id="selection_list">
-    </div>
+        <div id="selection_list" style="height:10em; overflow:auto" >
+            
+                
+                
+            </select>
+        </div>
 
     <script type="text/javascript" src="ddaccordion.js"></script>
     <script type="text/javascript" src="senate_committees.js"></script>
@@ -291,6 +295,6 @@
 
     <!-- For an unknown reason this needs to be here to make the popover work -->
     <script src="js/bootstrap.min.js"></script> 
-
+    <div onclick="committee_select('fish')">TEST BUTTON DIV</div>
 </body>
 </html>
