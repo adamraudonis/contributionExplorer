@@ -1,6 +1,3 @@
-
-
-
 var pi=Math.PI;
 var main_r=300;
 var main_x=500
@@ -17,21 +14,25 @@ function write_data(json){
 
 function jsonCallback(data){
 
-// {"A":"Agribusiness",
-// "B":"Communications/Electronics",
-// C	Construction
-// D	Defense
-// E	Energy/Natural Resources
-// F	Finance/Insurance/Real Estate
-// H	Health
-// K	Lowyers and Lobbyists
-// M	Transportation
-// N	Misc. Business
-// Q	Ideology/Single Issue
-// P	Labors
-// W	Other
-// Y	Unknown
-// Z	Adminstrative Use
+	all_sectors = new Array();
+	sector_count = 0;
+	max_sector = 0;
+
+	var sectorCodeDict = {"A":"Agribusiness",
+	"B":"Comm./Electronics",
+	"C":"Construction",
+	"D":"Defense",
+	"E":"Energy/Nat. Resources",
+	"F":"Finance/Insurance/Real Estate",
+	"H":"Health",
+	"K":"Lawyers / Lobbyists",
+	"M":"Transport",
+	"N":"Misc. Business",
+	"Q":"Ideology/Single Issue",
+	"P":"Labor",
+	"W":"Other",
+	"Y":"Unknown",
+	"Z":"Adminstrative Use"};
 
     console.log(data);
 
@@ -80,10 +81,11 @@ function jsonCallback(data){
 			 	else if (party=="R") { return "red"}
 			 	else {return "green"}
 			})
-			.attr("total_cash",function(d){
+			.attr("total_cash",function(d) {
 				
 				var total = 0
 				for(var j in d.SectorTotals) {
+					
 				
 					var sector = d.SectorTotals[j]
 					total = total + sector
@@ -100,6 +102,7 @@ function jsonCallback(data){
 			
 		var i = 0;   
 		for (var j in all_sectors){
+			
 			
 			colors_assigned[j] = colors[i]
 			
@@ -188,8 +191,13 @@ function jsonCallback(data){
 					motion_lock(this)
 				})  
 
+			var sectorName = j;
+			if (sectorCodeDict[j]) {
+				sectorName = sectorCodeDict[j];
+			};
+
 			canvas.append("svg:text")
-				.text(j)
+				.text(sectorName)
 				.attr("class","sector_bar_text")
 				.attr("x",x)
 				.attr("y",y)
@@ -301,7 +309,7 @@ function jsonCallback(data){
 						.attr("r", 2)
 						.attr("id", "center")
 			   
-			   
+
 }
 	
 function initialize(filename){
@@ -413,19 +421,31 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 
 
 								  if(redraw==false){
-								  
-								 
-								 
-								  canvas.append("svg:path")
-									.attr("d",d)
-									.attr("id", "cand_"+candidate_id+"_vector_"+j)
-									.style("stroke",colors_assigned[j])
-									.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
-									.style("opacity", 1+0*tension_fraction)
 									
-									// 
-								  }
+									// Returns a random integer between min and max
+									// http://stackoverflow.com/questions/10134237/
+									function getRandomInt (min, max) {
+									    return Math.floor(Math.random() * (max - min + 1)) + min;
+									}
 
+									var randomInt = 1;// = getRandomInt(0,3);
+									//if (randomInt == 1) {
+										canvas.append("svg:path")
+											.attr("d",d)
+											.attr("class","vector")
+											.attr("id", "cand_"+candidate_id+"_vector_"+j)
+											.style("stroke",colors_assigned[j])
+											.style("stroke-width",0.3+0.7*(tension_fraction)*max_stroke_width)
+											.style("opacity",function() {
+												if (randomInt == 1) { 
+													return 1+0*tension_fraction;
+												}
+												else {
+													return 1+0*tension_fraction;
+												};
+											})
+									//}
+								  }
 								  else{
 									  $("#cand_"+candidate_id+"_vector_"+j)
 										.attr("d",d)
@@ -485,7 +505,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 
 function mouse_tracker(canvas, colors_assigned){
 				
- 
+
 				var mouse_x=0;
 				var mouse_y=0;
 				var mouse_r=0;
@@ -690,7 +710,7 @@ function finish_selection(){
 										cx=candidate.attr("cx")
 										cy=candidate.attr("cy")
 										cand_id=candidate.attr("id")
-										name=d3_candidate[0][0]["__data__"]["candidateName"]
+										name=d3_candidate[0][0]["__data__"]["Name"]
 										console.log(name)
 
 										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
@@ -699,7 +719,8 @@ function finish_selection(){
 											candidate.css("stroke-width", 4)
 										   
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
-												
+											
+													
 
 										  
 										}
@@ -786,10 +807,11 @@ function lowlight_this(target){
 }
 
 function remove_selection(){
+    
+         //goes back to state where no candidates were ever selected. Clearing of selection_list occurs somewhere else. 
+    
 	
 	 $("#selection_rect").remove()
-	 
-	
 	
 	 $(".cand_locked").attr("class", "candidate cand_unlocked")
 	 
@@ -818,6 +840,32 @@ function remove_selection(){
 	
 }
 
-
+function committee_select(target){
+    
+    //target will be an array of objects
+    //Obama is N00009683
+    
+    var test_id="N00009638"
+    $(".candidate").css("opacity", 0.05)
+    $(".vector").css("opacity", 0.05)
+    
+    
+    $("#candidate_"+test_id).css("opacity", 1)
+    
+    //.attr("id", "cand_"+candidate_id+"_vector_"+j)
+    
+    
+    for (var j in all_sectors){
+        
+        var vector=$("#cand_candidate_"+test_id+"_vector_"+j)
+        
+        console.log("#cand_candidate_"+test_id+"_vector_"+j)
+        
+        vector.css("opacity", 1)
+        
+        
+    }
+   
+}
 
 
