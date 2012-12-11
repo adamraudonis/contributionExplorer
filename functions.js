@@ -861,8 +861,8 @@ function lock_candidate(target){
 function highlight_this(target){
    
     
-       $(".cand_unlocked").css("opacity", 0.01)
-       $(".vector").css("opacity", 0.01)
+       $(".cand_unlocked").css("opacity", 0.1)
+       $(".vector").css("opacity", 0.05)
 
        var target_circle=$(target).attr("for")
     
