@@ -102,7 +102,7 @@ function jsonCallback(data){
 				}
 				return total
 			})
-            .on("mouseover", function(d, i){
+            .on("click", function(d, i){
                 $(this).attr("class", "candidate_highlight2");
             })
           //  .on("mouseout", function(d){
