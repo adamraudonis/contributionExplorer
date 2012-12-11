@@ -1,6 +1,3 @@
-
-
-
 var pi=Math.PI;
 var main_r=300;
 var main_x=500
@@ -17,21 +14,25 @@ function write_data(json){
 
 function jsonCallback(data){
 
-// {"A":"Agribusiness",
-// "B":"Communications/Electronics",
-// C	Construction
-// D	Defense
-// E	Energy/Natural Resources
-// F	Finance/Insurance/Real Estate
-// H	Health
-// K	Lowyers and Lobbyists
-// M	Transportation
-// N	Misc. Business
-// Q	Ideology/Single Issue
-// P	Labors
-// W	Other
-// Y	Unknown
-// Z	Adminstrative Use
+	all_sectors = new Array();
+	sector_count = 0;
+	max_sector = 0;
+
+	var sectorCodeDict = {"A":"Agribusiness",
+	"B":"Comm./Electronics",
+	"C":"Construction",
+	"D":"Defense",
+	"E":"Energy/Nat. Resources",
+	"F":"Finance/Insurance/Real Estate",
+	"H":"Health",
+	"K":"Lawyers / Lobbyists",
+	"M":"Transport",
+	"N":"Misc. Business",
+	"Q":"Ideology/Single Issue",
+	"P":"Labor",
+	"W":"Other",
+	"Y":"Unknown",
+	"Z":"Adminstrative Use"};
 
     console.log(data);
 
@@ -80,10 +81,11 @@ function jsonCallback(data){
 			 	else if (party=="R") { return "red"}
 			 	else {return "green"}
 			})
-			.attr("total_cash",function(d){
+			.attr("total_cash",function(d) {
 				
 				var total = 0
 				for(var j in d.SectorTotals) {
+					
 				
 					var sector = d.SectorTotals[j]
 					total = total + sector
@@ -100,6 +102,7 @@ function jsonCallback(data){
 			
 		var i = 0;   
 		for (var j in all_sectors){
+			
 			
 			colors_assigned[j] = colors[i]
 			
@@ -188,8 +191,13 @@ function jsonCallback(data){
 					motion_lock(this)
 				})  
 
+			var sectorName = j;
+			if (sectorCodeDict[j]) {
+				sectorName = sectorCodeDict[j];
+			};
+
 			canvas.append("svg:text")
-				.text(j)
+				.text(sectorName)
 				.attr("class","sector_bar_text")
 				.attr("x",x)
 				.attr("y",y)
