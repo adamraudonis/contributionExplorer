@@ -2,10 +2,6 @@ var pi=Math.PI;
 var main_r=300;
 var main_x=500
 var main_y=400
-// =======
-// var main_x=550 //mouse x is 601
-// var main_y=400 //mouse y is 463
-// >>>>>>> 9a2df7e3620e86b461fed16c2138aff3ff3cc127
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
@@ -76,10 +72,8 @@ function jsonCallback(data){
 
 	var selection = canvas.selectAll("circle").data(data);
 				
-	selection.enter().append("circle").on("mousedown",function(){
-		console.log("HIIIII");
-	});
-
+	selection.enter().append("circle")
+	
 	canvas.append("svg:circle")
 						.attr("cx", main_x)
 						.attr("cy", main_y)
@@ -311,9 +305,7 @@ function jsonCallback(data){
 					.attr("cy", main_y)
 					.attr("r", main_r)
 					.attr("id", "main_circle")
-                                       
-					
-					
+
 						
 						
 						
@@ -677,6 +669,8 @@ function mouse_tracker(canvas, colors_assigned){
                                 }
 				
 				document.onmouseup = function (event){
+                                    
+                                        $("#selection_rect").remove()
 					if($("#select_status").html()=='true'){
 						finish_selection()
 					}
