@@ -28,33 +28,46 @@
             <button type="button" class="btn btn-small" id="pres">President</button>
             <button type="button" class="btn btn-small" id="senate">Senate</button>
             <button type="button" class="btn btn-small" id="house">House</button>
-        </div>
 
-        <button type="button" class="btn btn-small">Reset</button>
+        </div>
+            <button type="button" class="btn btn-small" id="reset" onClick="ResetDisplay()">Reset</button>
+        
+
+
     </form>
 
     <!-- The list of all the congressional committees. Display none hides it. style="display: none;"-->
     <div class="glossymenu" id="glossyid" style="display: none;"></div>
 
     <script type="text/javascript">
+
+        var currentView = null;
+        
         
         $(function() {
 
-            // Select Presidents view initially.
-            $('#pres').button('toggle');
-
-            // Get the selected button in the button group when pressed.
-            $ref = $(".btn-group");
-            $("body").on('click',$ref.selector+' .btn',function() {
-                if(!$(this).hasClass('active')){
-
-                    // Remove the SVG and initialize with different data
-                    // Note: This is move any html under the visualization to the top.
-                    d3.select("svg").remove();
-                    var svg = d3.select("body").append("svg")
-                        .attr("id","canvas").attr("width",900).attr("height",900);
-                    initializeVizAndMenu($(this).attr("id"));
-                }
+          // Select Presidents view initially.
+          $('#pres').button('toggle');
+          currentView = "pres";
+          // Get the selected button in the button group when pressed.
+          
+                
+          $ref = $(".btn-group");
+          $("body").on('click',$ref.selector+' .btn',function() {
+                       if(!$(this).hasClass('active')){
+                       
+                         
+                       
+                                // Remove the SVG and initialize with different data
+                                // Note: This is move any html under the visualization to the top.
+                                d3.select("svg").remove();
+                                var svg = d3.select("body").append("svg")
+                                .attr("id","canvas").attr("width",900).attr("height",900);
+                                currentView = $(this).attr("id");
+                                initializeVizAndMenu($(this).attr("id"));
+                       
+                               
+                       }
             });
 
             // Create the visualization with the president data
@@ -141,6 +154,16 @@
 
             testData(raceType);
         }
+        
+        function ResetDisplay(){
+            if(currentView != null){
+                d3.select("svg").remove();
+                var svg = d3.select("body").append("svg")
+                .attr("id","canvas").attr("width",900).attr("height",900);
+                initializeVizAndMenu(currentView);
+                
+            }
+        }
 
     </script>
 
@@ -194,7 +217,6 @@
             console.log(cidArray);
             select_cand_ids(cidArray);
         }
-            
 
     function testData(raceType) {
 
