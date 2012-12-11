@@ -92,7 +92,7 @@ function jsonCallback(data){
 			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
 				idNameMap["candidate_" + d.CID] = "";
 				return ("candidate_" + d.CID)} })
-			.attr("class", "candidate cand_unlocked")
+			.attr("class", "candidate")
 			.attr("candidateName", function (d){
 				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
 				nameList.push(d.Name)
@@ -124,12 +124,16 @@ function jsonCallback(data){
 				return total
 			})
             .on("mouseover", function(d, i){
-                //$(this).attr("class", "candidate_highlight2");
+                
                // $(this).css("stroke", "gold")
                 $(this).css("fill", "gold")
+                var id = $(this).attr('id');
+                var el=document.getElementById(id);
+                el.ownerSVGElement.appendChild(el);
 
             })
             .on("mouseout", function(d, i){
+              // $(this).attr("class", "candidate");
                //$(this).attr("class", "candidate");
                 
                 var party = d.Party;
@@ -324,9 +328,48 @@ function jsonCallback(data){
 	};
 	whois_reps_toselect = new Array();
     
+    run_qtip();
+    
+  // setTimeout(function(){run_qtip()},100);
+
+    
 
 }
 
+function run_qtip(){
+//    
+//                        $.fn.qtip.styles.tooltipDefault = {
+//                        background  : '#132531',
+//                        color       : '#FFFFFF',
+//                        textAlign   : 'left',
+//                        border      : {
+//                            width   : 10,
+//                            radius  : 10,
+//                            color   : '#C1CFDD'
+//                        },
+//                        width       : 220
+//                        
+//                        }
+//    }
+    
+    $('.candidate').each( function() {
+        var name = this.getAttribute("candidateName");
+        $(this).qtip({
+                     content: name,
+                     show: {delay: 0, effect: {type: 'slide', length:0}},
+                     position: {
+                        corner: {
+                            target: 'topRight',
+                            tooltip: 'bottomLeft'
+                        },
+                        adjust: {x: 20, y: 0}
+                     }
+                    
+          
+          
+        })
+    })
+}
 
 	
 function initialize(filename){
@@ -519,7 +562,8 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					   
 					   
 				   //end of code for each candidat
-    
+   // setTimeout(function(){run_qtip()},900);
+
 
 	
 }
@@ -816,6 +860,9 @@ function highlight_this(target){
        $(".vector").css("opacity", 0.01)
 
        var target_circle=$(target).attr("for")
+    
+    var el=document.getElementById(target_circle);
+    el.ownerSVGElement.appendChild(el);
    
    
 	var candidates=$(".cand_unlocked")

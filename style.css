@@ -119,8 +119,8 @@ body{
 
 #selection_list{
         position:fixed;
-        right:25em;
-        top:20em;
+        left:3em;
+        top:5em;
         width:10em;
         text-align:left;
         
