@@ -299,14 +299,18 @@ function jsonCallback(data){
 			   
 			   
 			   
-			  /* 
+			  
 			  canvas.append("svg:circle")
 					.attr("cx", main_x)
 					.attr("cy", main_y)
 					.attr("r", main_r)
 					.attr("id", "main_circle")
+                                        .on("mousedown", function(){
+                                            
+                                            alert('click')
+                                        })
 					
-			*/			
+					
 					
 						
 						
@@ -781,6 +785,7 @@ function finish_selection(){
 									var candidate="";
 									var cx=0, cy=0, cand_id="", name="", d3_candidate="";
 									var div_function=""
+                                                                        var reveal_count=0;
 								  
                                                                         $(".candidate").css("opacity",0.01)
                                                                         $(".vector").css("opacity",0.01)
@@ -796,7 +801,8 @@ function finish_selection(){
                                                                                 
                                                                              
 										if((between(cx,min_x,max_x)) && (between(cy, min_y, max_y))){
-                                                                               
+                                                                                        
+                                                                                        reveal_count++;
 											candidate.css("stroke", "orange")
 											candidate.css("stroke-width", 4)
                                                                                         candidate.css("opacity", default_cand_opacity)
@@ -814,6 +820,12 @@ function finish_selection(){
 										  
 										}
 									}
+                                                                        if(reveal_count==0){
+                                                                            
+                                                                            $(".candidate").css("opacity",1)
+                                                                            $(".vector").css("opacity",1)
+                                                                            remove_selection()
+                                                                        }
 								}
 							
 							
@@ -855,6 +867,7 @@ function highlight_this(target){
     var el=document.getElementById(target_circle);
     el.ownerSVGElement.appendChild(el);
     $("#"+target_circle).css("fill", "gold");
+   
    
 	var candidates=$(".cand_unlocked")
     
@@ -1027,6 +1040,16 @@ function getNames() {
 
 
 function start_selection_rect(){
+    
+        var mouse_x=$("#mouse_x").html()
+        var mouse_y=$("#mouse_y").html()-y_correction
+        
+        var delta_x=mouse_x-main_x
+        var delta_y=mouse_y-main_y
+        var length_squared=Math.pow(delta_x, 2)+Math.pow(delta_y, 2)
+        
+        if(length_squared > Math.pow(main_r, 2)){return ""}
+        
    
         var canvas = d3.select("#canvas")
         
@@ -1037,8 +1060,7 @@ function start_selection_rect(){
 
 
 
-        var mouse_x=$("#mouse_x").html()
-        var mouse_y=$("#mouse_y").html()-y_correction
+        
         var width=1
         var height=1
 
