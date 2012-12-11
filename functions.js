@@ -53,7 +53,7 @@ function jsonCallback(data){
 	colors[2]="#4876b1"
 	colors[3]="#c36929"
 	colors[4]="#8dd3c7"
-	colors[5]="#ffffb3"
+	colors[5]="#cf0500"
 	colors[6]="#bebada"
 	colors[7]="#fb8072"
 	colors[8]="#80b1d3"
@@ -309,7 +309,7 @@ function jsonCallback(data){
 					.attr("id", "main_circle")
                                         .on("mousedown", function(){
                                             
-                                            alert('click')
+                                            
                                         })
 					
 					
@@ -678,6 +678,8 @@ function mouse_tracker(canvas, colors_assigned){
                                 }
 				
 				document.onmouseup = function (event){
+                                    
+                                        $("#selection_rect").remove()
 					if($("#select_status").html()=='true'){
 						finish_selection()
 					}
