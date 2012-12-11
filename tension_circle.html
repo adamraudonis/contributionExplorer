@@ -17,13 +17,13 @@
     <script type="text/javascript" src="functions.js"></script>
     <script type="text/javascript" src="data.js"></script>
 </head>
-<body>
+<body onload="checkSearch()">
     <div class="credits"> <!-- Moved by CSS to the bottom -->
         <p>By Adam Raudonis - Lorenzo Mangubat - Gabriel Vincent Kho - Chris Fontas</p>
     </div>
 
     <form class="searchform">
-        <input class="searchfield" id="search" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+        <input class="searchfield" id="search" type="text" value="Search..." onchange = "checkSearch()" onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
 
         <button type="button" id="zippopover" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot; id=&quot;zipbutton&quot;>Submit</button>">Find My Rep.</button>
 
@@ -40,7 +40,7 @@
     <div class="glossymenu" id="glossyid" style="display: none;"></div>
 
     <script type="text/javascript">
-
+        var oldValue = document.getElementById('search').value;
         var currentView = null;
         
         $(document).ready(function(){
@@ -63,15 +63,6 @@
                     noResults: "",
                     results: function() {}
                 },  
-                formatItem: function(rowdata) {
-                    var details = rowdata[0].split(":");
-                    return details[1];
-                },
-                formatResult: function (rowdata) {
-                    var details = rowdata[0].split(":");
-                    $('#hobby_id').val(details[0]);
-                    return details[1];
-                },
             });
 
             $('#search').keypress(function(e){
@@ -81,6 +72,36 @@
             });
         });
 
+        function checkSearch() {
+
+            
+            var searchBar = document.getElementById('search');
+            var searchTerm = document.getElementById('search').value;
+            if (searchTerm.length == 0 || searchTerm == "Search...") {
+
+            }
+            else {
+               
+                search_data(searchTerm);
+            }
+        }
+        $(document).ready(function() {
+            $('a.ui-corner-all').click(function(e) {
+                e.preventDefault();
+            });
+        });
+
+        setInterval(function(){
+            var searchBar = document.getElementById('search');
+            var searchTerm = document.getElementById('search').value;
+            if ((searchTerm.length > 0 && oldValue != searchTerm )|| search.valueOf() === "Search..."){
+                oldValue = searchTerm;
+                console.log(searchTerm);
+                search_data(searchTerm);
+            }
+        }, 100);
+
+     //   document.getElementById('search').addEventListener('DOMSubtreeModified', OnSubtreeModified, false);
 
         $(function() {
 
