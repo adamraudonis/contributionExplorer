@@ -1018,15 +1018,15 @@ function select_cand_ids(cids) {
 			el.parentNode.appendChild(el)
 		};
 
-        if(cids.length == 1){
-            $("#candidate_" + cand_id).css("stroke", "#ff9912");
-            $("#candidate_" + cand_id).css("stroke-width", 5);
-        }    
-        else
-        {
-            $("#candidate_" + cand_id).css("stroke", "black");
-            $("#candidate_" + cand_id).css("stroke-width", 3);
-        }
+        // if(cids.length == 1){
+        //     $("#candidate_" + cand_id).css("stroke", "#ff9912");
+        //     $("#candidate_" + cand_id).css("stroke-width", 5);
+        // }    
+        // else
+        // {
+        //     $("#candidate_" + cand_id).css("stroke", "black");
+        //     $("#candidate_" + cand_id).css("stroke-width", 3);
+        // }
         
 	    for (var j in all_sectors){
 	        
