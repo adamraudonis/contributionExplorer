@@ -67,10 +67,10 @@ body{
 
 #main_circle{
     
-    fill:black;
+    fill:none;
     stroke: black;
     stroke-width:1;
-    opacity:0
+    opacity:1
     
 }
 
@@ -84,6 +84,12 @@ body{
     opacity:1;
     stroke:orange;
     stroke-width:1.5    
+}
+
+.candidate_hightlight2{
+    stroke:purple;
+    stroke-width:100;
+    fill:purple;
 }
 
 
@@ -109,16 +115,17 @@ body{
     
     position:fixed;
     top:8em;
-    left: 5em;
+    right: 5em;
     width:20em;
     text-align:left;
-    opacity:0.4
+    opacity:0;
+    display: none
 }
 
 #selection_list{
         position:fixed;
-        right:25em;
-        top:20em;
+        left:3em;
+        top:5em;
         width:10em;
         text-align:left;
         
