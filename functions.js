@@ -1,11 +1,17 @@
 var pi=Math.PI;
 var main_r=300;
+<<<<<<< HEAD
 var main_x=500
 var main_y=400
+=======
+var main_x=550 //mouse x is 601
+var main_y=400 //mouse y is 463
+>>>>>>> 9a2df7e3620e86b461fed16c2138aff3ff3cc127
 var all_sectors = new Array();
 var sector_count=0;
 var max_sector=0;
-var y_correction=68;
+var y_correction=63;
+var x_correction=51;
 var whois_reps_toselect = new Array();
 var race_type;
 
@@ -608,7 +614,7 @@ function mouse_tracker(canvas, colors_assigned){
 					$('#mouse_y').html(mouse_y)
 		 
 					 //var correction=0
-					 var delta_xc=mouse_x-main_x
+					 var delta_xc=mouse_x-main_x-x_correction
 					 var delta_yc=mouse_y-main_y-y_correction
 					 var r=Math.sqrt(Math.pow(delta_xc,2)+Math.pow(delta_yc, 2))
 
@@ -709,7 +715,7 @@ function track_selection(){
                                                             
                                                                 
                                                                 
-								var mouse_x=$("#mouse_x").html()
+								var mouse_x=$("#mouse_x").html()-x_correction
 								var mouse_y=$("#mouse_y").html()-y_correction
 
 								var origin_x=$("#select_point_1_x").html()
@@ -751,7 +757,7 @@ function finish_selection(){
 							*/
 							   
 								var x_1=$("#select_point_1_x").html()
-								var x_2=$("#mouse_x").html()
+								var x_2=$("#mouse_x").html()-x_correction
 								var min_x=0
 								var max_x=0
 
@@ -1086,7 +1092,7 @@ function getNames() {
 
 function start_selection_rect(){
     
-        var mouse_x=$("#mouse_x").html()
+        var mouse_x=$("#mouse_x").html()-x_correction
         var mouse_y=$("#mouse_y").html()-y_correction
         
         var delta_x=mouse_x-main_x
