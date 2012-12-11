@@ -1,6 +1,6 @@
 var pi=Math.PI;
 var main_r=300;
-var main_x=500
+var main_x=550
 var main_y=400
 var all_sectors = new Array();
 var sector_count=0;
@@ -811,12 +811,13 @@ function finish_selection(){
 										        
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
 											
+                                            console.log($("#selection_list"));
                                                                                         
 											for (var j in all_sectors){
 	        
-                                                                                            var vector = $("#cand_" + cand_id + "_vector_" + j)
-                                                                                            vector.css("opacity", 1)  
-                                                                                        }		
+                                                    var vector = $("#cand_" + cand_id + "_vector_" + j)
+                                                    vector.css("opacity", 1)  
+                                            }		
 
 										  
 										}

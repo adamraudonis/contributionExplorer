@@ -78,7 +78,7 @@
                     // Note: This is move any html under the visualization to the top.
                     d3.select("svg").remove();
                     var svg = d3.select("body").append("svg")
-                    .attr("id","canvas").attr("width",900).attr("height",900);
+                    .attr("id","canvas").attr("width",1100).attr("height",900);
                     currentView = $(this).attr("id");
                     initializeVizAndMenu($(this).attr("id"));
                }
@@ -129,7 +129,7 @@
                     $('#house').button('toggle');
                     d3.select("svg").remove();
                     var svg = d3.select("body").append("svg")
-                        .attr("id","canvas").attr("width",900).attr("height",900);
+                        .attr("id","canvas").attr("width",1100).attr("height",900);
                     whois_reps_toselect.push(crpid);
                     initializeVizAndMenu("house");
                 } else {
@@ -209,13 +209,13 @@
 
             d3.select("svg").remove();
             var svg = d3.select("body").append("svg")
-            .attr("id","canvas").attr("width",900).attr("height",900);
+          //  .attr("id","canvas").attr("width",1100).attr("height",900);
             initializeVizAndMenu(raceTypeVar);
         }
 
     </script>
 
-    <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
+    <svg id="canvas" xmlns="http://www.w3.org/2000/svg"></svg> 
     <div id="meta" style="display: none;">
         <div>mouse x: <span id="mouse_x"></span></div>
         <div>mouse y: <span id="mouse_y"></span></div>
@@ -227,9 +227,9 @@
         <div>select status<span id="select_status">false</span></div>
     </div>
     </div>
-        <!-- <div id="selection_list" style="height:10em; overflow:auto" >
+        <div id="selection_list" style="height:10em; overflow:auto" >
             </select>
-        </div> -->
+        </div> 
 
     <script type="text/javascript" src="ddaccordion.js"></script>
     <script type="text/javascript" src="senate_committees.js"></script>
