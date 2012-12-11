@@ -27,6 +27,11 @@ rect{
     fill:#619f3a;
 }
 
+.ui-autocomplete {
+    max-height: 100px !important;
+    overflow-y: scroll;
+}
+
 circle{
     
     fill:#e37e23; ;
