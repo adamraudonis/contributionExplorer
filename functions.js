@@ -311,11 +311,7 @@ function jsonCallback(data){
 					.attr("cy", main_y)
 					.attr("r", main_r)
 					.attr("id", "main_circle")
-                                        .on("mousedown", function(){
-                                            
-                                            alert('click')
-                                        })
-					
+                                     
 					
 					
 						
