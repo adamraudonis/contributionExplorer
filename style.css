@@ -59,11 +59,11 @@ circle{
 }
 
 #canvas{
-    width:900;
-    height:900;
+    width:950px;
+    height:800px;
     position:absolute;
-    top: 60px;
-    left: 50px;
+    top: 52px;
+    left: 0px;
 }
 
 #center{
@@ -147,18 +147,19 @@ body{
     right: 5em;
     width:20em;
     text-align:left;
-    opacity:0;
-    display: none
+    opacity:1;
+    display:none
 }
 
 #selection_list{
         position:fixed;
-        left:3em;
-        top:5em;
-        width:10em;
+        left:3px;
+        top:60px;
+        width:150px;
+        height:300px;
         text-align:left;
-        
-    
+        overflow:auto;
+        z-index:10;"
 }
 
 .sector_bar{
