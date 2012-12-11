@@ -6,6 +6,7 @@ var all_sectors=new Array();
 var sector_count=0;
 var max_sector=0;
 var y_correction=68;
+var idNameMap = Object();
 
 function write_data(json){
 	
@@ -68,9 +69,13 @@ function jsonCallback(data){
 			.attr("cx", main_x)
 			.attr("cy", main_y)
 			.attr("r", 20)
-			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{return ("candidate_" + d.CID)} })
+			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
+				idNameMap["candidate_" + d.CID] = "";
+				return ("candidate_" + d.CID)} })
 			.attr("class", "candidate cand_unlocked")
-			.attr("candidateName", function (d){return d.Name})
+			.attr("candidateName", function (d){
+				idNameMap["candidate_" + d.CID] = d.Name
+				return d.Name})
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -818,8 +823,36 @@ function remove_selection(){
 	
 }
 
-function select_cand_ids(cids) {
+function search_data(name) {
+	console.log(name)
 
+									   
+	var candidates=$(".candidate")
+					
+	var candidates=$(".candidate")
+	var candidate="";
+	var cx=0, cy=0, cand_id="";
+
+	var cidArray = new Array();
+
+	for(var i=0;i<candidates.length;i++){
+		candidate=$("#"+candidates[i].id)	
+		var cand_id=candidate.attr("id")
+		var cand_name = idNameMap[cand_id]
+		if (cand_name.indexOf(name) != -1) {
+			console.log(name)
+			console.log(cand_name.indexOf(name))
+			console.log(cand_name)
+			var index = cand_id.indexOf("_")
+			var passID = cand_id.substring(index+1)
+			cidArray.push(passID)
+		}
+	}
+	select_cand_ids(cidArray);
+
+}
+
+function select_cand_ids(cids) {
 	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.05)
     $(".vector").css("opacity", 0.05)
