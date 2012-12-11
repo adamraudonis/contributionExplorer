@@ -81,6 +81,12 @@ body{
     stroke-width:1.5    
 }
 
+.candidate_hightlight2{
+    stroke:purple;
+    stroke-width:100;
+    fill:purple;
+}
+
 
 
 .candidate_lowlight{
