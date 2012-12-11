@@ -81,7 +81,6 @@
 
         // Must be placed here. Can't be inside the document click function.
         function whoisrep_callback(jsonData){
-            console.log(jsonData);
             if (jsonData.response.legislators.length > 0) {
                 console.log(jsonData.response.legislators[0].legislator.crp_id);
 
@@ -130,10 +129,10 @@
 
         function initializeVizAndMenu(raceType) {
             initialize(raceType);
-            console.log("BEFORE TEST DATA");
-            //console.log($('#glossyid').children().remove());
+
+            // Remove all children of the glossy menu generated div
             $('#glossyid').children().remove()
-           // $('#glossyid a').remove();
+
             if (raceType == "pres") {
                 $("#glossyid").css("display","none");
             } else {
@@ -141,14 +140,12 @@
             }
 
             testData(raceType);
-
-
         }
 
     </script>
 
     <svg id="canvas" xmlns="http://www.w3.org/2000/svg" version="1.1" width="900" height="900"></svg>
-    <div id="meta">
+    <div id="meta" style="display: none;">
         <div>mouse x: <span id="mouse_x"></span></div>
         <div>mouse y: <span id="mouse_y"></span></div>
         <div>theta: <span id="theta"></span></div>
@@ -160,9 +157,6 @@
     </div>
     </div>
         <div id="selection_list" style="height:10em; overflow:auto" >
-            
-                
-                
             </select>
         </div>
 
@@ -189,21 +183,16 @@
         }
 
         function comdetails_callback(jsonData) {
-            // Parse to get CIDs to highlight
-            console.log("GOT JSON DATA");
-            console.log(jsonData);
+
             var cidArray = new Array();
             var members = jsonData.response.committee.members;
-            console.log(member);
 
             for (var i = 0; i < members.length; i++) {
-                var member = members[i];
-                console.log(member);
-
-                var legislator = member.legislator;
+                var legislator = members[i].legislator;
                 cidArray.push(legislator.crp_id);
             };
             console.log(cidArray);
+            select_cand_ids(cidArray);
         }
             
 
@@ -215,9 +204,6 @@
         } else {
             obj = get_house_list();
         }
-                    console.log("IN TEST DATA");
-
-            console.log(obj);
 
         obj = obj.response;
            
@@ -227,7 +213,6 @@
             a.setAttribute("id",obj.committees[f].committee.id);
             var committeename = obj.committees[f].committee.name;
             var firstsubstring = committeename.substring(0,19)
-            console.log(firstsubstring);
             if (raceType == "senate") {
                 if (firstsubstring == "Senate Committee on") {
                     committeename = committeename.substring(20)
@@ -246,10 +231,7 @@
                 }
             }
             
-                console.log(committeename);
-
             committeename = committeename.substring(0,38)
-
 
             a.appendChild (document.createTextNode (committeename));
 
@@ -267,7 +249,7 @@
                     var subcommittee = subcommittees[i];
                     var sub_li = document.createElement ("li");
                     var sub_a = document.createElement ("a");
-                    sub_a.setAttribute("href",'javascript:getCom(\"'+obj.committees[f].committee.id+'\")');
+                    sub_a.setAttribute("href",'javascript:getCom(\"' + subcommittee.committee.id + '\")');
                     sub_a.appendChild (document.createTextNode (subcommittee.committee.name));
                     sub_li.appendChild(sub_a);
                     ul.appendChild(sub_li);
@@ -295,6 +277,5 @@
 
     <!-- For an unknown reason this needs to be here to make the popover work -->
     <script src="js/bootstrap.min.js"></script> 
-    <div onclick="committee_select('fish')">TEST BUTTON DIV</div>
 </body>
 </html>
