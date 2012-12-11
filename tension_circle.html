@@ -8,6 +8,7 @@
     <link href="glossymenustyle.css" rel="stylesheet" type="text/css" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v2.js"></script>
@@ -20,7 +21,7 @@
     </div>
 
     <form class="searchform">
-        <input class="searchfield" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
+        <input class="searchfield" id="search" type="text" value="Search..." onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}" />
 
         <button type="button" id="zippopover" class="btn btn-small" data-placement="bottom" data-html="true" rel="popover" title="Enter Your Zip Code" data-content="<input id=&quot;zip&quot; class=&quot;searchfield&quot; type=&quot;text&quot; value=&quot;&quot; onfocus=&quot;if (this.value == '...') {this.value = '';}&quot; onblur=&quot;if (this.value == '') {this.value = 'Search...';}&quot; /> <button type=&quot;button&quot; class=&quot;btn btn-small btn-primary&quot; id=&quot;zipbutton&quot;>Submit</button>">Find My Rep.</button>
 
@@ -43,7 +44,25 @@
 
         var currentView = null;
         
-        
+        $(document).ready(function(){
+            $("#search").keyup(function(){
+                
+                // Retrieve the input field text and reset the count to zero
+                var search = $(this).val();
+                search.toLowerCase()
+                search_data(search);
+            });
+        });
+/*
+       $(function() {
+            var names = getNames();
+
+            $( "#search" ).autocomplete({
+                source: names
+            });
+        });
+*/
+
         $(function() {
 
           // Select Presidents view initially.

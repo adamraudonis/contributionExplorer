@@ -9,11 +9,17 @@ var y_correction=68;
 var whois_reps_toselect = new Array();
 var race_type;
 
+var idNameMap = Object();
+
+var default_cand_opacity=1
+
+var nameList = Array();
 
 function write_data(json){
 	
 	return json
 }
+
 
 function jsonCallback(data){
 
@@ -82,9 +88,14 @@ function jsonCallback(data){
 			.attr("cx", main_x)
 			.attr("cy", main_y)
 			.attr("r", 20)
-			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{return ("candidate_" + d.CID)} })
+			.attr("id", function(d){if(d.CID==undefined){return "no id"}else{
+				idNameMap["candidate_" + d.CID] = "";
+				return ("candidate_" + d.CID)} })
 			.attr("class", "candidate cand_unlocked")
-			.attr("candidateName", function (d){return d.Name})
+			.attr("candidateName", function (d){
+				idNameMap["candidate_" + d.CID] = d.Name.toLowerCase()
+				nameList.push(d.Name)
+				return d.Name})
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -149,13 +160,11 @@ function jsonCallback(data){
 		var y=0
 		var bar_size=0
 		var d="";
-		var angle_segment=sector_count+1
-
-
-					
+		var angle_segment=sector_count
+			
 		for (var j in all_sectors){
 		
-			bar_size = 15 + all_sectors[j]/max_sector * 300
+			bar_size = 15 + all_sectors[j]/max_sector * 100
 			anchor_angle = i/angle_segment * 2 * pi;
 			x = main_x + main_r * Math.cos(anchor_angle)
 			y = main_y + main_r * Math.sin(anchor_angle)
@@ -798,7 +807,7 @@ function lowlight_this(target){
 		
 	}*/
 	
-	$(".cand_unlocked").css("opacity", 0.25)
+	$(".cand_unlocked").css("opacity", default_cand_opacity)
 	
 	
    if($(target).attr("locked")=="true") {return;}
@@ -822,7 +831,7 @@ function remove_selection(){
 	 $(".candidate")
 			.css("stroke", "black")
 			.css("stroke-width", 1.5)
-			.css("opacity", 0.25)
+			.css("opacity", default_cand_opacity)
 
 	var candidates=$(".candidate")
 	var party="", id="", color="";
@@ -844,8 +853,36 @@ function remove_selection(){
 	
 }
 
-function select_cand_ids(cids) {
+function search_data(name) {
+	name = name.toLowerCase()
 
+								   
+	var candidates=$(".candidate")
+					
+	var candidates=$(".candidate")
+	var candidate="";
+	var cx=0, cy=0, cand_id="";
+
+	var cidArray = new Array();
+
+	for(var i=0;i<candidates.length;i++){
+		candidate=$("#"+candidates[i].id)	
+		var cand_id=candidate.attr("id")
+		var cand_name = idNameMap[cand_id].toLowerCase()
+		console.log("Candidate Name: " + cand_name)
+		console.log("Search: "+name)
+		if (cand_name.indexOf(name) != -1) {
+			
+			var index = cand_id.indexOf("_")
+			var passID = cand_id.substring(index+1)
+			cidArray.push(passID)
+		}
+	}
+	select_cand_ids(cidArray);
+
+}
+
+function select_cand_ids(cids) {
 	// Grey out all candidates and vectors
     $(".candidate").css("opacity", 0.05)
     $(".vector").css("opacity", 0.05)
@@ -864,5 +901,8 @@ function select_cand_ids(cids) {
 
 }
 
+function getNames() {
+	return nameList
+}
 
 
