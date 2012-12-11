@@ -99,6 +99,13 @@ function jsonCallback(data){
 				}
 				return total
 			})
+            .on("mouseover", function(d, i){
+                $(this).attr("class", "candidate_highlight2");
+            })
+          //  .on("mouseout", function(d){
+          ////      $(this).attr("class", "candidate");
+          //  })
+    
 			
 		var i = 0;   
 		for (var j in all_sectors){
@@ -485,8 +492,15 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 					  
 					   
 						   candidate
-						   .attr("cx", parseFloat(candidate_x))
-						   .attr("cy", parseFloat(candidate_y))
+                            .attr("cx", parseFloat(candidate_x))
+                            .attr("cy", parseFloat(candidate_y))
+                          //  .on("mouseover", function(){
+                           //     $(this).attr("class", "candidate_highlight2");
+                          ///  })
+                           // .on("mouseout", function(){
+                           //     $(this).attr("class", "candidate");
+                          //  })
+                           
 						   
 					  
 					  //el.parentNode.appendChild(el)
@@ -517,6 +531,8 @@ function mouse_tracker(canvas, colors_assigned){
 						document.captureEvents(Event.MOUSEMOVE); // Specifies that you want all mouse movement events passed to the document
 						document.captureEvents(Event.MOUSEDOWN);
 						document.captureEvents(Event.MOUSEUP);
+                        document.captureEvents(Event.mouseover);
+                        document.captureEvents(Event.click);
 					}  
 				
 				document.onmousemove = function(event){
