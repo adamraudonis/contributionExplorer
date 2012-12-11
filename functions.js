@@ -295,14 +295,18 @@ function jsonCallback(data){
 			   
 			   
 			   
-			  /* 
+			  
 			  canvas.append("svg:circle")
 					.attr("cx", main_x)
 					.attr("cy", main_y)
 					.attr("r", main_r)
 					.attr("id", "main_circle")
+                                        .on("mousedown", function(){
+                                            
+                                            alert('click')
+                                        })
 					
-			*/			
+					
 					
 						
 						
@@ -805,6 +809,7 @@ function highlight_this(target){
 
        var target_circle=$(target).attr("for")
    
+   
 	var candidates=$(".cand_unlocked")
     
         
@@ -968,6 +973,16 @@ function getNames() {
 
 
 function start_selection_rect(){
+    
+        var mouse_x=$("#mouse_x").html()
+        var mouse_y=$("#mouse_y").html()-y_correction
+        
+        var delta_x=mouse_x-main_x
+        var delta_y=mouse_y-main_y
+        var length_squared=Math.pow(delta_x, 2)+Math.pow(delta_y, 2)
+        
+        if(length_squared > Math.pow(main_r, 2)){return ""}
+        
    
         var canvas = d3.select("#canvas")
         
@@ -978,8 +993,7 @@ function start_selection_rect(){
 
 
 
-        var mouse_x=$("#mouse_x").html()
-        var mouse_y=$("#mouse_y").html()-y_correction
+        
         var width=1
         var height=1
 

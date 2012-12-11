@@ -62,10 +62,10 @@ body{
 
 #main_circle{
     
-    fill:black;
+    fill:none;
     stroke: black;
     stroke-width:1;
-    opacity:0
+    opacity:1
     
 }
 
