@@ -112,7 +112,7 @@ function jsonCallback(data){
             .attr("title", function(d){
                 //  console.log(d.Twitter);
                 if(d.Twitter != "")
-                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
+                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"' target='_blank'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
                   else 
                     return "<div class='candtip'>"+d.Name+"</div>"
                 })
@@ -173,6 +173,10 @@ function jsonCallback(data){
                 console.log(d.Twitter);
                 var id = $(this).attr('id');
                 SocialMediaData(id);
+                console.log(id.substring(10));
+                var sarr = new Array();
+                sarr.push(id.substring(10));
+                select_cand_ids(sarr);
             })
           
     
@@ -356,11 +360,11 @@ function run_qtip(){
                     tooltip: 'bottomLeft'
                 },
                 style: { 
-                  name: 'cream',
+                  name: 'light',
                   border: {
                     width: 2,
-                    radius: 4,
-                    color: '#8B5A00'
+                    radius: 2,
+                    color: '#000099'
                   },
                   width: 140
                 } 
@@ -778,7 +782,36 @@ function finish_selection(){
                                                           
 							
 								if(width<2 || height < 2){
-									//select_all_cand();
+									console.log("IN REMOVEEEE")
+									//var vectorDisplay = $(".vector").css("display");
+	//console.log(vectorDisplay);
+
+	//var opacity = $(".candidate").css("opacity");   
+	console.log("IN SELECT ALL CAND")
+	console.log(opacity);
+
+	if (race_type == "house") {
+		var candidates = $(".candidate")
+		
+		for (var i = 0; i < candidates.length; i++) {
+			var id = $(candidates[i]).attr("id");
+			var opacity = $(candidates[i]).css("opacity");
+
+		    for (var sector in all_sectors) {
+		    	var vector = $("#cand_" + id + "_vector_" + sector)
+		    	
+		    	vector.css("display",show_random_vectors())
+		    	
+		    };
+ 		};
+	} else {
+		$(".vector").css("display", "block")  
+	}
+	$(".candidate").css("opacity", 1)      
+	$(".vector").css("opacity", 1)  
+	$(".candidate").css("stroke", "black")
+	console.log("IN PAST ALL CAND")
+
 									remove_selection()
 									
 								}
@@ -980,28 +1013,30 @@ function remove_selection(){
 
 function search_data(name) {
 	name = name.toLowerCase()
+	if (name.length > 0) {
+		console.log("HERE")			   
+		var candidates=$(".candidate")
+						
+		var candidates=$(".candidate")
+		var candidate="";
+		var cx=0, cy=0, cand_id="";
 
-	console.log("HERE")			   
-	var candidates=$(".candidate")
-					
-	var candidates=$(".candidate")
-	var candidate="";
-	var cx=0, cy=0, cand_id="";
+		var cidArray = new Array();
 
-	var cidArray = new Array();
-
-	for(var i=0;i<candidates.length;i++){
-		candidate=$("#"+candidates[i].id)	
-		var cand_id=candidate.attr("id")
-		var cand_name = idNameMap[cand_id].toLowerCase()
-		if (cand_name.indexOf(name) != -1) {
-			
-			var index = cand_id.indexOf("_")
-			var passID = cand_id.substring(index+1)
-			cidArray.push(passID)
+		for(var i=0;i<candidates.length;i++){
+			candidate=$("#"+candidates[i].id)	
+			var cand_id=candidate.attr("id")
+			var cand_name = idNameMap[cand_id].toLowerCase()
+			if (cand_name.indexOf(name) != -1) {
+				
+				var index = cand_id.indexOf("_")
+				var passID = cand_id.substring(index+1)
+				cidArray.push(passID)
+			}
 		}
-	}
-	select_cand_ids(cidArray);
+		select_cand_ids(cidArray);
+	};
+	
 
 }
 
@@ -1033,12 +1068,13 @@ function select_cand_ids(cids) {
 
 function select_all_cand()
 {
+	$("#selection_list").empty();
 
 	//var vectorDisplay = $(".vector").css("display");
 	//console.log(vectorDisplay);
 
 	//var opacity = $(".candidate").css("opacity");   
-	console.log("HERE")
+	console.log("IN SELECT ALL CAND")
 	console.log(opacity);
 
 	if (race_type == "house") {

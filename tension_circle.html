@@ -148,7 +148,6 @@
           $ref = $(".btn-group");
           $("body").on('click',$ref.selector+' .btn',function() {
                if(!$(this).hasClass('active')){
-                    console.log("FUCKER");
                     // Remove the SVG and initialize with different data
                     // Note: This is move any html under the visualization to the top.
                     d3.select("svg").remove();
@@ -323,7 +322,7 @@
 
         // Callback for tapping the menu committees
         function getCom(committee_id) {
-            $("#selection_list").remove()
+            $("#selection_list").empty();
 
             $.ajax({
                 type: 'get',
