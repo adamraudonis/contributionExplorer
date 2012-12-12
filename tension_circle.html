@@ -48,6 +48,7 @@
                 
                 // Retrieve the input field text and reset the count to zero
                 var search = $(this).val();
+                $("#selection_list").remove()
                 search.toLowerCase()
                 search_data(search);
             });
@@ -216,8 +217,11 @@
                 //console.log(e.target);
 
                 var clickedClass = e.target.getAttribute("class");
-                if (clickedClass != "candidate cand_unlocked" && clickedClass != "subcl" && clickedClass != "menuitem" && clickedClass != "sector_bar") {
+                                             console.log(clickedClass)
+
+                if (clickedClass != "candidate cand_unlocked" && clickedClass != "subcl" && clickedClass != "menuitem" && clickedClass != "sector_bar" &&  clickedClass != "test") {
                     $("#search").attr("value", "");
+                    console.log("IN SELECTION");
                     select_all_cand();
                 };
 
@@ -299,6 +303,8 @@
 
         // Callback for tapping the menu committees
         function getCom(committee_id) {
+            $("#selection_list").remove()
+
             $.ajax({
                 type: 'get',
                 url: 'http://services.sunlightlabs.com/api/committees.get.json?apikey=de9c6b058ea542a4a5aab1d845d56c83&id=' + committee_id + '&jsonp=comdetails_callback',
