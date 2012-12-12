@@ -38,17 +38,7 @@ rect{
     overflow-y: scroll;
 }
 
-li {
-    color:#000;
-    padding-left: 10px;
-    background-color:yellow;
-    background: #f1f1f1;
-    width:185px;
-    border-bottom: solid 1px #00008B;
-    border-left: solid 1px #00008B;
-    border-right: solid 1px #00008B;
-    color: black;
-}
+
 
 .ui-menu-item {
     color:#000;
@@ -59,7 +49,7 @@ li {
     border-bottom: solid 1px #00008B;
     border-left: solid 1px #00008B;
     border-right: solid 1px #00008B;
-    color: red;
+    color: black;
 }
 
 .ui-autocomplete {

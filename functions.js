@@ -15,6 +15,7 @@ var idNameMap = Object();
 var default_cand_opacity=1
 
 var nameList = new Array();
+var contributorList = "";
 
 function write_data(json){
 	
@@ -110,11 +111,16 @@ function jsonCallback(data){
 				return d.Name})
             .attr("title", function(d){
                 //  console.log(d.Twitter);
-                //  if(d.Twitter != ""){
-                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png'/></a></div>"
-                 // else 
-                 //  return "<div class='candtip'>"+d.Name+"</div>"
-                  })
+                if(d.Twitter != "")
+                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
+                  else 
+                    return "<div class='candtip'>"+d.Name+"</div>"
+                })
+//            		console.log(d.CID);
+//            		contributor(d.CID);
+//                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png'/></a></div>";
+//                  })
+//>>>>>>> 81dc3aec4c70a3916edace3c9928c5663b7e2a9f
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -164,6 +170,7 @@ function jsonCallback(data){
                
             })
             .on("click", function(d, i){
+                console.log(d.Twitter);
                 var id = $(this).attr('id');
                 SocialMediaData(id);
             })
@@ -184,23 +191,6 @@ function jsonCallback(data){
 			
 			i++
 		}    
-
-
-
-				
-  //  		// Add the giant main ring circle
-		// canvas.append("svg:circle")
-		// 	.attr("cx", main_x)
-		// 	.attr("cy", main_y)
-		// 	.attr("r", main_r)
-		// 	.attr("id", "main_circle")
-			
-		// canvas.append("svg:circle")
-		// 	.attr("cx", main_x)
-		// 	.attr("cy", main_y)
-		// 	.attr("r", 2)
-		// 	.attr("id", "center")
-			
 						
 		//create sectors
 		var i=0;
@@ -354,6 +344,13 @@ function run_qtip(){
 
     $('.candidate')
             .qtip({
+                
+               show: { when: { event: 'click' } },
+                  hide: { when: { event: 'mouseout' }, 
+                  delay: 1000, 
+                 // effect: function() { $(this).qtip("destroy"); }
+                },
+                 // hide: { when: {event: 'click' }},//
                 corner: {
                     target: 'bottomLeft',
                     tooltip: 'bottomLeft'
@@ -370,7 +367,28 @@ function run_qtip(){
         })
 }
 
-	
+function candCallBack(data){
+	console.log(data)
+}
+
+
+function contributor(cid){
+
+	//nameList = new Array();
+	console.log('http://www.stanford.edu/~gdykho/cgi-bin/candCallback'+cid+'.json&jsonp=candCallback')
+	$(document).ready(function(){
+	    $.ajax({
+	        type: 'get',
+	        url: 'http://www.stanford.edu/~gdykho/cgi-bin/callback/'+cid+'.json&jsonp=candCallback',
+	        dataType: 'jsonp',
+	        success: candCallBack
+	    });
+     })	
+}
+
+
+
+
 function initialize(filename){
 
 	// The filename is the racetype: pres, senate, or house.
@@ -680,7 +698,6 @@ function mouse_tracker(canvas, colors_assigned){
 function motion_lock(target){
 	
   
-	console.log($(target).attr("sector_name"))
 	
 	$("#target").html($(target).attr("sector_name"))
   
@@ -758,10 +775,7 @@ function finish_selection(){
 								var width=max_x-min_x
 								var height=max_y-min_y
                                                                 
-                                                                console.log("x min "+min_x)
-                                                                console.log("x max "+max_x)
-                                                                console.log("y min "+min_y)
-                                                                console.log("y max "+max_y)
+                                                          
 							
 								if(width<2 || height < 2){
 									//select_all_cand();
@@ -800,7 +814,6 @@ function finish_selection(){
 										        
 											$("#selection_list").append("<div locked='false' onclick=lock_candidate(this) id=list_"+ cand_id+" for="+cand_id+" onmouseover=highlight_this(this) onmouseout=lowlight_this(this)>"+name+"</div>")
 											
-                                            //console.log($("#selection_list"));
                                                                                         
 											for (var j in all_sectors){
 	        
@@ -895,7 +908,6 @@ function lowlight_this(target){
 	var target_circle=$(target).attr("for")
     var circle = $("#"+target_circle)
     var party=circle[0]["__data__"]["Party"]
-    console.log(party)
     //var party = circle.getAttribute("party");
     if(party == "R")
         $("#"+target_circle).css("fill", "red")
@@ -969,7 +981,7 @@ function remove_selection(){
 function search_data(name) {
 	name = name.toLowerCase()
 
-								   
+	console.log("HERE")			   
 	var candidates=$(".candidate")
 					
 	var candidates=$(".candidate")
@@ -1009,16 +1021,6 @@ function select_cand_ids(cids) {
 			var el=document.getElementById($("#candidate_" + cand_id).attr("id"))
 			el.parentNode.appendChild(el)
 		};
-
-        // if(cids.length == 1){
-        //     $("#candidate_" + cand_id).css("stroke", "#ff9912");
-        //     $("#candidate_" + cand_id).css("stroke-width", 5);
-        // }    
-        // else
-        // {
-        //     $("#candidate_" + cand_id).css("stroke", "black");
-        //     $("#candidate_" + cand_id).css("stroke-width", 3);
-        // }
         
 	    for (var j in all_sectors){
 	        
@@ -1028,38 +1030,6 @@ function select_cand_ids(cids) {
 	    }
  	};
 }
-
-/*
-var candidates=$(".candidate")
-			  
-			  
-			for (var i=0;i<candidates.length;i++){
-				
-				var id=$(candidates[i]).attr("id")
-				var totalCash=$(candidates[i]).attr("total_cash")
-				// Make sure we don't include candidates that have no money
-				// coming from any sectors.
- 				//if (totalCash > 0) {
- 					draw_candidates(id, canvas, colors_assigned, false)
- 				//};
-			   
-			 }
-
-
-			   
-			for (var i=0;i<candidates.length;i++){       
-			   //bring candidate circles above vectors
-			   
-				var id=$(candidates[i]).attr("id")
-				var totalCash=$(candidates[i]).attr("total_cash")
-				// Make sure we don't include candidates that have no money
-				// coming from any sectors.
-				//if (totalCash > 0) {
-					var el=document.getElementById(id)
-			   		el.parentNode.appendChild(el) 					
-				//}; 
-			}
-*/
 
 function select_all_cand()
 {

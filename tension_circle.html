@@ -52,18 +52,26 @@
                 search.toLowerCase()
                 search_data(search);
             });
+
+            $("#search").click(function(){
+                
+                return false;
+            });
         });
 
        $(function() {
             var names = getNames();
 
-            $( "#search" ).autocomplete({
+            var thing = $( "#search" ).autocomplete({
                 width: 320,
                 source: names,
                 messages: {
                     noResults: "",
                     results: function() {}
                 },  
+                select: function( event, ui ) {
+                    event.preventDefault();
+                }
             });
 
             $('#search').keypress(function(e){
@@ -71,6 +79,18 @@
     
                 if ( e.which == 13 ) e.preventDefault();
             });
+
+            var renderItem = thing.data("autocomplete")._renderItem;
+            /* Override the _renderItem function to display the placeholder item */
+            thing.data("autocomplete")._renderItem = function(ul, item) {
+                return $("<li class=\"ui-menu-item\"></li>")
+                    .data("ui-menu-item", item)
+                    .append("<a>" + item.value + "</a>")
+                    .appendTo(ul);
+
+            };
+
+
         });
 
         function checkSearch() {
@@ -82,7 +102,7 @@
 
             }
             else {
-               
+                console.log("The search term " + searchTerm)
                 search_data(searchTerm);
             }
         }
@@ -95,7 +115,10 @@
 
         function OnSubtreeModified () {
             var searchTerm = document.getElementById('search').value;
-            search_data(searchTerm);
+            if (searchTerm.length > 0) {
+                console.log("The search term " + searchTerm)
+                search_data(searchTerm);
+            }
         }
 
         setInterval(function(){
@@ -108,9 +131,8 @@
                     anchor.addEventListener("click", OnSubtreeModified, false);
                 }
                 
-
+                console.log("The search term " + searchTerm)
                 oldValue = searchTerm;
-                console.log(searchTerm);
                 search_data(searchTerm);
             }
         }, 100);
@@ -126,7 +148,7 @@
           $ref = $(".btn-group");
           $("body").on('click',$ref.selector+' .btn',function() {
                if(!$(this).hasClass('active')){
-               
+                    console.log("FUCKER");
                     // Remove the SVG and initialize with different data
                     // Note: This is move any html under the visualization to the top.
                     d3.select("svg").remove();
@@ -162,7 +184,6 @@
         // Must be placed here. Can't be inside the document click function.
         function whoisrep_callback(jsonData){
             if (jsonData.response.legislators.length > 0) {
-                console.log(jsonData.response.legislators);
 
                 // TODO handle multiple reps per zip code.
                 // if (jsonData.response.legislators.length > 3) {
@@ -265,7 +286,6 @@
                 raceTypeVar = "pres";
             }
 
-            console.log(raceTypeVar);
 
             d3.select("svg").remove();
             var svg = d3.select("body").append("svg").attr("id","canvas").attr("width",1100).attr("height",900);
