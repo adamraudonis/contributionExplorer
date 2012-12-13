@@ -73,7 +73,19 @@ function jsonCallback(data){
 	var sector_x=0 
 	var sector_y=0
 
+
+
 	var selection = canvas.selectAll("circle").data(data);
+
+	 canvas.append("svg:circle")
+					.attr("cx", main_x)
+					.attr("cy", main_y)
+					.attr("r", main_r)
+					.attr("id", "main_circle")
+					.style("display", "block")
+					.style("fill","white")
+					.style("opacity",0.0001)
+					.attr("class","test")
 				
 	selection.enter().append("circle")
 
@@ -104,7 +116,7 @@ function jsonCallback(data){
                 
 
                 if(d.Twitter != "")
-                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
+                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"' target='_blank'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
                   else 
                     return "<div class='candtip'>"+d.Name+"<br /></div>"
                 })
@@ -161,6 +173,10 @@ function jsonCallback(data){
                 console.log(d.Twitter);
                 var id = $(this).attr('id');
                 SocialMediaData(id);
+                console.log(id.substring(10));
+                var sarr = new Array();
+                sarr.push(id.substring(10));
+                select_cand_ids(sarr);
             })
           
     
@@ -301,11 +317,8 @@ function jsonCallback(data){
 			   
 			   
 			  
-			  canvas.append("svg:circle")
-					.attr("cx", main_x)
-					.attr("cy", main_y)
-					.attr("r", main_r)
-					.attr("id", "main_circle")
+			 
+
 
 						
 		
@@ -345,11 +358,11 @@ function run_qtip(){
                     tooltip: 'bottomLeft'
                 },
                 style: { 
-                  name: 'cream',
+                  name: 'light',
                   border: {
                     width: 2,
-                    radius: 4,
-                    color: '#8B5A00'
+                    radius: 2,
+                    color: '#000099'
                   },
                   width: 140
                 } 
@@ -501,7 +514,6 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 								  if(redraw==false){
 									
 									
-									var randomInt = getRandomInt(0,3);
 									//if (randomInt == 1) {
 										canvas.append("svg:path")
 											.attr("d",d)
@@ -512,13 +524,7 @@ function draw_candidates(candidate_id,  canvas, colors_assigned, redraw){
 											.style("opacity",function() {
 												return 1+0*tension_fraction;
 											})
-											.style("display",function() {
-												if (randomInt == 1 || race_type != "house") {
-													return "block"
-												} else {
-													return "none";
-												};
-											})
+											.style("display",show_random_vectors())
 									//}
 								  }
 								  else{
@@ -774,8 +780,36 @@ function finish_selection(){
                                                           
 							
 								if(width<2 || height < 2){
-									
-									
+									console.log("IN REMOVEEEE")
+									//var vectorDisplay = $(".vector").css("display");
+	//console.log(vectorDisplay);
+
+	//var opacity = $(".candidate").css("opacity");   
+	console.log("IN SELECT ALL CAND")
+	console.log(opacity);
+
+	if (race_type == "house") {
+		var candidates = $(".candidate")
+		
+		for (var i = 0; i < candidates.length; i++) {
+			var id = $(candidates[i]).attr("id");
+			var opacity = $(candidates[i]).css("opacity");
+
+		    for (var sector in all_sectors) {
+		    	var vector = $("#cand_" + id + "_vector_" + sector)
+		    	
+		    	vector.css("display",show_random_vectors())
+		    	
+		    };
+ 		};
+	} else {
+		$(".vector").css("display", "block")  
+	}
+	$(".candidate").css("opacity", 1)      
+	$(".vector").css("opacity", 1)  
+	$(".candidate").css("stroke", "black")
+	console.log("IN PAST ALL CAND")
+
 									remove_selection()
 									
 								}
@@ -816,6 +850,8 @@ function finish_selection(){
 	        
                                                     var vector = $("#cand_" + cand_id + "_vector_" + j)
                                                     vector.css("opacity", 1)  
+                                                    vector.css("display", "block")  
+
                                             }		
 
 										  
@@ -823,8 +859,7 @@ function finish_selection(){
 									}
                                                                         if(reveal_count==0){
                                                                             
-                                                                            $(".candidate").css("opacity",1)
-                                                                            $(".vector").css("opacity",1)
+                                                                            //select_all_cand();
                                                                             remove_selection()
                                                                         }
 								}
@@ -954,7 +989,6 @@ function remove_selection(){
     
          //goes back to state where no candidates were ever selected. Clearing of selection_list occurs somewhere else. 
        
-	
 	 $("#selection_rect").remove()
          
          $(".candidate").attr("in_selection", "false")
@@ -977,28 +1011,30 @@ function remove_selection(){
 
 function search_data(name) {
 	name = name.toLowerCase()
+	if (name.length > 0) {
+		console.log("HERE")			   
+		var candidates=$(".candidate")
+						
+		var candidates=$(".candidate")
+		var candidate="";
+		var cx=0, cy=0, cand_id="";
 
-	console.log("HERE")			   
-	var candidates=$(".candidate")
-					
-	var candidates=$(".candidate")
-	var candidate="";
-	var cx=0, cy=0, cand_id="";
+		var cidArray = new Array();
 
-	var cidArray = new Array();
-
-	for(var i=0;i<candidates.length;i++){
-		candidate=$("#"+candidates[i].id)	
-		var cand_id=candidate.attr("id")
-		var cand_name = idNameMap[cand_id].toLowerCase()
-		if (cand_name.indexOf(name) != -1) {
-			
-			var index = cand_id.indexOf("_")
-			var passID = cand_id.substring(index+1)
-			cidArray.push(passID)
+		for(var i=0;i<candidates.length;i++){
+			candidate=$("#"+candidates[i].id)	
+			var cand_id=candidate.attr("id")
+			var cand_name = idNameMap[cand_id].toLowerCase()
+			if (cand_name.indexOf(name) != -1) {
+				
+				var index = cand_id.indexOf("_")
+				var passID = cand_id.substring(index+1)
+				cidArray.push(passID)
+			}
 		}
-	}
-	select_cand_ids(cidArray);
+		select_cand_ids(cidArray);
+	};
+	
 
 }
 
@@ -1030,15 +1066,49 @@ function select_cand_ids(cids) {
 
 function select_all_cand()
 {
-	$(".candidate").css("opacity", 1)      
-	$(".vector").css("display","block")
+	$("#selection_list").empty();
 
+	//var vectorDisplay = $(".vector").css("display");
+	//console.log(vectorDisplay);
+
+	//var opacity = $(".candidate").css("opacity");   
+	console.log("IN SELECT ALL CAND")
+	console.log(opacity);
+
+	if (race_type == "house") {
+		var candidates = $(".candidate")
+		var opacity_count = 0;
+		for (var i = 0; i < candidates.length; i++) {
+			var opacity = $(candidates[i]).css("opacity");
+			if (opacity == 1) {
+				opacity_count = opacity_count + 1;
+			};
+		}
+		console.log(opacity_count);
+		for (var i = 0; i < candidates.length; i++) {
+			var id = $(candidates[i]).attr("id");
+			var opacity = $(candidates[i]).css("opacity");
+
+		    for (var sector in all_sectors) {
+		    	var vector = $("#cand_" + id + "_vector_" + sector)
+		    	if (opacity_count > 400) {
+
+		    	} else {
+		    		vector.css("display",show_random_vectors())
+		    	}
+		    };
+ 		};
+	} else {
+		$(".vector").css("display", "block")  
+	}
+	$(".candidate").css("opacity", 1)      
 	$(".vector").css("opacity", 1)  
 	$(".candidate").css("stroke", "black")
 }
 
 function show_random_vectors()
 {
+	var randomInt = getRandomInt(0,3);
 	if (randomInt == 1 || race_type != "house") {
 		return "block"
 	} else {
@@ -1080,10 +1150,10 @@ function start_selection_rect(){
 
 
         canvas.append("svg:path")
-                        .attr("id","selection_rect")
-                        .attr("d",d)
-                $("#select_point_1_x").html(mouse_x)
-                $("#select_point_1_y").html(mouse_y)
+            .attr("id","selection_rect")
+            .attr("d",d)
+            $("#select_point_1_x").html(mouse_x)
+            $("#select_point_1_y").html(mouse_y)
     
 }
 
