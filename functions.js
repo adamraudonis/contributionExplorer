@@ -17,6 +17,8 @@ var default_cand_opacity=1
 var nameList = new Array();
 var contributorList = "";
 
+var contributions = new Array();
+
 function write_data(json){
 	
 	return json
@@ -98,17 +100,15 @@ function jsonCallback(data){
 				nameList.push(d.Name)
 				return d.Name})
             .attr("title", function(d){
-                //  console.log(d.Twitter);
+                
+                
+
                 if(d.Twitter != "")
                     return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png' width=\"25\" height = \"25\"/></a></div>"
                   else 
-                    return "<div class='candtip'>"+d.Name+"</div>"
+                    return "<div class='candtip'>"+d.Name+"<br /></div>"
                 })
-//            		console.log(d.CID);
-//            		contributor(d.CID);
-//                    return "<div class='candtip'>"+d.Name+"<br /><a href='http://www.Twitter.com/"+d.Twitter+"'><img src='Twitter.png'/></a></div>";
-//                  })
-//>>>>>>> 81dc3aec4c70a3916edace3c9928c5663b7e2a9f
+
 			.style("fill", function(d) {
 				
 				var party=d.Party
@@ -336,7 +336,7 @@ function run_qtip(){
     $('.candidate')
             .qtip({
                 
-               show: { when: { event: 'click' } },
+                  show: { when: { event: 'mouseover' } },
                   hide: { when: { event: 'mouseout' }, 
                   delay: 1000, 
                 },
@@ -357,7 +357,11 @@ function run_qtip(){
 }
 
 function candCallBack(data){
-	console.log(data)
+    contributions.length = 0;
+    for(var j in data) {
+        contributions.push(j);
+    }
+	console.log("The data is "+data)
 }
 
 
@@ -608,7 +612,6 @@ function mouse_tracker(canvas, colors_assigned){
 					$('#mouse_x').html(mouse_x)
 					$('#mouse_y').html(mouse_y)
 		 
-					 //var correction=0
 					 var delta_xc=mouse_x-main_x-x_correction
 					 var delta_yc=mouse_y-main_y-y_correction
 					 var r=Math.sqrt(Math.pow(delta_xc,2)+Math.pow(delta_yc, 2))
@@ -660,15 +663,12 @@ function mouse_tracker(canvas, colors_assigned){
 												  
 						 
 						 var candidates=$(".candidate")
-					
 						   for (var i=0;i<candidates.length;i++){       
 
 							var id=$(candidates[i]).attr("id")
 							draw_candidates(id, canvas, colors_assigned, true)
-
 						 }
 
-						 
 					}                                    
 				};
                                 
