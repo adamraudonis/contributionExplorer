@@ -120,6 +120,7 @@
                 search_data(searchTerm);
             }
         }
+        document.getElementById('search').addEventListener(Event.CHANGE, checkSearch, false);
 
         setInterval(function(){
             var searchBar = document.getElementById('search');
